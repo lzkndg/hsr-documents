@@ -10,4 +10,4 @@ https://gitlab.ost.ch/luzia.kuendig/lab03-VXLAN
 https://gitlab.ost.ch/luzia.kuendig/lab04-aws
 
 ## Lab 05 - Kubernetes
-!(Kubernetes)[https://gitlab.ost.ch/luzia.kuendig/lab05-kubernetes]
+![Kubernetes](https://gitlab.ost.ch/luzia.kuendig/lab05-kubernetes)

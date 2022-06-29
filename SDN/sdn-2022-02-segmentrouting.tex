@@ -1,0 +1,100 @@
+\section{Segment Routing}
+
+RFC 8402: \url{https://datatracker.ietf.org/doc/html/rfc8402}
+
+\emph{Segment Routing (SR) leverages the source routing paradigm.  A node 
+   steers a packet through an ordered list of instructions, called 
+   "segments".  A segment can represent any instruction, topological or 
+   service based.  A segment can have a semantic local to an SR node or 
+   global within an SR domain.  SR provides a mechanism that allows a 
+   flow to be restricted to a specific topological path, while 
+   maintaining per-flow state only at the ingress node(s) to the SR 
+   domain.}
+
+\subsection{Source Routing}
+The entire path is calculated as a \emph{Segment List} by the source router, or received by a PCE (Path Computation Element).
+This path defines either a route inside a topology or some network services (Networks Function Virtualization NFV).
+
+\noindent
+Segment = an Instruction
+\begin{itemize}
+    \item Shortest Path
+    \item specific interface
+    \item ...
+\end{itemize}
+
+\noindent
+Each node has one or several \emph{Segment IDs}. 
+\begin{itemize}
+    \item MPLS Label or IPv6 Address
+    \item Global Segment - Each node in the SR domain installs this instruction
+    \item Local Segment - only the node that originates this segment installs the associated instruction. \\
+    all nodes must know about other nodes' local segments in order to use them.
+\end{itemize}
+
+\noindent
+A packet header contains an \textbf{SID} as shortest path destination or \textbf{SID List} as defined path.
+
+\noindent
+Every hop runs the instructions inside the packet header - there is no per-flow state information. An instruction can be one of the following three.`'
+\begin{itemize}
+    \item PUSH -- insert segment(s) at the packet head and set first as active
+    \item CONTINUE -- active segment is not completed and remains active
+    \item NEXT -- active segment is completed, make next item in SID list active
+\end{itemize}
+
+\subsection{IGP Extensions to support Segment Routing}
+The following segment types must be known to the IGP protocol in order to distribute SIDs. 
+\subsubsection{Prefix Segment}
+Shortest path to any known network (prefix). Multi hop, equal cost.
+
+\noindent
+Prefix SID is domain-wide unique, assigned manually to the loopback address of each node
+
+\noindent
+Algorithm id specifies the method of choosing a path - default is 0, shortest path.
+
+\noindent
+A Prefix Segment can be of two different types
+\begin{itemize}
+    \item Node Segment \\
+    Associated with a /32 prefix which is a node address. \\
+    Sets \textbf{N-Flag} in Segment ID.
+    \item Anycast Segment \\
+    Associated with an anycast prefix, which routes to the geographically closest out of a group of hosts. \\
+    N-Flag is unset! \\ 
+    Macro-Engineering: can be used to steer traffic via specific region, or make it pass some router performing special network functions. \\
+    Offers ECMP load balancing and high availability.
+     
+\end{itemize}
+\subsubsection{Adjacency Segment \emph{(local)}}
+Unidirectional Adjacency, traffic is steered explicitly over an interface / link. Overrides shortest path routing decisions. \\
+SID list contains node prefix first, then Adjacency-ID. 
+\begin{itemize}
+    \item Layer-2 Adjacency can address one specific link inside a Link Aggregation Group (LAG). 
+    \item Group Adjacency
+\end{itemize} 
+\subsubsection{BGP Segments}
+\begin{itemize}
+    \item BGP Prefix Segment \\
+    Global segment, associated with a BGP Prefix \\
+    \emph{”steer traffic along the ECMP-aware BGP multi-path to the prefix associated with this segment”} 
+    \item BGP Anycast Segment \\
+    Traffic steering capabilities such as \emph{”steer traffic via spine nodes in group A”} 
+    \item BGP Peer Segment \\
+    Associated with BGP Peering sessions to specific neighbor \\ 
+    Local segments that are signaled via BGP link-state address-family \\
+    \emph{”steer traffic to the specific BGP peer node via ECMP multi-path towards that peer router”} \\
+    Overrides the traditional BGP mechanism 
+    \item BGP Peer Adjacency Segment \\
+    \emph{”steer traffic to the specific BGP peer node via the specified interface towards that peer router”}
+\end{itemize}
+
+\noindent
+Combining segments can create any kind of end-to-end path.
+
+\noindent
+\textbf{Traffic steering} only happens on source nodes to enable per-flow load balancing.
+
+\noindent
+For \textbf{traffic engineering} a policy defines the path (SID-List) to be used. 

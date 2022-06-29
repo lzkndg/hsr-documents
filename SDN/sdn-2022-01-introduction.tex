@@ -30,6 +30,10 @@ This results in some drawbacks such as
 \noindent
 \emph{Virtualization of Computing needs virtualization of Network!}
 
+\subsection{SDN Devices}
+All Information from FIB to Config can be updated via API calls (support depending: RESTCONF, NETCONF, ....)
+\\
+\\
 \noindent
 White box switches 
 \begin{itemize}
@@ -47,15 +51,17 @@ White box OS
 	\item fboss
 \end{itemize}
 
-\subsection{SDN Devices}
-All Information from FIB to Config can be updated via API calls (support depending: RESTCONF, NETCONF, ....)
-
 \includegraphics[width=5cm]{devices-openflow}
 \includegraphics[width=5cm]{devices-api}
 
 \subsection{SDN Approaches}
+Different levels of abstraction can be applied to the topology, resulting in mainly three different SDN approaches. 
 
-\includegraphics[width=10cm]{sdn-approaches}
+\begin{figure}
+	\centering
+	\caption{Different abstraction levels}
+	\includegraphics[width=\textwidth]{sdn-approaches}
+\end{figure}
 
 \subsubsection{Pure SDN}
 Academic approach.
@@ -84,6 +90,12 @@ Flow table is used for forwarding decisions.
 	\item migration
 	\item high risk
 \end{itemize} 
+
+\begin{figure}
+	\centering
+	\caption{Pure SDN schema example}
+	\includegraphics[width=5cm]{pure-sdn}
+\end{figure}
 
 \subsubsection{Hybrid SDN, API based}
 Data and Control Plane on each device, Management Plane centralized. Similar to snmp, ssh scripts. 
@@ -120,6 +132,12 @@ Data and Control Plane on each device, Management Plane centralized. Similar to 
 	\item software dependencies  
 \end{itemize}
 
+\begin{figure}
+	\centering
+	\caption{NETCONF and RESTCONF schema example}
+	\includegraphics[width=10cm]{netconf-restconf-2in1}
+\end{figure}
+
 \subsubsection{Hybrid SDN, Overlay based}
 \begin{itemize}
 	\item Underlay Network: optimized, traditional Architecture 
@@ -145,3 +163,15 @@ Data and Control Plane on each device, Management Plane centralized. Similar to 
 	\item Overlay-to-physical gateways
 	\item End-to-end monitoring and troubleshooting  
 \end{itemize}
+
+\begin{figure}
+	\centering
+	\caption{Overlay based schema example}
+	\includegraphics[width=5cm]{overlay-based-sdn}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{overlay-example-datacenter}
+	\caption{Datacenter example of an overlay solution}
+\end{figure}

@@ -2,10 +2,9 @@
 Traditional Networking Architecture is divided into planes, depending on the layer
 \begin{table}[h]
 	\begin{tabular}{p{0.1\textwidth}|p{0.25\textwidth}|p{0.35\textwidth}|p{0.3\textwidth}}
-		& Control Plane & Data Plane & Management Plane \\
+		. & Control Plane & Data Plane & Management Plane \\ 
 		\hline
-		Layer 2 & Spanning Tree Overlays (VLANs) & Forward \emph{Ethernet Frames} & \\
-		\hline
+		Layer 2 & Spanning Tree Overlays (VLANs) & Forward \emph{Ethernet Frames} & \\ \hline
 		Layer 3 & Routing Protocols Overlays (MPLS) & Forward \emph{IP Packets} &
 	\end{tabular}
 \end{table}
@@ -13,7 +12,7 @@ Traditional Networking Architecture is divided into planes, depending on the lay
 \noindent
 This results in some drawbacks such as
 \begin{itemize}
-	\item -- Limited decision making "intelligence"
+	\item -- Limited decision making ``intelligence''
 	\item -- Difficult administration
 	\item -- Missing overall analytics
 \end{itemize}
@@ -31,7 +30,7 @@ This results in some drawbacks such as
 \emph{Virtualization of Computing needs virtualization of Network!}
 
 \subsection{SDN Devices}
-All Information from FIB to Config can be updated via API calls (support depending: RESTCONF, NETCONF, ....)
+All Information from FIB to Config can be updated via API calls (support depending: RESTCONF, NETCONF, \ldots)
 \\
 \\
 \noindent
@@ -142,7 +141,7 @@ Data and Control Plane on each device, Management Plane centralized. Similar to 
 \begin{itemize}
 	\item Underlay Network: optimized, traditional Architecture 
 	\item Overlay Network: flexible, virtual network, centralized Management Plane 
-	\item Encapsulation necessary (VXLAN, NVGRE, IPSEC, ...) 
+	\item Encapsulation necessary (VXLAN, NVGRE, IPSEC, \ldots) 
 \end{itemize}
 
 \includegraphics[width=8cm]{approach-overlay-sdn}

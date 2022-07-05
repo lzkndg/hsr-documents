@@ -70,15 +70,24 @@ Usually, any head-end is able to compute SR-TE paths with certain optimization r
     track of the available bandwidth in the network and routes the requests accordingly.
 \end{itemize}
 
-\textbf{PCE -- Path Computation Element}
-
 \textbf{PCC -- Path Computation Client (Headend)}
 
-\begin{figure}
+Any device that receives SR paths externally instead of calculating them itself.
+Candidate paths can be distributed via 
+\begin{itemize}
+    \item \textbf{PCEP:} Path Computation Element Protocol
+    \item CLI configuration
+    \item NETCONF / RESTCONF
+    \item BGP 
+\end{itemize}
+
+\begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{srte-headend-to-pce.png}
     \caption{SRTE Headend to PCE communication}
 \end{figure}
+
+\textbf{PCE -- Path Computation Element}
 
 \vspace{5mm}
 \noindent
@@ -123,16 +132,6 @@ of two PCEs calculate any disjoint path.
 to access and update topology and path information.
 
 \textbf{Southbound Interface:} communicates with PCC devices, exchanging link state information and SR Paths. 
-
-\noindent
-Candidate paths can be distributed via 
-\begin{itemize}
-    \item \textbf{PCEP}
-    \item CLI
-    \item NETCONF
-    \item BGP 
-\end{itemize}
-
 
 \subsection{LFA -- Loop Free Alternate}
 \emph{``a directly connected neighbor that offers a repair path whose shortest path to the destination D does not traverse the protected component.''}

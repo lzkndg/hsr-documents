@@ -1,1 +1,173 @@
 \section{Software Defined Access}
+
+The term ``Fabric" describes an overlay. This is a logical topology, which virtually connects specific 
+devices using some unspecified underlaying infrastructure.
+Control planes for underlay and overlay are completely separate.
+
+Overlay transported traffic usually only ``knows about'' provider edge (PE) routers. 
+Traffic routing inside the underlay network is handled by the overlay logic and also the underlay routing protocol.
+
+\vspace{3mm}
+\noindent
+Overlay can transport layer 2 or 3 traffic , using some kind of encapsulation:
+\begin{itemize}
+    \item Layer 2 emulates a LAN segment, can provide different physical topologies. \\
+    Supports: Layer 2 flooding, single subnet mobility, transports ethernet frames.
+    \item Layer 3 abstracts IP conncectivity. \\
+    Supports: Gateway-independent mobility, contain network failures, transport IP packets (IPv4/IPv6)
+\end{itemize}
+
+\noindent
+Underlay usually uses some IGP for connectivity and control plane tasks.
+\begin{itemize}
+    \item OSPF
+    \item IS IS
+    \item Manual or automated deployment
+    \item Low latency is important (max. 100ms)
+\end{itemize}
+
+\subsection{VXLAN}
+
+VXLAN encapsulates layer 2 frames in UDP/IP, emulating a dedicated LAN network on top of a routed layer 3 network.
+
+UDP Destination is port 4789, source port is chosen from a range of high ports to allow Equal Cost Multi-Pathing.
+
+24-bit VXLAN segments allow for more than 16 million VNIDs, while classic VLANs are limited to 12 bit (4096 VLAN IDs).
+
+Encapsulation of MAC in UDP can be done in hardware / at line rate.
+
+Local Station Table - LST
+
+Global Station Table - GST
+
+Unknown destinations are forwarded to a spine -$>$ Council of Oracle. The oracle (a spine node) knows everything. Because everything learned by a leaf is forwarded to the spine.
+
+\subsection{LISP}
+\emph{Locator Identifier Separation Protocol 
+(\href{https://de.wikipedia.org/wiki/Locator/Identifier_Separation_Protocol}{Wikipedia})}
+
+\vspace{3mm}
+\noindent
+Separates \textbf{EID, endpoint identities} and \textbf{RLOC, routing locators}, which an IP address usually implicitly both contains, and maps one to the other.
+
+\begin{itemize}
+    \item Map Server / Resolver \\
+        Control plane function 
+    \item Tunnel Router \\
+        Ingress ITR, Egress ETR \\
+        Registers EID of clients with Map Server
+        encapsulates and decapsulates traffic of edge devices
+    \item Proxy Tunnel Router PxTR \\
+        Ingress (PITR) connects LISP- and non-LISP-domains \\
+        Egress PETR
+    \item Solicit Map Request \\
+        is sent when a client location is unknown
+\end{itemize}
+
+\noindent
+\emph{Control Plane Register}
+\begin{enumerate}
+    \item Router communicates Map-Register to controller (EID, RLOC)
+    \item Controller builds its database
+\end{enumerate}
+
+\vspace{3mm}
+\noindent
+\emph{Map Request (Proxy Mode and Non-Proxy Mode)}
+\begin{enumerate}
+    \item Map-request for requesting a location information from the controller. 
+    \item Non-Proxy: The request is then delegated to and will be answered by the corresponding end-router.
+    \item Proxy: Another request will be made to the correct router, answer will be sent by controller.
+    \item Request answer will be cached by the requester.
+\end{enumerate}
+
+\vspace{3mm}
+\noindent
+\emph{External Networks known/unknown}
+\begin{enumerate}
+    \item Known external networks can be listed inside the database exactly like internal hosts.
+    \item Unknown networks are processed as a ``default route'' / ``not found'' entry with separate destination / location.
+\end{enumerate}
+
+\vspace{3mm}
+\noindent
+\emph{Host Mobility}
+\begin{enumerate}
+    \item Known device connects with a different XTR: map entry is created.
+    \item Requests based on old, cached information by an ITR will be answered with ``Solicit Map-Request'' by the ETR that does not know the client anymore.
+    \item Standard Map-Request can then be sent to the correct ETR, and cache will be updated 
+\end{enumerate}
+
+
+\subsection{Secure Group Tag}
+Topology-independent, role based access control.
+
+Scaleable ingress tagging (SGT), egress filtering (SGACL).
+
+Centralized policy management on DNA controller, distributed policy enforcement on all network devices.
+
+Secure Group Tag introduces a micro level of segmentation, while VLAN and VXLAN operate on a macro level. 
+
+\subsection{Cisco DNA Center}
+Acts as Management Controller of a campus fabric. Integrates several management systems to configure and orchestrate LAN, WLAN and WAN access.
+
+\begin{itemize}
+    \item Fabric Control Plane
+        \begin{itemize}
+            \item Different Endpoint ID Lookups are supported (IPv4, IPv6, MAC)
+            \item Maintanis Endpoint ID Map Registrations
+            \item Processes Lookup Requests by edge- and border nodes
+        \end{itemize}
+    \item Fabric Edge node supplies first-hop services for users and devices that are connected to the fabric
+        \begin{itemize}
+            \item Identify and Authenticate
+            \item Register endpoint ID with Control Plane
+            \item Anycast Layer 3 Gateway (provide the same gateway IP on all Edge Nodes)
+            \item De- and encapsulation of Data Traffic 
+        \end{itemize}
+    \item Fabric Border
+        \begin{itemize}
+            \item Internal Border (XTR) \\
+            Known Routes inside your company \\
+            Communicates endpoints to outside and known subnets to inside of the fabric \\
+            Hand-off means mapping context (VRF and SGT) between the domains
+            \item External Border, Default (PXTR) \\
+            Unknown Routes outside your company \\
+            \emph{Gateway of last resort} for all unknown destinations \\
+            Exports all internal IP ranges as one summarized route to the available IGP \\
+            Does not import external Routes
+            Hand-off means mapping context (VRF and SGT) between the domains
+        \end{itemize}
+\end{itemize}
+
+\subsection{Cisco ACI -- Application Centric Infrastructure}
+\emph{``... ist eine branchendführende SDN-Lösung, die richtliniengesteuerte Automatisierung über integriertes Underlay und Overlay bietet 
+und Richtlinienautomatisierung für VMs, Bare-Metal Server und Container anbietet.''}
+
+\vspace{3mm}
+\noindent
+Trend: most of the traffic does not leave the datacenter (-> east west traffic), while traditional 3-tier networking model is optimized for north-south traffic.
+
+\noindent
+Solution: \textbf{Leaf-Spine Topology}
+This architecture is optimized for east-west traffic inside a datacenter, based on Clos Network from 1953.
+
+Every Endpoint is the same distance away from any other endpoint \emph{(deterministic)}
+
+Leaf connect to all and only to spines, spines connect to all and only to leafs.
+
+Scaling is easy: more bandwidth -$>$ add spine / more ports -$>$ add leaf
+
+\vspace{3mm}
+\noindent
+Trend: Mobility (VMotion), Layer 2 adjacency and ``getting rid of spanning tree''
+
+\noindent
+Solution: \textbf{VXLAN} - Creating a tunnel between all devices
+
+\vspace{3mm}
+\noindent
+Trend: Elasticity, rate of change in a datacenter network is high
+
+\noindent
+Solution: Everything is / will be programmable via API!

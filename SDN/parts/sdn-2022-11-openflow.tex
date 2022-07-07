@@ -18,14 +18,16 @@ Components of an OpenFlow Switch
 \end{itemize}
 
 \subsection{Controller}
-OpenFlow messages - for OF Channel setup between switch and controller
-\begin{table}[]
+OpenFlow messages -- for OF Channel setup between switch and controller:
+
+\begin{table}[h]
 	\begin{tabular}{l|l}
 	HELLO & Sent by the switch, reply by the controller \\
 		FEATURE\_REQUEST & Sent by controller, as supported OF capabilities \\
 		FEATURE\_REPLY & Sent by switch to advertise \\
 	\end{tabular}
 \end{table}
+
 Controller manages \emph{Flow Entries} in every switches flow tables (add, update, delete).
 
 \subsection{Flow Tables}

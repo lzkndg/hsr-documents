@@ -1,20 +1,20 @@
 \section{Introduction and Concepts}
-Traditional Networking Architecture is divided into planes, depending on the layer
+Traditional Networking Architecture is divided into different independent planes on each device, depending on the layer.
 \begin{table}[h]
 	\begin{tabular}{p{0.1\textwidth}|p{0.25\textwidth}|p{0.35\textwidth}|p{0.3\textwidth}}
 		. & Control Plane & Data Plane & Management Plane \\ 
 		\hline
-		Layer 2 & Spanning Tree Overlays (VLANs) & Forward \emph{Ethernet Frames} & \\ \hline
-		Layer 3 & Routing Protocols Overlays (MPLS) & Forward \emph{IP Packets} &
+		Layer 2 & Spanning Tree Overlays (VLANs) & Forward \emph{Ethernet Frames} & Configuration \\ \hline
+		Layer 3 & Routing Protocols Overlays (MPLS) & Forward \emph{IP Packets} & Configuration 
 	\end{tabular}
 \end{table}
 
 \noindent
-This results in some drawbacks such as
+This results in some drawbacks such as:
 \begin{itemize}
-	\item -- Limited decision making ``intelligence''
-	\item -- Difficult administration
-	\item -- Missing overall analytics
+	\item Limited decision making ``intelligence''
+	\item Difficult administration
+	\item Missing overall analytics
 \end{itemize}
 
 \subsection{Vision of SDN}
@@ -50,16 +50,15 @@ White box OS
 	\item fboss
 \end{itemize}
 
-\includegraphics[width=5cm]{devices-openflow}
-\includegraphics[width=5cm]{devices-api}
+
 
 \subsection{SDN Approaches}
 Different levels of abstraction can be applied to the topology, resulting in mainly three different SDN approaches. 
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
-	\caption{Different abstraction levels}
 	\includegraphics[width=\textwidth]{sdn-approaches}
+	\caption{Different abstraction levels}
 \end{figure}
 
 \subsubsection{Pure SDN}
@@ -69,7 +68,16 @@ Management and Control Plane centralized, resulting in full decoupling.
 OpenFlow Protocol distributes information, unknown Packets are sent to controller. 
 Flow table is used for forwarding decisions. 
 
-\includegraphics[width=8cm]{approach-pure-sdn}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=3cm]{pure-sdn}
+	\caption{Pure SDN}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{approach-pure-sdn}
+	\caption{Pure SDN}
+\end{figure}
 
 \noindent
 \textbf{Positive}
@@ -90,16 +98,21 @@ Flow table is used for forwarding decisions.
 	\item high risk
 \end{itemize} 
 
-\begin{figure}
-	\centering
-	\caption{Pure SDN schema example}
-	\includegraphics[width=5cm]{pure-sdn}
-\end{figure}
 
 \subsubsection{Hybrid SDN, API based}
 Data and Control Plane on each device, Management Plane centralized. Similar to snmp, ssh scripts. 
 
-\includegraphics[width=8cm]{approach-api-sdn}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=5cm]{devices-api}
+	\caption{Hybrid: API based SDN}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{approach-api-sdn}
+	\caption{Hybrid: API based SDN}
+\end{figure}
 
 \noindent
 \textbf{Positive}
@@ -131,10 +144,10 @@ Data and Control Plane on each device, Management Plane centralized. Similar to 
 	\item software dependencies  
 \end{itemize}
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
-	\caption{NETCONF and RESTCONF schema example}
 	\includegraphics[width=10cm]{netconf-restconf-2in1}
+	\caption{NETCONF and RESTCONF schema example}
 \end{figure}
 
 \subsubsection{Hybrid SDN, Overlay based}
@@ -144,7 +157,11 @@ Data and Control Plane on each device, Management Plane centralized. Similar to 
 	\item Encapsulation necessary (VXLAN, NVGRE, IPSEC, \ldots) 
 \end{itemize}
 
-\includegraphics[width=8cm]{approach-overlay-sdn}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=12cm]{approach-overlay-sdn}
+	\caption{Overlay SDN approach}
+\end{figure}
 
 \noindent
 \textbf{Positive}
@@ -163,13 +180,13 @@ Data and Control Plane on each device, Management Plane centralized. Similar to 
 	\item End-to-end monitoring and troubleshooting  
 \end{itemize}
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
+	\includegraphics[width=4cm]{overlay-based-sdn}
 	\caption{Overlay based schema example}
-	\includegraphics[width=5cm]{overlay-based-sdn}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{overlay-example-datacenter}
 	\caption{Datacenter example of an overlay solution}

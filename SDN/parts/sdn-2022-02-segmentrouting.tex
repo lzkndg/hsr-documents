@@ -13,7 +13,7 @@ RFC 8402: \url{https://datatracker.ietf.org/doc/html/rfc8402}
    domain.''}
 
 \begin{itemize}
-    \item Prefix-SIDs are 
+    \item Prefix-SIDs are labels usually  associated within the Segment Routing Global Block, between 16000 and 23999.
     \item Adjacency-SIDs are labels with the format 24NXY for the N-th adjacency from x $ \rightarrow $ y
     \item LDP/RSVP/BGP labels are in the range  [90000 - 99999]
 \end{itemize}
@@ -23,8 +23,10 @@ RFC 8402: \url{https://datatracker.ietf.org/doc/html/rfc8402}
 The rest of the network only executes these encoded instructions, there is no per-flow state information. 
 
 \vspace{5mm}
-\textbf{Segment:} An instruction to the processing device on how to forward the packet. The Segment-ID can be encoded as an MPLS label or an IPv6 and is usually associated
-either with a destination prefix, a local interface or a local service. In combination, a list of segments specifies the entire path a packet is supposed to take.
+\textbf{Segment:} An instruction to the processing device on how to forward the packet. 
+The Segment-ID can be encoded as an MPLS label or an IPv6 address and is usually associated
+either with a destination prefix, a local interface or a local service. 
+In combination, a list of segments specifies the entire path a packet is supposed to take.
 
 \vspace{5mm}
 \textbf{Local Segment:} Only the node that originates this segment understands the associated instruction.
@@ -51,17 +53,21 @@ NEXT -- active segment is completed, make next item in SID list active
 See also: \href{https://www.segment-routing.net/tutorials/2016-09-27-segment-routing-igp-control-plane/}{Segment Routing IGP Control Plane on segment-routing.net}
 
 \vspace{5mm}
-The following segment types are based on on IGP routing information. The usual topology updates with added SID information are distributed by the IGP protocol within the SR-Domain.
+The following segment types are based on IGP routing information. The usual topology updates with added SID information 
+are distributed by the IGP protocol within the SR-Domain.
+
 Prefix-to-SID mapping server 
 
-SR for IS-IS supports TLV extensions of the routing protocol -- additional Information transmitted via Link State Packets (LSP)
+SR for IS-IS supports TLV extensions of the routing protocol -- additional information transmitted via Link State Packets (LSP)
 
 SR for OSPF is implemented by adding new Types of LSA (Link State Advertisements).
 
-Metric-style wide must be applied for the routing protocol configuration in order to support SR capabilities.
+\ttfamily Metric-style wide \rmfamily must be applied for the routing protocol configuration in order to support SR capabilities.
 
-\vspace{5mm}
+\vspace{3mm}
+\noindent
 Some sub-TLVs supported are
+
 \begin{itemize}
     \item SR Capability: IS-IS router Capability
     \item Prefix-SID: Extended IP Reachability
@@ -116,10 +122,10 @@ Overrides shortest path routing decisions.
 SID list contains node prefix first, then Adjacency-ID. 
 Distributed by ISIS/OSPF.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=80mm]{sr-adjacency-sid.png}
-    \caption{Combining IGP PRefix and Adjacency Segments}
+    \caption{Combining IGP Prefix and Adjacency Segments}
 \end{figure}
 
 \begin{itemize}

@@ -1,0 +1,60 @@
+\section{Ansible}
+Focus in ansible is writing configuration as code that can easily be pushed out to managed devices, 
+reducing or eliminating the need to manually configure single devices. 
+There is no client installation needed on the endpoints. 
+
+Alternatives to ansible include Puppet, Chef and SaltStack. Based on python and extensible via modules, ansible has about 65\% market share.   
+
+\subsection{Basics and Setup}
+Ansible is usually installed on a control node, e.g. an operators workstation. Inventory, code and playbooks can then be managed and shared through version control systems. 
+Connections to assets that should be configured are initiated for every task that is run, using the ssh protocol for Linux and winrm for Windows devices..
+
+
+To run tasks, the following is required on an operators machine:
+\begin{itemize}
+    \item Python installation
+    \item Ansible installation
+    \item \ttfamily/etc/hosts \rmfamily for dns resolution
+    \item ansible.cfg for configuration (default in \ttfamily/etc/ansible/ansible.cfg\rmfamily) \\ 
+    used for default settings including privilege and remote user, ``fallback'' for settings that aren't provided at a more specific level
+    \item inventory file (default in \ttfamily/etc/ansible/hosts\rmfamily) \\
+     to identify all managed hosts, can be dynamic using central inventory software or static file with host lists
+\end{itemize}
+
+\noindent
+On the managed devices:
+\begin{itemize}
+    \item Python installation
+    \item Dedicated ansible user account with ssh / sudo access, typically key-based
+\end{itemize}
+
+\subsection{Ad-Hoc Commands and Modules}
+Executing a single module on some hosts in the inventory can be done by command line: 
+
+\ttfamily
+\noindent
+ansible 
+
+-i $<$inventory file$>$ all 
+
+-m $<$module name$>$ 
+
+-a $<$module argument$>$ 
+
+-u $<$username$>$ 
+
+-k \rmfamily \emph{(ask for password)}
+Running the same task a second time, ansible recognizes if changes had to be done or the command did not have any effect.
+
+Modules to avoid: \emph{command, shell, raw} because there is no idempotency. Ansible cannot determine, if the configuration is already there or has to be applied. If a simple command is run (like useradd), 
+instead of recognizing the ``ok state'' (user already exists, do nothing) ansible returns the actual error the command outputs. 
+They should only be used as a last resort, if there is no appropriate ansible module available.
+
+\subsection{Playbooks}
+A playbook contains multiple tasks that are run in order. Errors in one task will cause the whole play to fail.
+
+Each playbook is  written in yaml. It consists of several p
+
+\subsubsection{Facts and Variables}
+
+\subsubsection{Working with Conditionals}

@@ -205,6 +205,29 @@ It can be configured to do the following:
 
 \subsection{Scheduling}
 
+\textbf{Kube-Scheduler:} Matches pods to nodes, is needed to run kubernetes. Labels can be used to influence scheduling (nodeName, nodeSelector, affinity/antiAffinity, taints)
+
+\noindent
+\textbf{Filtering:} Nodes need to meet the resources needed to run the pods. 
+
+\emph{PodFitsHostPort, PodFitsResources, PodMatchNodeSelector, CheckNodeDiskPressure, CheckVolumeBinding}
+
+\noindent
+\textbf{Scoring:} Ranking after filtering is applied: SelectorSpreadPriority, LeastRequestedPriority, NodeAffinityPriority
+
+\noindent
+\textbf{NodeSelector:} Label as Key=Value, can be used in yaml as key: value
+
+\noindent
+\textbf{NodeName:} Specify a node host specifically
+
+\noindent
+\textbf{Affinity:}
+ 
+nodeAffinity: like nodeSelector, uses labels. Type: required / preferred
+
+podAffinity: required/preferred (+ weight)
+
 \subsection{Taints and Tolerations}
 
 \subsection{Storage}

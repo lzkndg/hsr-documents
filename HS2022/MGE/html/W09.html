@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./style.css"
+      media="screen,print"
+    />
+
+    <title>W09</title>
+  </head>
+
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="xaml-extensible-application-markup-language">
+          <span>XAML: eXtensible Application Markup Language</span>
+        </h1>
+        <h2 id="xaml-grundlagen">
+          <a
+            href="https://learn.microsoft.com/en-us/dotnet/maui/?view=net-maui-7.0"
+            ><span>XAML Grundlagen</span></a
+          >
+        </h2>
+        <p>
+          <span
+            >XML basiert, nur in Microsoft (.NET) UI-Framekworks verwendet zur
+            Trennung von Layout und Code. Hierarchisch strukturiert. Leicht
+            verschiedene Varianten für WPF/UWP/WinUI/Xamarin/MAUI.</span
+          >
+        </p>
+        <p>
+          <img
+            src="res/microsoft-ui-frameworks.png"
+            alt="UI Frameworks Vergleich"
+            style="zoom: 33%"
+          />
+        </p>
+        <p>
+          <span
+            >Control Libraries: spezifische SDK Bibliothek für Controls,
+            Layouts, Buttons etc.</span
+          >
+        </p>
+        <p>
+          <img
+            src="res/maui-code-zum-app.png"
+            alt="UI Frameworks Vergleich"
+            style="zoom: 33%"
+          />
+        </p>
+        <h3 id="visual-und-logical-tree">
+          <span>Visual und Logical Tree</span>
+        </h3>
+        <p>
+          <span>Ansicht kann in Visual Studio umgeschaltet werden.</span>
+          <span
+            >Visual Tree: vollständiger Baum der visuell dargestellt wird,
+            enthält sämtliche Knoten.
+          </span>
+          <span
+            >Logical Tree: Vereinfachung, beinhaltet nur selber definierte
+            Knoten</span
+          >
+        </p>
+        <h3 id="namespaces"><span>Namespaces</span></h3>
+        <p>
+          <span>Können/müssen im Application Knoten definiert werden: </span
+          ><code
+            >xmlns:name=&quot;clr-namespace:mein_csharp_namespace&quot;</code
+          ><span>
+            - ohne Name ein Standard Namespace. Üblich: Standard ist MAUI
+            Control Library, </span
+          ><code>x</code><span> für XAML-spezifisches, </span><code>local</code
+          ><span>für eigenes Assembly. </span
+          ><code>x:Class =&quot;Vorlesung_09.App&quot;</code
+          ><span> definiert zugehörige Code-Behind Klasse.</span>
+        </p>
+        <h3 id="named-elements"><span>Named Elements</span></h3>
+        <p>
+          <code>x:Name=&quot;myElement&quot;</code
+          ><span
+            >Attribut erstellt ein Property in der generierten Klasse,
+            ermöglicht Zugriff aus Code-Behind.</span
+          >
+        </p>
+        <h3 id="event-handler"><span>Event Handler</span></h3>
+        <p>
+          <span
+            >Methode aus Code Behind kann in XML registriert werden. parameter </span
+          ><code>object sender</code
+          ><span>
+            ist das auslösende Control. Argumente enthalten Details zum Event
+            (abgeleitet von EventArgs)</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Button</span> <span class="cm-attribute">Clicked</span>=<span class="cm-string">"Button_OnClicked"</span> <span class="cm-attribute">Text</span>=<span class="cm-string">"Click Me!"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">private</span> <span class="cm-keyword">void</span> <span class="cm-variable">Button_OnClicked</span>(<span class="cm-variable-3">object</span> <span class="cm-variable">sender</span>, <span class="cm-variable">EventArgs</span> <span class="cm-variable">args</span>) {<span class="cm-comment">/* some logic*/</span> }</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <h3 id="xaml-syntaxen"><span>XAML Syntaxen</span></h3>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xaml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xaml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label</span> <span class="cm-attribute">Text</span>=<span class="cm-string">"Attribute Syntax"</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; <span class="cm-attribute">TextColor</span>=<span class="cm-string">"Red"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label</span> <span class="cm-attribute">Text</span>=<span class="cm-string">"Property Element Syntax"</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label.TextColor</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Color</span><span class="cm-tag cm-bracket">&gt;</span>Red<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">Color</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">Label.TextColor</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">Label</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <h3 id="content-properties"><span>Content Properties</span></h3>
+        <p>
+          <span
+            >Spezielle Eigenschaft kann direkt als Inhalt des XML-Tags
+            geschrieben werden, kann aufwändige Property Element Syntax
+            vereinfachen.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xaml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xaml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label</span> <span class="cm-attribute">Text</span>=<span class="cm-string">"Inhalt"</span> <span class="cm-tag cm-bracket">/&gt;</span> oder <span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label</span><span class="cm-tag cm-bracket">&gt;</span>Inhalt<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">Label</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">VerticalStackLayout</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">VerticalStackLayout.Children</span><span class="cm-tag cm-bracket">&gt;</span> <span class="cm-comment">&lt;!-- Children ist Content Property von VerticalStackLayout: --&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label</span><span class="cm-tag cm-bracket">&gt;</span>Inhalt<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">Label</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">VerticalStackLayout.Children</span><span class="cm-tag cm-bracket">&gt;</span> <span class="cm-comment">&lt;!-- kann weggelassen werden --&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">VerticalStackLayout</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 157px;"></div><div class="CodeMirror-gutters" style="display: none; height: 157px;"></div></div></div></pre>
+        <h3 id="attached-properties"><span>Attached Properties</span></h3>
+        <p>
+          <span
+            >Setzen einer Eigenschaft auf einem Element, welche zu einem anderen
+            Element gehört. Pendant in Android die </span
+          ><code>layout_</code><span> Attribute.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xaml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xaml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Grid</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  ...</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label</span> <span class="cm-attribute">Grid.Row</span>=<span class="cm-string">"0"</span> <span class="cm-attribute">x:Name</span>=<span class="cm-string">"Test"</span><span class="cm-tag cm-bracket">&gt;&lt;/</span><span class="cm-tag">Label</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">Grid</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 104px;"></div><div class="CodeMirror-gutters" style="display: none; height: 104px;"></div></div></div></pre>
+        <h3 id="type-converters">
+          <a
+            href="https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/data-binding/converters?view=net-maui-7.0"
+            ><span>Type Converters</span></a
+          >
+        </h3>
+        <p>
+          <span
+            >Werden verwendet, um im XAML aus meist String-Eingaben
+            verschiedenste komplexere Elemente zu parsen (Location, Brush,
+            Color, etc.). Viele Converters sind im .NET Community Toolkit
+            enthalten.</span
+          >
+        </p>
+        <p>
+          <span>Klasse leitet ab von </span><code>IValueConverter</code
+          ><span> mit zwei Methoden </span><code>Convert</code><span> und </span
+          ><code>ConvertBack</code
+          ><span
+            >. XAML Binding Attribut definiert den Converter als
+            StaticResource.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">IntToBoolConverter</span> : <span class="cm-variable">IValueConverter</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">object</span> <span class="cm-variable">Convert</span> (<span class="cm-variable-3">object</span> <span class="cm-keyword">value</span>, <span class="cm-variable">Type</span> <span class="cm-variable">targetType</span>, <span class="cm-variable-3">object</span> <span class="cm-variable">parameter</span>, <span class="cm-variable">CultureInfo</span> <span class="cm-variable">culture</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  { <span class="cm-keyword">return</span> (<span class="cm-variable-3">int</span>)<span class="cm-keyword">value</span> <span class="cm-operator">!=</span> <span class="cm-number">0</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">object</span> <span class="cm-variable">ConvertBack</span>(<span class="cm-variable-3">object</span> <span class="cm-keyword">value</span>, <span class="cm-variable">Type</span> <span class="cm-variable">TargetType</span>, <span class="cm-variable-3">object</span> <span class="cm-variable">parameter</span>, <span class="cm-variable">CultreInfo</span> <span class="cm-variable">culture</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  { <span class="cm-keyword">return</span> (<span class="cm-variable-3">bool</span>)<span class="cm-keyword">value</span> <span class="cm-operator">?</span> <span class="cm-number">1</span> : <span class="cm-number">0</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xaml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xaml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Button</span> <span class="cm-attribute">Text</span>=<span class="cm-string">"Search"</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-attribute">IsEnabled</span>=<span class="cm-string">"{Binding Source={x:Reference entry1},</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-string">Path=Text.Length,</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-string">Converter={StaticResource intToBool}}"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">&lt;!-- Ref entry1 = zu prüfendes Textfeld, Text.Length = zu konvertierender Wert --&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 130px;"></div><div class="CodeMirror-gutters" style="display: none; height: 130px;"></div></div></div></pre>
+        <h3 id="markup-extensions"><span>Markup Extensions</span></h3>
+        <p>
+          <span
+            >Erlauben Logik in XAML, häufig für Styling oder Data Binding
+            verwendet. Auch eigene Extensions möglich. Aufzurufende Funktion
+            innerhalb </span
+          ><code>{ }</code>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xaml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xaml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label</span> <span class="cm-attribute">Text</span>=<span class="cm-string">"Mein Text"</span> <span class="cm-attribute">FontFamily</span>=<span class="cm-string">"{x:Null}"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Label</span> <span class="cm-attribute">Text</span>=<span class="cm-string">"{local:LocationExtension Lat=10,Long=20}"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 52px;"></div><div class="CodeMirror-gutters" style="display: none; height: 52px;"></div></div></div></pre>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">LocationExtension</span> : <span class="cm-variable">IMarkupExtension</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">string</span> <span class="cm-variable">Latitude</span> { <span class="cm-keyword">get</span>; <span class="cm-keyword">set</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">string</span> <span class="cm-variable">Longitude</span> { <span class="cm-keyword">get</span>; <span class="cm-keyword">set</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">string</span> <span class="cm-variable">ProvideValue</span>(<span class="cm-variable">IServiceProvider</span> <span class="cm-variable">sp</span>) <span class="cm-operator">=&gt;</span> <span class="cm-variable">Latitude</span> <span class="cm-operator">+</span> <span class="cm-string">" / "</span> <span class="cm-operator">+</span> <span class="cm-variable">Longitude</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">object</span> <span class="cm-variable">IMarkupExtension</span>.<span class="cm-variable">ProvideValue</span>(<span class="cm-variable">IServiceProvider</span> <span class="cm-variable">sp</span>) <span class="cm-operator">=&gt;</span> <span class="cm-variable">ProvideValue</span>(<span class="cm-variable">sp</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <h2 id="gui-grundelemente"><span>GUI-Grundelemente</span></h2>
+        <p>
+          <img
+            src="C:\Users\luzia\switchdrive\KgL@HSR\01_Aktuelles_Semester\MGE\_zsf\res\maui-klassenhierarchie.png"
+            style="zoom: 40%"
+          />
+        </p>
+        <p>
+          <span
+            >Grundlegender Aufbau einer Seite (--&gt; Enthält 1 oder mehrere
+            von)</span
+          >
+        </p>
+        <p>
+          <img
+            src="C:\Users\luzia\switchdrive\KgL@HSR\01_Aktuelles_Semester\MGE\_zsf\res\maui-grundaufbau.png"
+            style="zoom: 40%"
+          />
+        </p>
+        <h3 id="application"><span>Application</span></h3>
+        <p>
+          <span
+            >MainPage: definiert erster angezeigter Screen, erzeugt und
+            verwaltet Fenster. Verarbeitung von </span
+          ><strong><span>Lifecycle Events</span></strong
+          ><span>
+            in überschreibbaren Methoden (für alle Fenster). Zentrale Verwaltung
+            von </span
+          ><strong><span>app-weiten XAML</span></strong
+          ><span> Ressourcen.</span>
+        </p>
+        <h3 id="window"><span>Window</span></h3>
+        <p>
+          <span
+            >Definiert ein einzelnes Fenster inkl. Lifecycle Methoden, zum
+            überschreiben ist eine eigene Ableitung von Window nötig.</span
+          >
+        </p>
+        <h3 id="lifecycle">
+          <a
+            href="https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/app-lifecycle?view=net-maui-7.0"
+            ><span>Lifecycle</span></a
+          >
+        </h3>
+        <p>
+          <img
+            src="C:\Users\luzia\switchdrive\KgL@HSR\01_Aktuelles_Semester\MGE\_zsf\res\maui-app-lifecycle.png"
+            alt="Maui App Lifecycle"
+            style="zoom: 50%"
+          />
+        </p>
+        <p><span>Grau: Nicht im Memory geladen.</span></p>
+        <p>
+          <img
+            src="C:\Users\luzia\switchdrive\KgL@HSR\01_Aktuelles_Semester\MGE\_zsf\res\maui-lifecycle-events.png"
+            alt="MAUI Lifecycle Events Mapping"
+            style="zoom: 50%"
+          />
+        </p>
+        <h2 id="pages"><span>Pages</span></h2>
+        <p>
+          <span
+            >Elemente zur Strukturierung und Gestaltung von Screens.
+            Verschachtelung üblich. </span
+          ><strong><span>Content Page</span></strong
+          ><span> (leer), </span><strong><span>Flyout Page </span></strong
+          ><span>
+            (Benötigt NavigationPage für korrekte Darstellung. Seitlich
+            &quot;einfliegende&quot; Content Page), </span
+          ><strong><span>Navigation Page</span></strong
+          ><span> (Titel Bar mit Back Button), </span
+          ><strong><span>Tabbed Page</span></strong
+          ><span> (Vereint mehrere ContentPages mittels Tab Navigation)</span>
+        </p>
+        <h3 id="navigation"><span>Navigation</span></h3>
+        <p>
+          <span
+            >Modal: Vordefinierte Abfolge von Fenstern, kann nicht einfach
+            geschlossen werden</span
+          >
+          <span
+            >Modeless: Navigation Stack, User kann jederzeit zurück navigieren. </span
+          ><code>NavigationPage</code><span> benötigt.</span>
+        </p>
+        <p>
+          <span>Varianten: </span
+          ><strong><span>Application.MainPage</span></strong
+          ><span>, austausch der angezeigten Page (sehr einfach). </span
+          ><strong><span>NavigableElement.Navigation</span></strong
+          ><span> (s.o.), </span><strong><span>Shell</span></strong
+          ><span> (URIs)</span>
+        </p>
+        <h2 id="layouts"><span>Layouts</span></h2>
+        <p>
+          <span
+            >Sind Container für Kind-Elemente =&gt; Composite Design Pattern.
+            Verschachtelung möglich (analog Android).</span
+          >
+          <span>Zur Ausrichtung von Kind-Elementen im Layout wird </span
+          ><code>HorizontalOptions</code><span> und </span
+          ><code>VerticalOptions</code
+          ><span
+            >verwendet. Varianten sind Start, Center, End, Fill
+            (Standard).</span
+          >
+        </p>
+        <p>
+          <strong><span>StackLayout</span></strong
+          ><span>: Horizontal- oder Vertical Stack Layout möglich.</span>
+          <strong><span>FlexLayout</span></strong
+          ><span
+            >: Wie Stack aber mit Wrapping und mehr Gestaltungsmöglichkeiten. </span
+          ><code>Direction=&quot;[Row|Column]&quot;</code><span>, </span
+          ><code>Wrap=&quot;Wrap&quot;</code><span>, </span
+          ><code>JustifyContent</code><span>, </span><code>AlignItems</code
+          ><span> zur Verteilung der Items auf beiden Achsen.</span>
+          <strong><span>Grid</span></strong
+          ><span
+            >: Flexibles, verbreitetes Layout. Zeilen und Spalten. Sehr
+            mächtig.</span
+          >
+          <span>Grössen: </span><code>1*, 2*, 3*</code
+          ><span> = relative Einheiten. einmalig </span><code>*</code
+          ><span>
+            vergeben für &quot;brauche restlich verfügbaren Platz&quot;. </span
+          ><code>auto</code
+          ><span>
+            wie Android wrap_content (overhead, Koordination durch
+            Elternlayout). Mehrere Elemente in der selben Zelle werden auf der
+            z-Axis gestapelt (=&gt; Background Image). Weiter </span
+          ><code>Row/ColumnSpacing</code><span>(Abstand), </span
+          ><code>Row/ColumnSpan</code><span>(Verbundene Zellen).</span>
+          <strong><span>AbsoluteLayout</span></strong
+          ><span
+            >: Gut für Overlays, Karten mit Controls etc. Absolute Werte
+            (selten), Proportionale Werte (in Prozent vom Elternelement, zw.
+            0.0-1.0). Wertetypen sind Kombinierbar.</span
+          >
+        </p>
+        <h2 id="views"><span>Views</span></h2>
+        <p>
+          <span>Werden mit </span
+          ><a
+            href="https://learn.microsoft.com/en-us/dotnet/maui/user-interface/handlers/?view=net-maui-7.0"
+            ><span>Handlers</span></a
+          ><span> auf native Views abgebildet (W10).</span>
+        </p>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th><span>Darstellung</span></th>
+                <th>
+                  <span>Label, Image, Border, Frame, ScrollView, ...</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span>Eingaben</span></td>
+                <td><span>Entry, CheckBox, Slider, Switch, ...</span></td>
+              </tr>
+              <tr>
+                <td><span>Aktionen</span></td>
+                <td><span>Button, ImageButton, SearchBar, ...</span></td>
+              </tr>
+              <tr>
+                <td><span>Aktivitätsanzeige</span></td>
+                <td><span>ActivityIndicator und ProgressBar</span></td>
+              </tr>
+              <tr>
+                <td><span>Collections (W11)</span></td>
+                <td>
+                  <span>Picker, ListView, CarouselView, TableView, ...</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <p>
+          <span
+            >Grössenangaben: immer DeviceIndependent Units. Relative Werte ohne
+            Einheit, Umrechnung auf plattformspezifische Werte bei Ausführung.
+            Sind nur </span
+          ><strong><span>Wünsche</span></strong
+          ><span>
+            an die Rendering-Engine (Minimum-/MaximumHeightRequest. Ohne
+            Grössenangabe wird View &quot;so gross wie nötig&quot; bzw. wie in
+            Android wrap_content dargestellt.</span
+          >
+        </p>
+        <h2 id="margin-und-padding"><span>Margin und Padding</span></h2>
+        <p>
+          <span
+            >Pages: Padding, Layouts und Views: Margin und Padding. Mögliche
+            Werte sind </span
+          ><code>all</code><span> / </span><code>horizontal,vertical</code
+          ><span> / </span><code>l,t,r,b</code>
+        </p>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>w08</title>
+</head>
+<body><h1 id='woche-8'>Woche 8</h1>
+<h2 id='net-runtime'>.NET Runtime</h2>
+<p>.NET Framework // .NET Core (neu nur noch .NET) // Mono (Mobile Crossplatform). Seit .NET 5 wird vereinheitlicht. .NET Standard beinhaltet die Gemeinsamkeiten der verschiedenen Base Class Libraries.</p>
+<p>NuGet - Paketmanager im .NET Umfeld. Open Source, öffentlich auf nuget.org, <code>.nupkg</code> Dateien (ZIP)</p>
+<h2 id='net-maui'>.NET MAUI</h2>
+<ul>
+<li>Bestandteile: UI und Non-UI Komponenten</li>
+<li>Funktionsweise: <strong>Shared Code</strong> verwendet nur abstrakte Elemente aus MAUI und ist für alle Zielplattformen gedacht. <strong>Platform Code</strong> verwendet Elemente aus dem darunterliegenden UI Framework und muss für jede Plattform separat geschrieben werden. Appicon als Bsp. wird einmal eingefügt im Resources Ordner und plattformspezifisch weiterverwendet. Ebenso Projekteinstellungen: Entweder zentral für alle, oder spezifisch überschreiben.</li>
+<li>Kompilierung: <strong>Android</strong> Just In Time, <strong>iOS</strong>: Ahead of Time AOT, Runtime in Maschinensprache. Von Apple vorgeschrieben.</li>
+<li>app.xaml entspricht android Application.java</li>
+<li><strong>Debug Konfiguration</strong> für Entwicklung (höherer Speicherbedarf, keine Code Optimierung, Kompilat mit Debug-Infos) vs. <strong>Release Konfiguration</strong> (ohne Debug-Infos, optimierter Code, weniger Speicher)</li>
+<li>Single Project: Ein Projekt beinhaltet alles, was für die Ausführung auf verschiedenen OS nötig ist.</li>
+<li>XAML / Markup, C# Code Behind und C# Generierter Code definieren die Applikation in 3 Teilen.</li>
+<li>XAML Baumstruktur kann gleichwertig auch in C# definiert werden. Wird aber schnell umständlich.</li>
+
+</ul>
+<h2 id='refresher-c'>Refresher C#</h2>
+<p>Common Language Runtime ist die Ausführende Instanz, MSIL Microsoft Intermediate Language (Assembler-Like) als Zwischensprache.</p>
+<p>Wichtige Objekte:</p>
+<ul>
+<li>Properties</li>
+<li>Delegates</li>
+<li>Events</li>
+<li>Lambda Expressions</li>
+<li>Extension Methods</li>
+<li>LINQ Syntax</li>
+
+</ul>
+</body>
+</html>

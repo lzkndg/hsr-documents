@@ -146,16 +146,3 @@ foreach (string file in files)
 await call.RequestStream.CompleteAsync(); // No more messages to come (server exits foreach-Loop)
 await readTask; // Wait until service method is terminated / all messages are received by clien
 ```
-
-## Advanced Topics
-
-### Exception Handling
-
-### Special Types
-
-### Configuration / Logging
-
-### Timeouts
-
-### Cancellation
-

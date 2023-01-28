@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>w05</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="android-berechtigungen-persistenz-hardwarezugriff">
+          <span>Android Berechtigungen, Persistenz, Hardwarezugriff</span>
+        </h1>
+        <h2 id="berechtigungen"><span>Berechtigungen</span></h2>
+        <ul>
+          <li>
+            <span>Normale (</span><em><span>install-time</span></em
+            ><span
+              >) Berechtigungen: im Android Manifest definiert. Wird während der
+              Installation beim System angefragt und automatisch erteilt.</span
+            >
+          </li>
+          <li>
+            <span>Gefährliche (</span><em><span>run-time</span></em
+            ><span
+              >) Berechtigungen: Werden zur Laufzeit beim User angefragt (Pop-Up
+              Meldung).</span
+            >
+          </li>
+        </ul>
+        <p>
+          <strong><span>Selektives Ablehnen</span></strong
+          ><span>
+            von Berechtigungen erst seit API 23 (Android 6.0) möglich. Vorher
+            wurden sämtliche Berechtigungen beim Installieren der App erteilt
+            oder die App nicht installiert. </span
+          ><strong><span>Einmaliges Erlauben</span></strong
+          ><span> seit API 30 (Android 11.0), wie auch </span
+          ><strong><span>automatisches Zurücksetzen</span></strong
+          ><span> vom System.</span>
+          <strong><span>Nachträchliches Entziehen</span></strong
+          ><span>
+            von Berechtigungen ist jederzeit möglich, vom User oder vom System.
+            Check im Code also vor jeder Verwendung einer API nötig, sonst
+            fliegt </span
+          ><code>SecurityException</code><span>. App wird beim </span
+          ><strong><span>Anpassen von Berechtigungen</span></strong
+          ><span> sofort beendet.</span>
+          <strong><span>Best Practices:</span></strong
+          ><span>
+            Nur anfordern, was wirklich benötigt wird. Im Kontext der Verwendung
+            anfordern. Transparente Erklärungen. Abbruch ermöglichen.
+            Verweigerung berücksichtigen und Alternativen anbieten.</span
+          >
+        </p>
+        <h3 id="manifest-definition"><span>Manifest Definition</span></h3>
+        <p>
+          <code>uses-permission</code
+          ><span>
+            im Manifest resultiert auch in einem Filter für den Google Play
+            Store. Beispielsweise: App wird nur für Geräte mit Kamera angeboten.
+            Um das auszuschalten das </span
+          ><code>uses-feature</code><span> verwenden, mit </span
+          ><code>android:required=false</code><span>.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">uses-permission</span> <span class="cm-attribute">android:name</span>=<span class="cm-string">"android.permission.CAMERA"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">uses-permission</span> <span class="cm-attribute">android:name</span>=<span class="cm-string">"android.permission.CAMERA"</span> <span class="cm-attribute">android:maxSdkVersion</span>=<span class="cm-string">"28"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">&lt;!-- Obergrenze API: neuer wird die Berechtigung nicht mehr benötigt? --&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">uses-feature</span> <span class="cm-attribute">android:name</span>=<span class="cm-string">"android.hardware.location"</span> <span class="cm-attribute">android:required</span>=<span class="cm-string">"false"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 104px;"></div><div class="CodeMirror-gutters" style="display: none; height: 104px;"></div></div></div></pre>
+        <h3 id="im-code"><span>Im Code</span></h3>
+        <p>
+          <span>Abfrage </span
+          ><code
+            >if (shouldShowRequestPermissionRationale(permission)) { .. mehr
+            info anzeigen .. }</code
+          ><span>
+            wird beim ersten Anfordern der Berechtigungen ausgeführt. Liefert
+            auch </span
+          ><code>true</code><span> nach erstmaliger Verweigerung. </span
+          ><code>onRequestPermissionResult(...)</code
+          ><span>
+            wird aufgerufen, sobald der User eine Option gewählt hat. </span
+          ><code>requestPermissions(..., CALLBACK_CODE)</code
+          ><span>
+            kann definieren, woher im Code die Anfrage kommt. Lehnt der User die
+            Anfrage wiederholt ab, gilt es automatisch als &quot;Nicht mehr
+            Fragen&quot;. Dem User wird keine Anfrage mehr angezeigt.</span
+          >
+        </p>
+        <h2 id="persistenz"><span>Persistenz</span></h2>
+        <h3 id="varianten--mechanismen">
+          <span>Varianten / Mechanismen</span>
+        </h3>
+        <p>
+          <span>App-Intern: </span>
+          <strong><span>App-Spezifische Dateien:</span></strong
+          ><span>
+            Beliebiges Format. Werden beim Deinstallieren der App gelöscht.
+            Geschützt vor fremdem Zugriff. Bsp: Domänenobjekte als JSON. Zugriff
+            via File Klasse und Methoden auf Context: </span
+          ><code
+            >getFilesDir, getCacheDir, getExternalFilesDir,
+            getExternalCacheDir</code
+          >
+          <strong><span>Preferences:</span></strong
+          ><span> Key-Value Paare, Bsp: Benutzereinstellungen. </span>
+          <strong><span>Datenbanken</span></strong
+          ><span
+            >: strukturierte Daten, Bsp: umfangreiche Domänenobjekte. Varianten
+            SQLite direkt oder Abstraktion via OR Mapper RoomDb, basierend auf
+            Java Annotations.</span
+          >
+          <span>App-übergreifend: </span>
+          <strong><span>Medien:</span></strong
+          ><span>
+            Bilder, Dokumente, Musik und Videos. Ohne UI-Dialog, benötigt ggf.
+            Berechtigungen. Bleiben bei Deinstallation erhalten. Ab API 29 nur
+            noch für das Lesen fremder Daten Berechtigungen nötig, vorher auch
+            für eigene. Schreiben in fremde Ordner nicht möglich. Zugriff via </span
+          ><code>MediaStore</code><span> Content Provider.</span>
+          <strong><span>Dokumente:</span></strong
+          ><span>
+            Beliebige Dateiformate. Mit UI-Dialog (delegiert an andere App - wo
+            speichern?), keine Berechtigungen benötigt. Bleiben bei
+            Deinstallation erhalten. Zugriff via Storage Access Framework,
+            Kombination aus Intents und CPs.</span
+          >
+        </p>
+        <p>
+          <strong><span>Content Providers</span></strong
+          ><span>
+            (Server) und Resolvers (Client): Datenquelle für andere Apps. SQL
+            ähnliche, standardisierte Schnittstelle. Diverse Provider von
+            Android implementiert: Kalender, Kontakte, Medien, Dokumente,
+            Wörterbuch.. Methoden für CRUD Operationen, Cursor zur Iteration
+            über Ergebnisse. Berechtigung nötig für Zugriff.</span
+          >
+        </p>
+        <h3 id="verschiedene-speicherorte">
+          <span>Verschiedene Speicherorte</span>
+        </h3>
+        <p>
+          <span
+            >Intern (flash): meist app-spezifische Daten, geschützter
+            Speicherbereich pro App. </span
+          ><code>/data/data/{App-id}</code>
+          <span
+            >Extern (sdcard oder emuliert auf flash): grössere Datein, mit
+            anderen Apps geteilt. </span
+          ><code>/sdcard/Android/data/{App-id}</code>
+          <span>Öffentliche Daten: </span><code>/sdcard/Download</code
+          ><span>, </span><code>/sdcard/Movies</code><span>, </span
+          ><code>/sdcard/Music</code><span>, </span
+          ><code>/sdcard/Pictures</code>
+        </p>
+        <p>
+          <img
+            src="res/speicher-uebersicht.png"
+            referrerpolicy="no-referrer"
+            alt="Speicherarten"
+          />
+        </p>
+        <p>
+          <span
+            >Debugging-Tools: Device File Explorer, Database Inspector. Export
+            aller Daten einer App auch möglich, via cli-Befehle.
+          </span>
+          <code>adb backup -noapk &lt;APPID&gt;</code><span> &amp; </span
+          ><code>java -jar abe.jar unpack backup.ab backup.tar</code>
+        </p>
+        <h2 id="hardwarezugriff"><span>Hardwarezugriff</span></h2>
+        <p>
+          <span
+            >Sensor Framework soll für alle möglichen Sensoren die gleiche
+            Bedienung bieten. </span
+          ><code>Sensor Manager</code
+          ><span> ist Einstiegspunkt zur Verwendung von Sensordaten. </span
+          ><code>Sensor</code><span> repräsentiert Hardwaresensor. </span
+          ><code>SensorEvent</code><span> enthält aktuelle Werte, </span
+          ><code>SensorEventListener</code
+          ><span> verwenden für Callbacks.</span>
+        </p>
+        <p>
+          <strong><span>Verzögerung</span></strong
+          ><span>
+            beeinflusst den Energieverbrauch: Festlegen mit verschiedenen Werten </span
+          ><code>SensorManager.SENSOR_DELAY_XX</code
+          ><span> Werte aufsteigend sind Fastest, Game, UI, Normal. </span
+          ><strong><span>Genauigkeit</span></strong
+          ><span> löst Callback aus bei Änderungen: </span
+          ><code>SENSOR_STATUS_ACCURACY_XX</code
+          ><span> : high, medium, low, unreliable.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="java"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="java"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Bei Sensor auf Änderungen registrieren</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">String</span> <span class="cm-variable">service</span> <span class="cm-operator">=</span> <span class="cm-variable">Context</span>.<span class="cm-variable">SENSOR_SERVICE</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">type</span> <span class="cm-operator">=</span> <span class="cm-variable">Sensor</span>.<span class="cm-variable">TYPE_LIGHT</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">delay</span> <span class="cm-operator">=</span> <span class="cm-variable">SensorManager</span>.<span class="cm-variable">SENSOR_DELAY_NORMAL</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">SensorManager</span> <span class="cm-variable">mgr</span> <span class="cm-operator">=</span> (<span class="cm-variable">SensorManager</span>)<span class="cm-variable">getSystemService</span>(<span class="cm-variable">service</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Sensor</span> <span class="cm-variable">sensor</span> <span class="cm-operator">=</span> <span class="cm-variable">mgr</span>.<span class="cm-variable">getDefaultSensor</span>(<span class="cm-variable">type</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">mgr</span>.<span class="cm-variable">registerListener</span>(<span class="cm-keyword">this</span>, <span class="cm-variable">sensor</span>, <span class="cm-variable">delay</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Implementierung von SensorEventListener</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-meta">@Override</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-def">onSensorChanged</span>(<span class="cm-variable">SensorEvent</span> <span class="cm-variable">sensorEvent</span>) {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">float</span> <span class="cm-variable">lux</span> <span class="cm-operator">=</span> <span class="cm-variable">sensorEvent</span>.<span class="cm-variable">values</span>[<span class="cm-number">0</span>]; <span class="cm-comment">// Inhalt abhängig von Sensortyp</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Log</span>.<span class="cm-variable">d</span>(<span class="cm-atom">null</span>, <span class="cm-variable">lux</span> <span class="cm-operator">+</span> <span class="cm-string">" lux"</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-meta">@Override</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-def">onAccuracyChanged</span>(<span class="cm-variable">Sensor</span> <span class="cm-variable">sensor</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">i</span>) {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 416px;"></div><div class="CodeMirror-gutters" style="display: none; height: 416px;"></div></div></div></pre>
+        <p>
+          <span
+            >Sensortypen, möglich sind Hardware vs. Software (basiert auf
+            Berechnung aus anderen Hardware-Sensoren): </span
+          ><em
+            ><span
+              >Accelerometer, Ambient_Temperature, Gravity, Gyroscope, Light,
+              Linear_Acceleration, Magnetic_Field, Orientation, Pressure,
+              Proximity, Relative_Humidity, Rotation_Vector, Temperature</span
+            ></em
+          >
+        </p>
+        <p>
+          <strong><span>Vibration</span></strong
+          ><span>: Für haptisches Feedback. Klasse </span><code>Vibrator</code
+          ><span
+            >. Ab API 26 sind Effekte möglich, API 29 bringt vordefinierte
+            Effekte. Keine AndroidX Alternative vorhanden, API Checks zwingend!
+            Berechtigung </span
+          ><code>VIBRATE</code><span> nötig.</span>
+        </p>
+        <p>
+          <strong><span>Connectivity</span></strong
+          ><span
+            >: Fokus Mobilfunk / WiFi. REST-Calls mit verschiedenen Varianten
+            möglich, Berechtigung </span
+          ><code>INTERNET</code><span> zwingend. </span
+          ><strong><span>V1</span></strong
+          ><span> mit </span><code>HttpsURLConnection</code
+          ><span> ist Teil der Android SDK, API 1. </span
+          ><strong><span>V2</span></strong
+          ><span> mit </span><code>OkHttp</code
+          ><span>
+            ist effiziente Alternative, ab API 21. 3rd Party Library. </span
+          ><strong><span>V3</span></strong
+          ><span> </span><code>Retrofit</code
+          ><span>
+            bietet erweiterte Funktionalität auf OkHttp basierend, wie Konverter
+            zur Serialisierung und die Definition von Endpunkten und
+            Datenobjekten. 3rd Party Library. </span
+          ><code>Call.execute()</code><span> vs. </span
+          ><code>Call.enqueue()</code
+          ><span> für Background-Kommunikation.</span>
+          <span
+            >Netzwerkkommunikation ist auf Main-Thread nicht erlaubt. Verbindung
+            (WLAN/Mobile) muss nicht selber definiert werden, Android wählt aus
+            (Geschwindigkeit, Signalqualität, Vermeiden von Roaming). Kann
+            jedoch abgefragt werden über Klasse </span
+          ><code>ConnectivityManager</code><span>. Berechtigun </span
+          ><code>ACCESS_NETWORK_STATE</code><span>. </span
+          ><strong><span>Statusänderungen</span></strong
+          ><span> werde via Broadcasts übermittelt.</span>
+        </p>
+        <p>
+          <strong><span>Positionsbestimmung:</span></strong
+          ><span>
+            Aggregation von verschiedenen Datenquellen: GPS, verbundene
+            Mobilfunkzelle, verbundenes Wifi. Ohne Google-Dienste: </span
+          ><code>LocationManager</code><span>, mit Google-Dienste: </span
+          ><code>Fused Location Provider</code><span>. Berechtigungen </span
+          ><code
+            >ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION,
+            ACCESS_BACKGROUND_LOCATION</code
+          ><span
+            >. API: Agggregierung verschiedener Datenquellen und abonnieren von
+            Positionsupdates.</span
+          >
+        </p>
+        <p>
+          <strong><span>Kamera:</span></strong
+          ><span>
+            App via Intent (empfohlen, weniger Komplexität), Camera-API,
+            Camera2-API, CameraX-API (mehr Möglichkeiten und Kontrolle)</span
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

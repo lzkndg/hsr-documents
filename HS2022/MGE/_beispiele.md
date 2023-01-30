@@ -1,6 +1,6 @@
-# Beispiele
+# Beispiele Android
 
-## Android- API Check
+## API Check
 
 ```java
 int device = android.os.Build.VERSION.SDK_INT; int required = Build.VERSION_CODES.Q;
@@ -9,7 +9,7 @@ if (device >= required) {
 }
 ```
 
-## Android-Activity
+## Activity
 
 ```java
 public class MainActivity extends Activity {
@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 </LinearLayout>	
 ```
 
-## Android- Constraint Layout
+##  Constraint Layout
 
 ```xml
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-## Android TextView
+## TextView
 
 ```xml
 <TextView
@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
           android:textSize />
 ```
 
-## Android Menus
+## Menus
 
 ```xml
 <ImageButton
@@ -128,7 +128,7 @@ fun onOptionsItemSelected(item: MenuItem) : boolean {
 }
 ```
 
-## Android ListView mit (eigenem) ArrayAdapter
+## ListView mit (eigenem) ArrayAdapter
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -190,7 +190,7 @@ public View getView(int pos, View view, ViewGroup parent) {
 }
 ```
 
-## Android ListenAdapter mit View Holder
+## ListenAdapter mit View Holder
 
 ```java
 private class ViewHolder { TextView text1; TextView text2; }
@@ -214,7 +214,7 @@ public View getView(int pos, View view, ViewGroup parent) {
 }
 ```
 
-## Android RecyclerView
+## RecyclerView
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?> // [ Main Activity ]
@@ -263,7 +263,7 @@ public class UsersAdapter extends RecyclerView.Adapter<ViewHolder>
 }
 ```
 
-## Android Intents
+## Intents
 
 ```csharp
 // Expliziter Intent
@@ -279,7 +279,7 @@ sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey!");
 startActivity(sendIntent);
 ```
 
-## Android GUI-Aktualisierung
+## GUI-Aktualisierung
 
 ```java
 final Runnable updateUi = new Runnable() { 
@@ -301,7 +301,7 @@ Runnable background = new Runnable() {
 Thread thread = new Thread(background); thread.start();
 ```
 
-## Android- Fragments statisch
+##  Fragments statisch
 
 ```java
 public class MainActivity extends AppCompatActivity {
@@ -343,7 +343,7 @@ public class OutputFragment extends Fragment {
 </LinearLayout>
 ```
 
-## Android- Fragments dynamisch
+##  Fragments dynamisch
 
 ```xml
 <!-- Platzhalter im XML -->
@@ -384,7 +384,7 @@ fragmentManager.beginTransaction()
 });
 ```
 
-## Android- Permissions
+##  Permissions
 
 ```java
 // Permission Check
@@ -406,7 +406,7 @@ if (status != PackageManager.PERMISSION_GRANTED) {
 }
 ```
 
-## Android- Filezugriff
+##  Filezugriff
 
 ```java
 // Schreiben
@@ -429,7 +429,7 @@ inputStream.close();
 String output = new String(bytes);
 ```
 
-## Android- Preferences
+##  Preferences
 
 ```java
 String file = "ch.ost.rj.mge.v05.myapplication.preferences";
@@ -452,9 +452,9 @@ boolean value2 = preferences.getBoolean(key2, false);
 int value3 = preferences.getInt(key3, 0);
 ```
 
-## Android- Datenbanken
+##  Datenbanken
 
-## Android- Medien
+##  Medien
 
 ```java
 // Auslesen von Bildern sortiert nach Einfügedatum
@@ -480,7 +480,7 @@ while (cursor.moveToNext()) {
 cursor.close();
 ```
 
-## Android- Dokumente
+##  Dokumente
 
 ```java
 private static final int CREATE_DOCUMENT_CODE = 1;
@@ -518,7 +518,7 @@ public void onActivityResult(int req, int res, Intent data) {
 }
 ```
 
-## Android- Netzwerkverbindung
+##  Netzwerkverbindung
 
 ```java
 String service = Context.CONNECTIVITY_SERVICE;
@@ -543,7 +543,7 @@ for (Network network : manager.getAllNetworks()) {
 }
 ```
 
-## Android- Positionsbestimmung
+##  Positionsbestimmung
 
 ```java
 // Kriterien für Provider definieren
@@ -564,6 +564,145 @@ manager.requestLocationUpdates(provider, 5000L, 0, this);
 @Override
 public void onLocationChanged(Location loc) {
     Log.d(null, loc.getLatitude() + "|" + loc.getLongitude());
+}
+```
+
+## Broadcast
+
+```java
+public class MyBroadcastReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d(LOG_TAG, "Broadcast | Action: " + intent.getAction());
+
+        if (intent.getExtras() != null 
+            	&& intent.getExtras().containsKey(MyStartedService.SERVICE_RESULT_KEY)) {
+            Log.d(LOG_TAG, "Broadcast | Service Result: " + intent.getIntExtra(
+                MyStartedService.SERVICE_RESULT_KEY, 0));
+        }
+    }
+}
+public class MainActivity extends AppCompatActivity {
+        private void registerBroadcastReceiver() {
+        receiver = new MyBroadcastReceiver();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(BROADCAST_ACTION);
+
+        registerReceiver(receiver, filter); // Dynamische Registrierung, vs. statisch im Manifest
+    }
+    private void unregisterBroadcastReceiver() {
+        unregisterReceiver(receiver);
+        receiver = null;
+    }
+    private void sendImplicitBroadcast() {
+        // Can be simulated using:
+        // adb shell am broadcast -a ch.ost.rj.mge.v06.myapplication.MY_INTENT
+        Intent intent = new Intent();
+        intent.setAction(BROADCAST_ACTION);
+        intent.putExtra("data","example");
+        sendBroadcast(intent);
+    }
+    private void sendExplicitBroadcast() {
+        // Can be simulated using:
+        // adb shell am broadcast -a ch.ost.rj.mge.v06.myapplication.MY_INTENT -n 	
+        	// ch.ost.rj.mge.v06.myapplication/.MyBroadcastReceiver
+        Intent intent = new Intent(this, MyBroadcastReceiver.class);
+        intent.setAction(BROADCAST_ACTION);
+        intent.putExtra("data","example");
+        sendBroadcast(intent);
+    }
+}
+```
+
+## Started Service
+
+```java
+public class MainActivity extends AppCompatActivity {
+	private void runStartedService() {
+        Intent broadcastIntent = new Intent(this, MyBroadcastReceiver.class);
+        broadcastIntent.setAction(BROADCAST_ACTION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+            this, 0, broadcastIntent, PendingIntent.FLAG_MUTABLE);
+
+        Intent intent = new Intent(this, MyStartedService.class);
+        intent.putExtra(MyStartedService.SERVICE_PI_KEY, pendingIntent);
+        startService(intent);
+    }
+    private void stopStartedService() {
+        Intent intent = new Intent(this, MyStartedService.class);
+        stopService(intent);
+    }
+    
+}
+public class MyStartedService extends Service {
+    private boolean stopRequested;
+    @Override
+    public void onCreate() { /* ... */ }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        new Thread(() => {
+            /* do some things */ 
+            if (stopRequested) { stopSelf(startId); }
+        }).start();
+    }
+    @Override
+    public void onDestroy() {
+        logMessage("onDestroy");
+        stopRequested = true;
+        super.onDestroy();
+    }
+}
+```
+
+## Bound Service
+
+```java
+public class MainActivity extends AppCompatActivity implements ServiceConnection {
+	private void connectToBoundService() {
+        Intent intent = new Intent(this, MyBoundService.class);
+        bindService(intent, this, Context.BIND_AUTO_CREATE);
+    }
+    private void interactWithBoundService() {
+        boundService.showToast("Hallo aus der MainActivity");
+    }
+    private void disconnectFromBoundService() {
+        unbindService(this);
+        onServiceDisconnected(null);
+    }
+}
+@Override
+public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+	// Call UI Related Logic
+    MyBoundService.MyBinder binder = (MyBoundService.MyBinder) iBinder;
+    boundService = binder.getService();
+}
+
+@Override
+public void onServiceDisconnected(ComponentName componentName) {
+    // only called on problems, not normal unbind!
+	// Call UI Related Logic
+    boundService = null;
+}
+
+public class MyBoundService extends Service {
+    public class MyBinder extends Binder {
+        public MyBoundService getService() {
+            return MyBoundService.this;
+        }
+    }
+	private final IBinder binder = new MyBinder();
+    
+    @Override public IBinder onBind(Intent intent) {
+        logMessage("onBind"); return binder;
+    }
+    @Override public boolean onUnbind(Intent intent) {
+        logMessage("onUnbind"); return super.onUnbind(intent);
+    }
+    @Override public void onDestroy() {
+        logMessage("onDestroy"); super.onDestroy();
+    }
 }
 ```
 

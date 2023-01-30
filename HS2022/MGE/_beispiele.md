@@ -706,3 +706,89 @@ public class MyBoundService extends Service {
 }
 ```
 
+## Data Binding: Observables
+
+### Observable Fields
+
+```java
+public class User {
+    public final ObservableField<String> name = new ObservableField<>();
+    public final ObservableInt age = new ObservableInt();
+
+    public User(String name, int age) {
+        this.firstName.set(name);
+        this.age.set(age);
+    }
+}
+```
+
+### Observable Classes
+
+```java
+public class User extends BaseObservable {
+	// Fields and Constructor... 
+    @Bindable	// This Annotation should be applied to any getter of Observable Fields.
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
+        notifyPropertyChanged(BR.name); // BR ist eine automatisch generierte Klasse mit 
+    }						// Properties, die fürs Binding verwendet werden.
+}
+```
+
+## Lifecycle Aware Components
+
+```java
+public class MyActivity {
+    private MyLocationListener myLocationListener;
+    @Override protected void onCreate (Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		binding = ActivityUserBinding.inflate(...);
+		binding.setVm(viewModel);
+		binding.setLifecycleOwner(this);         // Lifecycle Owner für Data Bindings im XML
+		myLocationListener = new LocationListener(
+            getLifecycle(),		// eigener Lifecycle übergeben
+            (location) -> { /* UI Update bei Positionsänderung */ });
+		Util.check(result -> {
+            if (result) { myLocationListener.enable(); }
+        });
+    }
+}
+// Listener Implementation
+public class MyLocationListener implements LifecycleObserver {
+    private final Lifecycle lifecycle;
+    private boolean enabled = false;
+    
+    public MyLocationListener(Lifecycle lifecycle, Consumer<Location> callback) {
+        this.lifecycle = lifecycle;
+        this.lifecycle.addObserver(this);
+    }
+    @OnLifeCycleEvent(ON_START)
+    void start() { /* ... */ }
+    @OnLifeCycleEvent(ON_STOP)
+    void stop() { /* ... */ }
+    public void enable() {
+        enabled = true;
+        if (lifecycle.getCurrentState().isAtLeast(STARTED)) {
+            start();
+        }
+    }
+}
+```
+
+## ViewModel
+
+```java
+public class UserActivity extends AppCompatActivity {
+    private ActivityUserBinding binding;
+    @Override protected void onCreate (Bundle savedInstanceState) {
+    	super.onCreate(savedInstanceState);
+        User user = new User("Thomas", "Kälin", 36);
+        UserViewModelFactory factory = new UserViewModelFactory(user);
+        UserViewModel viewModel = new ViewModelProvider(this, factory) // Factory nur 
+            .get(UserViewModel.class);						// benötigt wegen user-Parameter
+    }			// this ist Referenz auf Lifecycle-Owner ^
+}
+```

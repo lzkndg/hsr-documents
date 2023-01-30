@@ -360,6 +360,9 @@ li > :first-child {
     border-color: transparent !important;
     padding-bottom: 0px !important;
   }
+  .pagebreak {
+    page-break-before: always;
+  }
   .typora-export * {
     -webkit-print-color-adjust: exact;
   }

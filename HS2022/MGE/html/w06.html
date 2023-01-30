@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <title>w06</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="android-architektur-und-fortgeschrittenes">
+          <span>Android Architektur und Fortgeschrittenes</span>
+        </h1>
+        <h2 id="software-architektur"><span>Software-Architektur</span></h2>
+        <p>
+          <span
+            >Zerlegung grösserer Systeme in Teile verbessert Wartbarkeit und
+            Verständlichkeit. </span
+          ><strong><span>Schichten</span></strong
+          ><span>
+            gruppieren zusammengehörige Konzepte. Keine Zyklen wenn
+            Abhängigkeiten nur nach unten zeigen. Presentation-Schicht
+            beinhaltet Darstellung und Benutzerinteraktion, stark an UI-Tools
+            gebunden. Domain-Schicht beinhaltet Businesslogik und
+            Domänenklassen. Keine UI Funktionalität, einfach zu testen. Wenig
+            externe Abhängigkeiten. Datenschicht dient der Speicherung,
+            Bereitstellung von Daten. Auch Persistenz oder Datenhaltung genannt. </span
+          ><strong><span>Variationen</span></strong
+          ><span
+            >: Mehr als 3 Schichten, zusätzlich vertikale Zerlegung nach
+            Feature, Presentation Patterns (MVC, MVP, MVVM)</span
+          >
+        </p>
+        <p><img src="res/schichten.png" alt="Schichten" style="zoom: 67%" /></p>
+        <p>
+          <span
+            >Fundament der Software soll nicht Daten sein, sondern Domäne. In
+            der neueren (Clean Code-) </span
+          ><strong><span>Ringarchitektur</span></strong
+          ><span>
+            ist auch die Datenbank in der äussersten Schicht, ändert also
+            potenziell oft. Je weiter innen, desto stabiler. &quot;Technische
+            Details&quot; sind aussen. Domäne bildet den Kern.</span
+          >
+        </p>
+        <p><img src="res/clean_code.png" alt="Ringe" style="zoom: 50%" /></p>
+        <p>
+          <strong><span>Ziele in MGE</span></strong
+          ><span
+            >: UI Code gruppieren, von restlichem Code trennen und bestmöglich
+            testbar machen.</span
+          >
+        </p>
+        <h2 id="observer-pattern"><span>Observer Pattern</span></h2>
+        <p>
+          <span
+            >Dient der &quot;Rückmeldung&quot; von Domain zu Presentation bei
+            Änderungen an den Daten. </span
+          ><strong><span>Subject/Observable</span></strong
+          ><span
+            >: Das Ding, das ändern kann, also innerhalb der Domäne. Bietet </span
+          ><code>Attach()/Detach()</code><span>-Funktionen. Eine </span
+          ><code>Notify()</code><span> Funktion führt </span
+          ><code>Update()</code><span> auf allen registrierten </span
+          ><strong><span>Observern</span></strong
+          ><span>
+            (GUI-Elementen) aus. Ergo: Observer kennt Subject, umgekehrt nicht. </span
+          ><em><span>Wichtig</span></em
+          ><span>: Anmelden wenn die App sichtbar ist (</span
+          ><code>onResume</code
+          ><span>), abmelden wenn die App im Hintergrund ist (</span
+          ><code>onPause</code
+          ><span
+            >). Ansonsten werden unnötige Ressourcen verschwendet, GUI
+            aktualisiert das nicht sichtbar ist.
+          </span>
+        </p>
+        <p>&nbsp;</p>
+        <p>
+          <img
+            src="res/android-observerpattern.png"
+            referrerpolicy="no-referrer"
+          />
+        </p>
+        <p>
+          <span
+            >Grundlegend &quot;manuelle&quot; Implementation für jedes Objekt,
+            komplex und aufwändig. Wer observiert Wen? An-/Abmelden korrekt
+            überall? Vereinfachte, allgemeine Implementation nötig...</span
+          >
+        </p>
+        <h2 id="grundlagen-architektur"><span>Grundlagen Architektur</span></h2>
+        <p>
+          <img src="res/mvc.png" alt="MVC" style="zoom: 50%" /><span> </span
+          ><img src="res/mvp.png" alt="MVP" style="zoom: 50%" /><img
+            src="res/mvvm.png"
+            alt="MVVM"
+            style="zoom: 50%"
+          />
+        </p>
+        <p>
+          <strong><span>Model View Controller</span></strong
+          ><span
+            >: Basis (lose) für Android. Kritik: Controller (Activity/Fragments)
+            wird schnell extrem umfangreich und schwierig zu testen wegen
+            Referenzen auf UI. </span
+          ><strong><span>Model View Presenter:</span></strong
+          ><span> Keine Verbindung zwischen View und Model. </span
+          ><strong><span>Model View ViewModel:</span></strong
+          ><span> Siehe Woche 7.</span>
+        </p>
+        <h2 id="android-application"><span>Android: Application</span></h2>
+        <p>
+          <span>Wird im AndroidManifest als </span
+          ><code>&lt;application&gt;</code
+          ><span>
+            - Knoten definiert. Instanz wird beim Start der App erstellt - lebt
+            solange die App läuft. Aufbau nach Standard oder selber definiert
+            als abgeleitete Klasse. Kann verwendet werden für einmalige
+            Initialisierungen, erzeugen von Singleton Objekten, Zugriff / Halten
+            von globalen Objekten etc. Hat verschiedene Lifecycle-Methoden wie
+          </span>
+          <code>onCreate, onTerminate</code
+          ><span> (wird NIE aufgerufen), </span>
+          <code>onConfigurationChanged(newConfig)</code
+          ><span>
+            bei Änderungen der System-Konfig wie Sprache, Rotation des Geräts,
+          </span>
+          <code>onLowMemory</code
+          ><span>
+            bei Speicherknappheit, Hinweis auf mögliche Terminierung der App,
+          </span>
+          <code>onTrimMemory(level)</code
+          ><span>
+            in geeigneten Momente für Aufräumaktion, Parameter gibt Hinweis auf
+            Auslöser.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">application</span> <span class="cm-attribute">android:name</span>=<span class="cm-string">".MyApplication"</span><span class="cm-tag cm-bracket">&gt;</span> <span class="cm-comment">&lt;!-- Unsere Activities etc..  --&gt;</span> <span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">application</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <p>
+          <code>Application.ActivityLifecycleCallbacks</code
+          ><span>
+            ist ein Interface, dass implementiert werden kann um von allen
+            Activities die Lifecycle-Events zentral verwalten zu können. Bietet
+            überschreibbare Methoden wie </span
+          ><code>onActivityCreated()</code
+          ><span>
+            mit der auslösenden Activity im Parameter. Gut für zentrales Logging
+            etc.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="java"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="java"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 10.9999px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">MyApplication</span> <span class="cm-keyword">extends</span> <span class="cm-variable">Application</span> <span class="cm-keyword">implements</span> <span class="cm-variable">Application</span>.<span class="cm-variable">ActivityLifecycleCallbacks</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-meta">@Override</span> <span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-variable">onCreate</span>() { </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span> &nbsp; &nbsp;<span class="cm-keyword">super</span>.<span class="cm-variable">onCreate</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">registerActivityLifecycleCallbacks</span>(<span class="cm-keyword">this</span>); <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-comment">// Wichtig!</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-meta">@Override</span> <span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-variable">onActivityCreated</span>(<span class="cm-variable">Activity</span> <span class="cm-variable">activity</span>) { <span class="cm-comment">/* ... */</span> }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 237px;"></div><div class="CodeMirror-gutters" style="display: none; height: 237px;"></div></div></div></pre>
+        <h2 id="context"><span>Context</span></h2>
+        <p>
+          <span
+            >Abstrakte SDK Klasse mit vielen (50+) Ableitungen. Ermöglicht den </span
+          ><strong><span>Zugriff auf Dienste und Ressourcen</span></strong
+          ><span>
+            der App. Verschiedene Ableitungen haben verschiedene Möglichkeiten.
+            Activity hat andere &quot;Berechtigungen&quot; als Application.
+            Lebensdauer des Context hängt vom aufrufenden Objekt ab,
+            angeforderte Ressourcen werden wiederum mit dem zugehörigen Context
+            freigegeben. </span
+          ><strong><span>Vorsicht</span></strong
+          ><span>
+            beim Weitergeben von Context zwischen verschiedenen Activities etc..
+          </span>
+        </p>
+        <p>
+          <img
+            src="res/context-overview.png"
+            alt="Context table"
+            style="zoom: 50%"
+          />
+        </p>
+        <h2 id="brodacasts"><span>Brodacasts</span></h2>
+        <p>
+          <span>Sind normale Intent-Objekte, </span><code>Action</code
+          ><span>
+            im Intent definiert den Typ als string mit globaler Namensgebung.
+            Deshalb idealerweise package-Name einbauen. Parameter sind als
+            Intent-Extras möglich. 2 Varianten für Broadcasts:</span
+          >
+        </p>
+        <p>
+          <strong><span>Global:</span></strong
+          ><span>
+            Austausch von Meldungen zwischen Apps. Datenquelle meist Android
+            (auch eigene App möglich). Empfänger verschiedene Apps, die sich
+            registrieren. </span
+          ><strong><span>Beispiel</span></strong
+          ><span>: Netzwerkverbindung verloren, SMS empfangen, ...</span>
+        </p>
+        <p>
+          <strong><span>Lokal</span></strong
+          ><span
+            >: Innerhalb App. Bsp. zum Senden von Benachrichtigung, die via
+            Android OS wieder zurück kommt und von einer komplett separaten
+            Komponente verarbeitet werden kann. Für App-Lokale Nachrichten gibt
+            es einen </span
+          ><code>LocalBroadcastManager</code><span>.</span>
+        </p>
+        <p>
+          <span
+            >Wichtig: keinen sensitiven Daten übermitteln, App-ID integrieren.
+            Ableiten von Basisklasse Broadcast, Registrieren der Klasse auf
+            bestimmte Nachrichten. Alt: im Manifest registriert, nur noch
+            eingeschränkt möglich. Neu dynamisch im Code mit </span
+          ><code>Context.registerReceiver()</code><span>.</span>
+        </p>
+        <h2 id="services"><span>Services</span></h2>
+        <p>
+          <span
+            >Threads entkoppeln Aufgaben vom UI, Services entkoppeln Aufgaben
+            von einer Activity / der App: Ausführen von Aktionen im Hintergrund,
+            Lebenszyklus unabhängig. Wird auch mittels Intent gestartet.</span
+          >
+          <strong><span>Started Services</span></strong
+          ><span>
+            haben eine klar definierte Lebensdauer, gedacht für einmalige
+            Aufgaben (bsp. Download: klares Ende). UI nur innerhalb einer
+            Notification (Foreground) oder gar keines (Background). Werden
+            etweder durch Service selber </span
+          ><code>stopSelf</code><span>, eine Applikation </span
+          ><code>service.stopService</code
+          ><span> oder durch Android beendet. Varianten: </span
+          ><code>IntentService</code><span> und </span
+          ><code>JobIntentService</code
+          ><span>
+            für Ausführung einer Aktion im BackgroundThread und automatischer
+            Stopp. </span
+          ><code>onStartCommand</code
+          ><span>
+            hat einen Rückgabewert für verschiedene Arten von gewünschten
+            Neustarts:
+          </span>
+          <code>START_NOT_STICKY</code
+          ><span>: Automatischer Neustart nur bei unverarbeiteten Intents</span>
+          <code>START_STICKY</code
+          ><span
+            >: Automatischer Neustart mit nächstem anstehenden Intent oder </span
+          ><code>null</code> <code>START_REDELIVER_INTENT</code
+          ><span
+            >: Automatischer Neustart mit zuletzt verarbeitetem Intent.</span
+          >
+          <strong><span>Bound Services</span></strong
+          ><span>
+            leben so lange, wie sie verwendet werden (Musikplayer). Nach letztem
+            Disconnect wird der Service gestoppt. Können von verschiedenen Apps
+            oder Activities gesteuert werden. </span
+          ><code>onBound/onUnbound</code
+          ><span>
+            bei Verbindung von einer Activity. Ähnlich Client/Server
+            Kommunikation. Registrierung der verwendeten Services im Manifest
+            zwingend.
+          </span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">service</span> <span class="cm-attribute">android:name</span>=<span class="cm-string">".services.MyStartedService"</span> <span class="cm-attribute">android:exported</span>=<span class="cm-string">"false"</span> <span class="cm-tag cm-bracket">/&gt;</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <h2 id="deployment"><span>Deployment</span></h2>
+        <p>
+          <span>Installation von Apps aus </span><code>.apk</code
+          ><span>
+            Dateien. Dies sind Zip-Archive, können über beliebige Kanäle
+            verteilt werden und enthalten alle zur Ausführung nötigen Daten. </span
+          ><code>.apk</code
+          ><span>
+            aus dem Play Store sind von Google signiert, alle anderen gelten als
+            unbekannte bzw. unsichere Apps. Privater Schlüssel als Developer gut
+            aufbewahren, für Updates im Store zwingend nötig.
+          </span>
+          <strong><span>Bundeln</span></strong
+          ><span> von verschiedenen </span><code>.apk</code><span> in ein </span
+          ><code>.aab</code><span> (Android App Bundle, Nachfolger von </span
+          ><code>.apk</code
+          ><span
+            >) möglich. Beispiel verschiedene Versionen (x86/x64) der App. Aus
+            dem </span
+          ><code>.aab</code
+          ><span>
+            wird auf den Google Servern bei Download dynamisch das passende </span
+          ><code>.apk</code
+          ><span>
+            generiert (Sprache, CPU, ...). Optimiert die Dateigrösse, bietet
+            verschiedene Delivery Kanäle für Features oder Assets. </span
+          ><em
+            ><span
+              >Vorteil, der Signaturschlüssel liegt bei Google - Nachteil, der
+              Signaturschlüssel liegt bei Google..</span
+            ></em
+          ><span> </span><code>aab</code
+          ><span>-Format ist zwingend seit 2021.</span>
+          <strong><span>Grössenbeschränkung</span></strong
+          ><span
+            >: Google Play Store setzt zum Schutz der Infrastruktur ein Limit
+            bei 100 MB für APK / 150MB für AAB.. Möglichkeiten daran vorbei sind
+            APK Splitting (nach verschiedenen Kriterien wie CPU, Gerätetyp.. )
+            oder APK Expansion Files für grosse Ressourcen wie Videos o.ä.
+            Erlaubt max. 2x 2GB zusätzlich, als </span
+          ><code>.oob</code
+          ><span>
+            Dateien oder &quot;Play Asset Delivery&quot; als Alternative.</span
+          >
+        </p>
+        <p>
+          <span>Inhalt eines APK Files (APK Analyzer in Android Studio):</span
+          ><img
+            src="res/android-apk-analyzed.png"
+            referrerpolicy="no-referrer"
+          />
+        </p>
+        <p>
+          <span
+            >DEX Format: Optimierte Bytecode-Sprache für Mobile-CPUs. Inhalt </span
+          ><code>classes.dex</code><span>:</span>
+          <img
+            src="res/android-apk-analyzed-code.png"
+            referrerpolicy="no-referrer"
+          />
+        </p>
+        <h3 id="android-build-system"><span>Android Build System</span></h3>
+        <p>
+          <span
+            >Java Virtual Machine wandelt Bytecode in Maschinencode um. Cold
+            Code wird bei jeder Ausführung interpretiert, Hot Code wird vom
+            JIT-Compiler vorkompiliert und steht direkt als Maschinencode zur
+            Verfügung. Das </span
+          ><strong><span>Android Asset Packaging Tool</span></strong
+          ><span> erzeugt </span><code>R.java</code
+          ><span> Klasse sowie alle möglichen Ressourcen.</span>
+        </p>
+        <p>
+          <img
+            src="res/android-buildprozess.png"
+            referrerpolicy="no-referrer"
+          />
+        </p>
+        <p>
+          <strong><span>DEX-Compiler</span></strong
+          ><span
+            >: DEX Code ist optimiert für die Ausführung auf Smartphones /
+            mobile CPUs. Ausführung von DEX: früher ganz
+            &quot;Java-Normal&quot;, via Android JVM (Name Dalvik).</span
+          >
+        </p>
+        <p>
+          <img src="res/android-build-v1.png" referrerpolicy="no-referrer" />
+        </p>
+        <p>
+          <strong><span>Android Runtime ART 1.0</span></strong
+          ><span
+            >: Ab Android 5.0 wird das Interpretieren/Kompilieren während der
+            Installation gemacht - Speicherplatz gegenüber Rechenzeit. Neues
+            File-Format </span
+          ><code>.oat</code
+          ><span>
+            (Ahead Of Time-Binaries). Grosser Nachteil: Umwandlung DEX auf AOT
+            während Installation, nach Systemupdates von Android,
+            &quot;Optimizing App 1/x&quot;-Screen.</span
+          >
+        </p>
+        <p>
+          <img src="res/android-build-v2.png" referrerpolicy="no-referrer" />
+        </p>
+        <p>
+          <strong><span>ART 2.0:</span></strong
+          ><span>
+            Vom JIT-Compiler wird an Android OS gemeldet, welcher Code Hot-Code
+            ist. Resultierendes AOT-Profile wird verwendet, um Umwandlung von
+            DEX in AOT zu machen. Effizienz-steigerung geschieht also stetig,
+            nach der App-Installation. AOT-Profile können schlussendlich via
+            Google Play Store verteilt werden.</span
+          >
+        </p>
+        <p>
+          <img src="res/android-build-v3.png" referrerpolicy="no-referrer" />
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

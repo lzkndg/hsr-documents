@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>3-Klassen-Structs</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="klassen-und-structs"><span>Klassen und Structs</span></h1>
+        <h2 id="klasse"><span>Klasse</span></h2>
+        <p><span>Reference Type (wird auf dem Heap abgelegt)</span></p>
+        <ul>
+          <li><span>Basisklassen, Abgeleitete Klassen</span></li>
+          <li><span>Implementation von Interfaces</span></li>
+        </ul>
+        <p><span>Konstruktor mit optionalen Parametern</span></p>
+        <p>
+          <span
+            >Initialisierung von Feldern in der Klassendefinition erlaubt.</span
+          >
+        </p>
+        <h3 id="instanzierung"><span>Instanzierung</span></h3>
+        <p><span>Speicher wird</span></p>
+        <ul>
+          <li><span>alloziiert</span></li>
+          <li><span>initialisiert</span></li>
+        </ul>
+        <p>
+          <span>Klassische Initialisierung: </span
+          ><code>Stack s = new Stack(10);</code><span></span><br /><span
+            >Target-Typed &quot;new&quot;-Expression: </span
+          ><code>Stack s = new(10);</code>
+        </p>
+        <h2 id="struct"><span>Struct</span></h2>
+        <p>
+          <span
+            >Soll immer einen einzelnen Wert repräsentieren, speziell wenn
+            dieser aus mehreren Teilen besteht (Vektor, Point, ... ).</span
+          >
+        </p>
+        <p>
+          <span
+            >Ist immutable, wenn Änderungen nötig sind wird ein neuer Struct
+            erzeugt.</span
+          >
+        </p>
+        <ul>
+          <li><span>Kurzlebig oder in andere Objekte eingebettet</span></li>
+          <li><span>wird initialisiert</span></li>
+          <li>
+            <span
+              >Kann nicht abgeleiten oder als Basisklasse verwendet werden</span
+            >
+          </li>
+          <li><span>Kann Interfaces implementieren</span></li>
+        </ul>
+        <h2 id="felder"><span>Felder</span></h2>
+        <ul>
+          <li>
+            <span>Feld (</span><code>int</code
+            ><span
+              >): initialisierung in deklaration optional,struct felder dürfen
+              nicht initialisiert werden</span
+            >
+          </li>
+          <li>
+            <span>Konstante (</span><code>cons int</code
+            ><span>): muss initialisierungswert haben</span>
+          </li>
+          <li>
+            <span>readonly-Feld (</span><code>readonly int</code
+            ><span
+              >): in deklaration oder konstruktor initialisiert, wert darf
+              später nicht verändert werden.</span
+            >
+          </li>
+        </ul>
+        <h2 id="nested-types"><span>Nested Types</span></h2>
+        <p>
+          <em><span>struct, klasse, interface, enum, delegate:</span></em
+          ><span> Für spezifische Hilfsklassen verwendet.</span>
+        </p>
+        <p><span>Zugriff:</span></p>
+        <ul>
+          <li>
+            <span>Äussere Klasse sieht </span
+            ><strong><span>public</span></strong
+            ><span> members der inneren</span>
+          </li>
+          <li>
+            <span>Innere Klasse sieht </span><strong><span>alle</span></strong
+            ><span> members der äusseren</span>
+          </li>
+          <li>
+            <span>Fremde Klasse sieht </span><strong><span>public</span></strong
+            ><span> members der inneren</span>
+          </li>
+        </ul>
+        <h2 id="statische-klassen"><span>Statische Klassen</span></h2>
+        <p><span>Können nicht instanziert werden. </span></p>
+        <p><span>Nur statische Members erlaubt</span></p>
+        <p>
+          <span>Bsp: Sammlung von Werten oder Funktionalität (</span
+          ><code>Math.Pi, Math.Cos()</code><span>)</span>
+        </p>
+        <h2 id="statische-usings"><span>Statische Usings</span></h2>
+        <p>
+          <code>using static System.Console</code
+          ><span> um bsp. Console.WriteLine() zu WriteLine() zu kürzen.</span>
+        </p>
+        <p><span>Namenskonflikte müssen manuell aufgelöst werden.</span></p>
+        <h2 id="statische-methoden"><span>Statische Methoden</span></h2>
+        <p>
+          <span>Prozedur/Aktion (ohne Rückgabewert)</span>
+          <span>Funktion (mit Rückgabewert)</span>
+        </p>
+        <p>
+          <span>Innerhalb der Klasse ohne Instanz aufrufbar (</span
+          ><code>Print()</code><span>)</span>
+          <span>Ausserhalb der Klasse eine Instanz nötig (</span
+          ><code>mc.Print()</code><span>)</span>
+        </p>
+        <h2 id="methodenparameter"><span>Methodenparameter</span></h2>
+        <h3 id="value-parameter"><span>Value-Parameter</span></h3>
+        <p>
+          <span
+            >Kopie des Stack-Inhaltes wird übergeben: Wert (Struct, Int) oder
+            Heap-Referenz (normale Klassen).</span
+          >
+        </p>
+        <p>
+          <strong
+            ><span
+              >Änderungen an &quot;nicht-Klassen&quot; werden ausserhalb der
+              Methode nicht persistiert!</span
+            ></strong
+          >
+        </p>
+        <h3 id="reference-parameter"><span>Reference-Parameter</span></h3>
+        <p>
+          <span
+            >Adresse der Variable wird übergeben. Diese muss initialisiert sein.
+            Nur benötigt für Value Types.</span
+          >
+        </p>
+        <h3 id="out-parameter"><span>Out-Parameter</span></h3>
+        <p>
+          <span
+            >Muss initialisiert werden, kann seit C# 7.0 im Methoden-Header
+            gemacht werden.</span
+          >
+        </p>
+        <p>
+          <code>void Init(out int a, out int b) { a = 1; b = 2 }</code>
+          <code>Init(out int a1, out int b1);</code>
+        </p>
+        <p>
+          <span>Discarding von out-Parametern möglich mit Underscore:</span>
+        </p>
+        <p>
+          <code>bool success = int.TryParse(&quot;123a&quot;, out _);</code>
+        </p>
+        <h3 id="params-array"><span>Params-Array</span></h3>
+        <ul>
+          <li><span>Erlaubt beliebig viele Parameter</span></li>
+          <li><span>Muss am Schluss der Deklaration stehen</span></li>
+          <li><span>nur einmal erlaubt pro Methode</span></li>
+          <li>
+            <span>Wird in der Methode wie ein normales Array verwendet</span>
+          </li>
+        </ul>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">void</span> <span class="cm-variable">Sum</span>(<span class="cm-keyword">out</span> <span class="cm-variable-3">int</span> <span class="cm-variable">sum</span>, <span class="cm-keyword">params</span> <span class="cm-variable-3">int</span>[] <span class="cm-variable">values</span>)</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">sum</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">foreach</span> (<span class="cm-variable-3">int</span> <span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-variable">values</span>) <span class="cm-variable">sum</span> <span class="cm-operator">+=</span> <span class="cm-variable">i</span>; &nbsp; </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 130px;"></div><div class="CodeMirror-gutters" style="display: none; height: 130px;"></div></div></div></pre>
+        <h3 id="optionale-parameter"><span>Optionale Parameter</span></h3>
+        <p>
+          <span
+            >Mittels Zuweisung eines Default Values in der Methodendefinition
+            wird ein Parameter optional.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">private</span> <span class="cm-keyword">void</span> <span class="cm-variable">Sort</span>(</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">int</span>[] <span class="cm-variable">array</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">int</span> <span class="cm-keyword">from</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">int</span> <span class="cm-variable">to</span> <span class="cm-operator">=</span> <span class="cm-operator">-</span><span class="cm-number">1</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">bool</span> <span class="cm-keyword">ascending</span> <span class="cm-operator">=</span> <span class="cm-atom">true</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">bool</span> <span class="cm-variable">ignoreCase</span> <span class="cm-operator">=</span> <span class="cm-atom">false</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  ) { ... }</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <h3 id="named-parameter"><span>Named Parameter</span></h3>
+        <p>
+          <span
+            >Parameter können mit Namen bezeichnet unsortiert mitgegeben werden,
+            Compiler sortiert anschliessend wieder korrekt:</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Sort</span>(<span class="cm-variable">a</span>, <span class="cm-keyword">ascending</span>: <span class="cm-atom">false</span>, <span class="cm-variable">ignoreCase</span>: <span class="cm-atom">true</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <h2 id="überladen-von-methoden"><span>Überladen von Methoden</span></h2>
+        <p>
+          <span
+            >Mehrere Methoden mit gleichem Namen: Ünterschiede müssen vorhanden
+            sein in einem von:
+          </span>
+        </p>
+        <ul>
+          <li><span>Anzahl Parameter</span></li>
+          <li><span>Parametertypen</span></li>
+          <li><span>Arten (ref/out, spezifisch C#)</span></li>
+        </ul>
+        <p>
+          <span>Rückgabetyp ist zur Unterscheidung </span
+          ><strong><span>nicht</span></strong
+          ><span> relevant.</span>
+        </p>
+        <h2 id="properties"><span>Properties</span></h2>
+        <p>
+          <span
+            >Reines Compiler-Konstrukt zur Vereinfachung von Get/Set
+            Methoden.</span
+          >
+          <span
+            >Wie Public Fields, können aber Logik beinhalten beim Lesen und
+            Schreiben.</span
+          >
+        </p>
+        <p><span>Standard Property:</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">private</span> <span class="cm-variable">_length</span>; <span class="cm-comment">// Backing-Field</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">Length</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">get</span> { <span class="cm-keyword">return</span> <span class="cm-variable">_length</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">set</span> { <span class="cm-variable">_lengt</span> <span class="cm-operator">=</span> <span class="cm-keyword">value</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <p><span>oder als Kurzform:</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">LengthAuto</span> { <span class="cm-keyword">get</span>; <span class="cm-keyword">set</span>; } <span class="cm-comment">// Auto-Property</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <p><span>auto-implemented Property:</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">LegthInit</span> { <span class="cm-keyword">get</span>; <span class="cm-keyword">set</span>; } <span class="cm-operator">=</span> <span class="cm-number">5</span>;</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <p><span>Backing-Field wird auf 5 gesetzt.</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">LengthInit</span> { <span class="cm-keyword">get</span>; }</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <p>
+          <span>Backing-Field wird auf </span><code>readonly</code
+          ><span> gesetzt.</span>
+        </p>
+        <h3 id="objekt-initialisierung"><span>Objekt-Initialisierung</span></h3>
+        <p>
+          <span
+            >Properties können direkt initialisiert werden. Dazu eine
+            geschweifte Klammer nach der Klasseninstanzierung verwenden.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">MyClass</span> <span class="cm-variable">mc</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> ()</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Length</span> <span class="cm-operator">=</span> <span class="cm-number">1</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Width</span> <span class="cm-operator">=</span> <span class="cm-number">2</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 130px;"></div><div class="CodeMirror-gutters" style="display: none; height: 130px;"></div></div></div></pre>
+        <h3 id="init-only-setters"><span>Init-Only setters</span></h3>
+        <p>
+          <span
+            >Property muss während der Initialisierung gesetzt werden. Dabei ist
+            Schreibzugriff auf eigene readonly-Felder des Typ möglich.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">LengthInitOnly</span> { <span class="cm-keyword">get</span>; <span class="cm-variable">init</span>; }</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">MyClass</span> <span class="cm-variable">mc</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> ()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">LengthInitOnly</span> <span class="cm-operator">=</span> <span class="cm-number">42</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">};</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 156px;"></div><div class="CodeMirror-gutters" style="display: none; height: 156px;"></div></div></div></pre>
+        <h2 id="expression-bodied-members">
+          <span>Expression Bodied Members</span>
+        </h2>
+        <p><span>Bei Methoden mit genau einem Statement. </span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">Examples</span> {</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">private</span> <span class="cm-variable-3">int</span> <span class="cm-variable">_value</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Constructors / Destructors (C# 7.0)</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Examples</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">v</span>) <span class="cm-operator">=&gt;</span> <span class="cm-variable">_value</span> <span class="cm-operator">=</span> <span class="cm-variable">v</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">~Examples</span>() <span class="cm-operator">=&gt;</span> <span class="cm-variable">_value</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Methods (C# 6.0)</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">Sum</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">x</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">y</span>) <span class="cm-operator">=&gt;</span> <span class="cm-variable">x</span> <span class="cm-operator">+</span> <span class="cm-variable">y</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">GetZero</span>() <span class="cm-operator">=&gt;</span> <span class="cm-number">0</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">void</span> <span class="cm-variable">Print</span>() <span class="cm-operator">=&gt;</span> <span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-string">"..."</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Properties (C# 6.0)</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">Zero</span> <span class="cm-operator">=&gt;</span> <span class="cm-number">0</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">Bla</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">Sum</span>(<span class="cm-variable">Zero</span>, <span class="cm-number">2</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Getters/Setters (C# 7.0)</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">Value</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">get</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">_value</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">set</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">_value</span> <span class="cm-operator">=</span> <span class="cm-keyword">value</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 572px;"></div><div class="CodeMirror-gutters" style="display: none; height: 572px;"></div></div></div></pre>
+        <h2 id="indexers"><span>Indexers</span></h2>
+        <p>
+          <span
+            >Überladen des Index-Operators, um Klassen mit Array-Verhalten zu
+            erzeugen.</span
+          >
+        </p>
+        <ul>
+          <li>
+            <span>Read- und/oder Write-Only möglich, weglassen von </span
+            ><code>get{}</code><span>/</span><code>set{}</code>
+          </li>
+          <li>
+            <span>Schlüsselwort </span><code>this</code
+            ><span> definiert den Indexer</span>
+          </li>
+          <li>
+            <span>Schlüsselwort </span><code>value</code
+            ><span> für Zugriff Wert im Setter</span>
+          </li>
+          <li><span>Indexwert kann überladen werden (mehrere Typen)</span></li>
+        </ul>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyClass</span> {</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">private</span> <span class="cm-variable-3">string</span>[] <span class="cm-variable">_arr</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable-3">string</span>[<span class="cm-number">10</span>];</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">string</span> <span class="cm-keyword">this</span>[<span class="cm-variable-3">int</span> <span class="cm-variable">index</span>] {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">get</span> { <span class="cm-keyword">return</span> <span class="cm-variable">_arr</span>[<span class="cm-variable">index</span>]; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">set</span> { <span class="cm-variable">_arr</span>[<span class="cm-variable">index</span>] <span class="cm-operator">=</span> <span class="cm-keyword">value</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-keyword">this</span>[<span class="cm-variable-3">string</span> <span class="cm-variable">index</span>] {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">get</span> </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">for</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">i</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>; <span class="cm-variable">i</span> <span class="cm-operator">&lt;</span> <span class="cm-variable">_arr</span>.<span class="cm-variable">Length</span>; <span class="cm-variable">i</span><span class="cm-operator">++</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  { </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span>(<span class="cm-variable">_arr</span>[<span class="cm-variable">i</span>] <span class="cm-operator">==</span> <span class="cm-variable">search</span>) <span class="cm-keyword">return</span> <span class="cm-variable">i</span>; </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-operator">-</span><span class="cm-number">1</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 494px;"></div><div class="CodeMirror-gutters" style="display: none; height: 494px;"></div></div></div></pre>
+        <h2 id="konstruktoren"><span>Konstruktoren</span></h2>
+        <p><span>Gleicher Name wie Klasse, kein Rückgabetyp nötig.</span></p>
+        <p>
+          <span
+            >Privater Konstruktor: Kann nur intern verwendet werden, damit wird
+            kein Default-Konstruktor erzeugt.</span
+          >
+        </p>
+        <p>
+          <span>Aufruf anderer Konstruktoren derselben Klasse mit </span
+          ><code>this</code><span>.</span>
+          <span>Aufruf des Basisklassen-Konstruktors mit </span><code>base</code
+          ><span>.</span>
+        </p>
+        <h3 id="default-konstruktor"><span>Default-Konstruktor</span></h3>
+        <p>
+          <span>Konstruktor ohne Parameter.</span>
+          <span
+            >Kann bei Klasse überschrieben werden, wird ansonsten vom Compiler
+            generiert.</span
+          >
+          <span>Wird bei Struct immer vom Compiler generiert.</span>
+        </p>
+        <p>
+          <span>Automatisch generierter Konstruktor setzt alle Felder auf </span
+          ><strong><span>Standard-Werte</span></strong
+          ><span> (</span><code>null</code><span>, </span><code>0</code
+          ><span>, oder </span><code>false</code><span>).</span>
+        </p>
+        <p><span>Standardwerte können manuell verwendet werden</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">x</span> <span class="cm-operator">=</span> <span class="cm-keyword">default</span>(<span class="cm-variable-3">int</span>);</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">y</span> <span class="cm-operator">=</span> <span class="cm-keyword">default</span>(); <span class="cm-comment">// ab C# 7.1 möglich</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 52px;"></div><div class="CodeMirror-gutters" style="display: none; height: 52px;"></div></div></div></pre>
+        <h3 id="statischer-konstruktor"><span>Statischer Konstruktor</span></h3>
+        <ul>
+          <li>
+            <p><span>Zwingend parameterlos</span></p>
+          </li>
+          <li>
+            <p><span>Keine Sichtbarkeit</span></p>
+          </li>
+          <li>
+            <p><span>Nur einmal erlaubt</span></p>
+          </li>
+          <li>
+            <p><span>Wird genau einmal ausgeführt:</span></p>
+            <ul>
+              <li><span>bei erster Instanzierung des Typen</span></li>
+              <li><span>bei erstem Zugriff auf ein statisches Feld</span></li>
+            </ul>
+          </li>
+        </ul>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Class</span> <span class="cm-def">MyClass</span>() </span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">static</span> <span class="cm-variable">MyClass</span>() </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-comment">// ...</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 208px;"></div><div class="CodeMirror-gutters" style="display: none; height: 208px;"></div></div></div></pre>
+        <h3 id="destruktoren"><span>Destruktoren</span></h3>
+        <p>
+          <span>Finalizer bei Java</span>
+          <span
+            >Bei Klassen erlaubt, bei Structs verboten (keine Möglichkeit zum
+            Ausführen von Logik beim Abräumen)</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyClass</span>()</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">~MyClass</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-comment">// Freigabe von Ressourcen ... </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <h2 id="initialisierungs-reihenfolge">
+          <span>Initialisierungs-Reihenfolge</span>
+        </h2>
+        <p>
+          <strong><span>Klasse Sub</span></strong
+          ><span
+            >: Statische Felder -&gt; Statischer Konstruktor -&gt; Felder</span
+          ><br /><span>--&gt; </span><strong><span>Klasse Base</span></strong
+          ><span
+            >: Statische Felder -&gt; Statischer Konstruktor -&gt; Felder</span
+          ><br /><span>--&gt; --&gt; </span
+          ><strong><span>Klasse Object</span></strong
+          ><span
+            >: Statische Felder -&gt; Statischer Konstruktor -&gt; Felder</span
+          ><br /><span>--&gt; </span><strong><span>Klasse Base</span></strong
+          ><span>: Konstruktor</span><br /><strong
+            ><span>Klasse Sub</span></strong
+          ><span>: Konstruktor</span>
+        </p>
+        <h3 id="konstruktoren-in-ober--oder-unterklasse">
+          <span>Konstruktoren in Ober- oder Unterklasse</span>
+        </h3>
+        <p>
+          <span
+            >Impliziter und expliziter Aufruf des Basisklassen-Konstruktor</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">Sub</span> : <span class="cm-variable">Base</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Sub</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">x</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  :<span class="cm-keyword">base</span>(<span class="cm-variable">x</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-comment">// ... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 208px;"></div><div class="CodeMirror-gutters" style="display: none; height: 208px;"></div></div></div></pre>
+        <h2 id="operator-overloading"><span>Operator Overloading</span></h2>
+        <p>
+          <span>Methode muss </span><code>static</code
+          ><span> sein, erzeugt eine eigene Instanz.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable">Point</span> <span class="cm-keyword">operator</span> <span class="cm-operator">+</span> (<span class="cm-variable">Point</span> <span class="cm-variable">a</span>, <span class="cm-variable">Point</span> <span class="cm-variable">b</span>)</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-keyword">new</span> (<span class="cm-variable">a</span>.<span class="cm-variable">_x</span> <span class="cm-operator">+</span> <span class="cm-variable">b</span>.<span class="cm-variable">_x</span>, <span class="cm-variable">a</span>.<span class="cm-variable">_y</span> <span class="cm-operator">+</span> <span class="cm-variable">b</span>.<span class="cm-variable">_y</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 104px;"></div><div class="CodeMirror-gutters" style="display: none; height: 104px;"></div></div></div></pre>
+        <h2 id="partielle-klassen"><span>Partielle Klassen</span></h2>
+        <p>
+          <em><span>Klassen, Structs, Interfaces</span></em>
+        </p>
+        <p>
+          <span>Definition von einem Typen in mehreren Files möglich.</span>
+        </p>
+        <p><span>Zweck: </span></p>
+        <ul>
+          <li><span>Arbeiten mit Generatoren</span></li>
+          <li><span>Aufsplitten grosser Dateien</span></li>
+          <li><span>Arbeiten mit schlechter Codequalität</span></li>
+        </ul>
+        <p>
+          <span>Selbe Sichtbarkeit, Keyword </span><code>partial</code
+          ><span> zwingend bei allen Klassenteilen</span>
+          <span
+            >Implementation von Interfaces, sealed kann auch über alle Teile
+            verwendet werden.</span
+          >
+        </p>
+        <h2 id="partielle-methoden"><span>Partielle Methoden</span></h2>
+        <p>
+          <span>Ermöglicht Benutzer-Definierte </span><em><span>Hooks</span></em
+          ><span> in generiertem Code.</span>
+        </p>
+        <p>
+          <span>Funktioniert in Klassen / Structs (muss ebenso </span
+          ><code>partial</code><span> sein).</span>
+        </p>
+        <p><span>Kann, muss aber nicht implementiert werden:</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// File 1</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">partial</span> <span class="cm-keyword">class</span> <span class="cm-def">MyClass</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">partial</span> <span class="cm-keyword">void</span> <span class="cm-variable">Test1Initialize</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">partial</span> <span class="cm-keyword">void</span> <span class="cm-variable">Test1Cleanup</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// File 2</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">partial</span> <span class="cm-keyword">class</span> <span class="cm-def">MyClass</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">void</span> <span class="cm-variable">Test2</span>() { }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">partial</span> <span class="cm-keyword">void</span> <span class="cm-variable">Test1Initialize</span>() { <span class="cm-comment">/*Implementation*/</span> }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 338px;"></div><div class="CodeMirror-gutters" style="display: none; height: 338px;"></div></div></div></pre>
+      </div>
+    </div>
+  </body>
+</html>

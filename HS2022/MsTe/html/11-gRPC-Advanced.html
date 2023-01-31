@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <title>11-gRPC-Advanced</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="grpc-advanced-topics"><span>gRPC Advanced Topics</span></h1>
+        <h2 id="exception-handling"><span>Exception Handling</span></h2>
+        <p>
+          <span
+            >Weitergabe einer Exception vom Server auf den Client via gRPC nicht
+            einfach so möglich: aus Sicherheitsgründen, wegen fehlender
+            Serialisierungslogik einer Exception, wegen möglicherweise
+            unterschiedlicher Programmiersprachen von Server und Client.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">RpcException</span> : <span class="cm-variable">Exception</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">RpcException</span>(<span class="cm-variable">Status</span> <span class="cm-variable">status</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">RpcException</span>(<span class="cm-variable">Status</span> <span class="cm-variable">status</span>, <span class="cm-variable-3">string</span> <span class="cm-variable">message</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">RpcException</span>(<span class="cm-variable">Status</span> <span class="cm-variable">status</span>, <span class="cm-variable">Metadata</span> <span class="cm-variable">trailers</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">RpcException</span>(<span class="cm-variable">Status</span> <span class="cm-variable">status</span>, <span class="cm-variable">Metadata</span> <span class="cm-variable">trailers</span>, <span class="cm-variable-3">string</span> <span class="cm-variable">message</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Status</span> <span class="cm-variable">Status</span> { <span class="cm-keyword">get</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">StatusCode</span> <span class="cm-variable">StatusCode</span> { <span class="cm-keyword">get</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Metadata</span> <span class="cm-variable">Trailers</span> { <span class="cm-keyword">get</span>; }<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Möglichkeit, weitere Details an den Client zu übermitteln</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">struct</span> <span class="cm-def">Status</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-keyword">readonly</span> <span class="cm-variable">Status</span> <span class="cm-variable">DefaultSuccess</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Status</span>(<span class="cm-variable">StatusCode</span>.<span class="cm-variable">OK</span>, <span class="cm-string">""</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-keyword">readonly</span> <span class="cm-variable">Status</span> <span class="cm-variable">DefaultCancelled</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Status</span>(<span class="cm-variable">StatusCode</span>.<span class="cm-variable">Cancelled</span>, <span class="cm-string">""</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Status</span>(<span class="cm-variable">StatusCode</span> <span class="cm-variable">statusCode</span>, <span class="cm-variable-3">string</span> <span class="cm-variable">detail</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">StatusCode</span> <span class="cm-variable">StatusCode</span> { <span class="cm-keyword">get</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">string</span> <span class="cm-variable">Detail</span> { <span class="cm-keyword">get</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">override</span> <span class="cm-variable-3">string</span> <span class="cm-variable">ToString</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 520px;"></div><div class="CodeMirror-gutters" style="display: none; height: 520px;"></div></div></div></pre>
+        <p>
+          <span>Standard-Mechanismus auf Übertragungskanal: Nutzung von </span
+          ><strong><span>HTTP Status Codes</span></strong
+          ><span>. Convenience Features seitens .NET: </span
+          ><strong><span>RpcException</span></strong
+          ><span
+            >. Jede mögliche Exception innerhalb des Servers sollte in eine
+            RpcException verwandelt werden. Somit kann die .NET gRPC
+            Implementation diese in eine saubere HTTP Response verwandeln.</span
+          >
+        </p>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th><span>Status Code</span></th>
+                <th><span>Beschreibung</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span>OK</span></td>
+                <td><span>Kein Fehler, alles okay.</span></td>
+              </tr>
+              <tr>
+                <td><span>Cancelled</span></td>
+                <td>
+                  <span>Operation wurde abgebrochen (meist durch Client).</span>
+                </td>
+              </tr>
+              <tr>
+                <td><span>Unknown</span></td>
+                <td>
+                  <span
+                    >Fehler kann nicht ermittelt werden / ist unbekannt. Default
+                    wenn Exception nicht behandelt wird.</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>InvalidArgument</span></td>
+                <td><span>Ungültige Argumente beim Aufruf angegeben.</span></td>
+              </tr>
+              <tr>
+                <td><span>DeadlineExceeded</span></td>
+                <td>
+                  <span
+                    >Deadline überschritten bevor Anfrage erfolgreich beendet
+                    wurde.</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>NotFound</span></td>
+                <td><span>Angefragte Ressource wurde nicht gefunden.</span></td>
+              </tr>
+              <tr>
+                <td><span>AlreadyExists</span></td>
+                <td>
+                  <span>Zu erstellende Ressource existiert bereits.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><span>PermissionDenied</span></td>
+                <td>
+                  <span
+                    >Aufrufer hat keine Berechtigung um die Operation
+                    auszuführen.</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>Unauthenticated</span></td>
+                <td>
+                  <span>Aufrufer ist nicht authentifiziert (angemeldet).</span>
+                </td>
+              </tr>
+              <tr>
+                <td><span>ResourceExhausted</span></td>
+                <td>
+                  <span
+                    >Eine Ressource ist aufgebraucht (Per-User-Quota /
+                    Speicherplatz / etc.)</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>FailedPrecondition</span></td>
+                <td>
+                  <span
+                    >Vorbedingungen sind falsch (ungültiger Systemstatus, keine
+                    Datenbankverbindung, Bestellung abschliessen obwohl bereits
+                    abgeschlossen).</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>Aborted</span></td>
+                <td>
+                  <span
+                    >Anfrage wurde abgebrochen (Concurrency Issues,
+                    Transaktionsabbruch, etc.).</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>OutOfRange</span></td>
+                <td>
+                  <span
+                    >Ungültiger Range bei Anfrage (Geburtsdatum in der Zukunft,
+                    etc.).</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>Unimplemented</span></td>
+                <td><span>Methode wurde (noch) nicht implementiert.</span></td>
+              </tr>
+              <tr>
+                <td><span>Internal</span></td>
+                <td><span>Allgemeiner interner Serverfehler</span></td>
+              </tr>
+              <tr>
+                <td><span>Unavailable</span></td>
+                <td><span>Service ist aktuell nicht verfügbar.</span></td>
+              </tr>
+              <tr>
+                <td><span>DataLoss</span></td>
+                <td><span>Datenverlust oder korrupte Daten</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <p>
+          <span
+            >Wird von der Server Runtime eine nicht-RPC-Exception gefangen, wird
+            diese allgemein in eine StatusCode Unknown RPC-Exception umgewandelt
+            mit leerem Trailer. Eine RPC-Exception wird jeweils direkt
+            übertragen.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">override</span> <span class="cm-variable-3">Task</span><span class="cm-operator">&lt;</span><span class="cm-variable">Empty</span><span class="cm-operator">&gt;</span> <span class="cm-def">NotFound</span>(<span class="cm-variable">Empty</span> <span class="cm-variable">request</span>, <span class="cm-variable">ServerCallContext</span> <span class="cm-variable">context</span>)</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">throw</span> <span class="cm-keyword">new</span> <span class="cm-variable">RpcException</span>(</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">new</span> <span class="cm-variable">Status</span>(</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">StatusCode</span>.<span class="cm-variable">NotFound</span>, <span class="cm-string">"Something was not found."</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-comment">//Optional: Trailers mitgeben </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">new</span> <span class="cm-variable">Metadata</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  { <span class="cm-string">"error-details"</span>, <span class="cm-string">"Here are some more Details"</span> },</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  { <span class="cm-string">"error-obj"</span> <span class="cm-operator">+</span> <span class="cm-variable">Metadata</span>.<span class="cm-variable">BinaryHeaderSuffix</span>, <span class="cm-variable">Encoding</span>.<span class="cm-variable">UTF8</span>.<span class="cm-variable">GetBytes</span>(<span class="cm-string">"..payload.."</span>) }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-comment">// Metadata.BinaryHeaderSuffix fügt dem Namen "-bin" hinzu für binary-Data</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 364px;"></div><div class="CodeMirror-gutters" style="display: none; height: 364px;"></div></div></div></pre>
+        <h3 id="common-mistakes"><span>Common Mistakes</span></h3>
+        <p><span>Unimplemented kann heissen: </span></p>
+        <ul>
+          <li>
+            <span>Service in Startup nicht registriert mit </span
+            ><code>endpoints.MapGrpcService&lt;...&gt;();</code>
+          </li>
+          <li>
+            <span
+              >Methode in Proto File definiert aber nicht implementiert
+              (überschrieben).</span
+            >
+          </li>
+        </ul>
+        <p>
+          <span
+            >Unknown kann auf einen fehlenden Catch-Block für aufgetretene
+            Fehler hindeuten.</span
+          >
+        </p>
+        <h3 id="clientseite"><span>Clientseite</span></h3>
+        <p>
+          <span>Exceptions können mit when-Klauseln abgefangen werden:</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">try</span> { <span class="cm-comment">/* gRPC call(s) */</span> }</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Communication exceptions</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">RpcException</span> <span class="cm-variable">e</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable">when</span> (<span class="cm-variable">e</span>.<span class="cm-variable">StatusCode</span> <span class="cm-operator">==</span> <span class="cm-variable">StatusCode</span>.<span class="cm-variable">Unavailable</span>) {}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">RpcException</span> <span class="cm-variable">e</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable">when</span> (<span class="cm-variable">e</span>.<span class="cm-variable">StatusCode</span> <span class="cm-operator">==</span> <span class="cm-variable">StatusCode</span>.<span class="cm-variable">NotFound</span>) {}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">RpcException</span> <span class="cm-variable">e</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable">when</span> (<span class="cm-variable">e</span>.<span class="cm-variable">StatusCode</span> <span class="cm-operator">==</span> <span class="cm-variable">StatusCode</span>.<span class="cm-variable">Aborted</span>) {}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">RpcException</span> <span class="cm-variable">e</span>) {}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Other stuff</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">Exception</span>) { <span class="cm-comment">/* ... */</span> }</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 286px;"></div><div class="CodeMirror-gutters" style="display: none; height: 286px;"></div></div></div></pre>
+        <h2 id="well-known-types"><span>Well Known Types</span></h2>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th><span>Typ</span></th>
+                <th><span>Beschreibung</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span>Emtpy</span></td>
+                <td>
+                  <code>import &quot;google/protobuf/empty.proto&quot;</code>
+                </td>
+              </tr>
+              <tr>
+                <td><span>Timestamp</span></td>
+                <td>
+                  <code>import &quot;google/protobuf/timestamp.proto&quot;</code
+                  ><span>, immer auf UTC ohne daylight saving bezogen.</span>
+                </td>
+              </tr>
+              <tr>
+                <td><span>ByteString</span></td>
+                <td>
+                  <span>Typ </span><code>bytes</code
+                  ><span> ohne Import in proto Files verwendbar. in C#: </span
+                  ><code
+                    >var bs = ByteString.CopyFrom(&quot;X&quot;,
+                    Encoding.Unicode);</code
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <h3 id="repeated-fields"><span>Repeated Fields</span></h3>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="protobuf"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="protobuf"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">message</span> <span class="cm-variable">RepeatedResponse</span> { <span class="cm-keyword">repeated</span> <span class="cm-keyword">string</span> <span class="cm-variable">results</span> = <span class="cm-number">1</span>; }</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">RepeatedResponse</span> <span class="cm-variable">response</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>();</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">response</span>.<span class="cm-variable">results</span>.<span class="cm-variable">Add</span>(<span class="cm-string">"Hello"</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span> [] <span class="cm-variable">arr</span> <span class="cm-operator">=</span> { <span class="cm-string">"A"</span>, <span class="cm-string">"B"</span> }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">response</span>.<span class="cm-variable">results</span>.<span class="cm-variable">AddRange</span>(<span class="cm-variable">arr</span>);</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 104px;"></div><div class="CodeMirror-gutters" style="display: none; height: 104px;"></div></div></div></pre>
+        <h3 id="map-fields"><span>Map Fields</span></h3>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="protobuf"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="protobuf"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">message</span> <span class="cm-variable">MapResponse</span> { <span class="cm-variable">map</span>&lt;<span class="cm-keyword">int32</span>, <span class="cm-keyword">string</span>&gt; <span class="cm-variable">results</span> = <span class="cm-number">1</span> }</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">MapResponse</span> <span class="cm-variable">response</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>();</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">response</span>.<span class="cm-variable">results</span>.<span class="cm-variable">Add</span>(<span class="cm-number">1</span>, <span class="cm-string">"Hello"</span>); <span class="cm-comment">// Single Add</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Verwendung wie ein IDictionary </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">bool</span> <span class="cm-variable">exists</span> <span class="cm-operator">=</span> <span class="cm-variable">response</span>.<span class="cm-variable">results</span>.<span class="cm-variable">ContainsKey</span>(<span class="cm-number">1</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span> <span class="cm-variable">result</span><span class="cm-operator">=</span> <span class="cm-variable">response</span>.<span class="cm-variable">results</span>[<span class="cm-number">1</span>];</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 130px;"></div><div class="CodeMirror-gutters" style="display: none; height: 130px;"></div></div></div></pre>
+        <h3 id="oneof"><span>OneOf</span></h3>
+        <p>
+          <span
+            >Lässt eine Auswahl von Typen zu, liefert aber immer nur einen davon
+            zurück. Logik in generierter Klasse implementiert, dass immer nur
+            einer der beiden Werte gesetzt sein kann.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="protobuf"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="protobuf"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">message</span> <span class="cm-variable">OneofResponse</span> {</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">oneof</span> <span class="cm-variable">results</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">string</span> <span class="cm-variable">image_url</span> = <span class="cm-number">1</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">bytes</span> <span class="cm-variable">image_data</span> = <span class="cm-number">2</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 156px;"></div><div class="CodeMirror-gutters" style="display: none; height: 156px;"></div></div></div></pre>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">OneofResponse</span> <span class="cm-variable">response</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>() { <span class="cm-variable">ImageUrl</span> <span class="cm-operator">=</span> <span class="cm-string">"http://..."</span> };</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">rc</span> <span class="cm-operator">=</span> <span class="cm-variable">response</span>.<span class="cm-variable">ResultsCase</span>;<span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// ImageUrl -&gt; wird in C# als Enum implementiert</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span> <span class="cm-variable">s</span> <span class="cm-operator">=</span> <span class="cm-variable">response</span>.<span class="cm-variable">ImageUrl</span>; <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// "http://..."</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">ByteString</span> <span class="cm-variable">bs</span> <span class="cm-operator">=</span> <span class="cm-variable">response</span>.<span class="cm-variable">ImageData</span>; &nbsp;<span class="cm-comment">// default</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 104px;"></div><div class="CodeMirror-gutters" style="display: none; height: 104px;"></div></div></div></pre>
+        <h3 id="any"><span>Any</span></h3>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="protobuf"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="protobuf"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">import</span> <span class="cm-string">"google/protobuf/any.proto"</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">message</span> <span class="cm-variable">AnyResponse</span> { <span class="cm-variable">google</span>.<span class="cm-variable">protobuf</span>.<span class="cm-variable">Any</span> <span class="cm-variable">results</span> = <span class="cm-number">1</span>; }</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 52px;"></div><div class="CodeMirror-gutters" style="display: none; height: 52px;"></div></div></div></pre>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">AnyResponse</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>();<span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Response Objekt</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">response</span>.<span class="cm-variable">Results</span> <span class="cm-operator">=</span> <span class="cm-variable">Any</span>.<span class="cm-variable">Pack</span>(<span class="cm-keyword">new</span> <span class="cm-variable">CustomerResponse</span>()); <span class="cm-comment">// Objekt befüllen</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">bool</span> <span class="cm-variable">isCust</span> <span class="cm-operator">=</span> <span class="cm-variable">response</span>.<span class="cm-variable">Results</span>.<span class="cm-variable">Is</span>(<span class="cm-variable">CustomerResponse</span>.<span class="cm-variable">Descriptor</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">bool</span> <span class="cm-variable">success</span> <span class="cm-operator">=</span> <span class="cm-variable">response</span>.<span class="cm-variable">Results</span>.<span class="cm-variable">TryUnpack</span>(<span class="cm-keyword">out</span> <span class="cm-variable">CustomerResponse</span> <span class="cm-variable">parsed</span>); <span class="cm-comment">// safe unpack</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">response</span>.<span class="cm-variable">Results</span>.<span class="cm-variable">Unpack</span><span class="cm-operator">&lt;</span><span class="cm-variable">CustomerResponse</span><span class="cm-operator">&gt;</span>(); <span class="cm-comment">// unsafe unpack</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <h2 id="configuration-und-logging">
+          <span>Configuration und Logging</span>
+        </h2>
+        <h3 id="serverseitig"><span>Serverseitig</span></h3>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th><span>Option</span></th>
+                <th><span>Default</span></th>
+                <th><span>Beschreibung</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span>MaxSendMessageSize</span></td>
+                <td><span>null</span></td>
+                <td>
+                  <span
+                    >Maximale Message-Grösse beim Senden (Exception falls
+                    grösser).</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>MaxReceiveMessageSize</span></td>
+                <td><span>4 MB</span></td>
+                <td>
+                  <span
+                    >Maximale Message-Grösse beim Empfangen (Exception falls
+                    grösser).</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>EnableDetailedErrors</span></td>
+                <td><span>false</span></td>
+                <td>
+                  <span
+                    >Wenn true werden Details zu Exceptions an den Client
+                    übermittelt. Achtung: Möglicher Security Flaw</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>CompressionProviders</span></td>
+                <td><span>gzip</span></td>
+                <td><span>Kompressions-Algorithmus</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">.<span class="cm-variable">Services</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  .<span class="cm-variable">AddGrpc</span>(<span class="cm-variable">options</span> <span class="cm-operator">=&gt;</span> <span class="cm-comment">// Global</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">options</span>.<span class="cm-variable">MaxSendMessageSize</span> <span class="cm-operator">=</span> <span class="cm-number">5</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span>; <span class="cm-comment">// 5 MB</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">options</span>.<span class="cm-variable">MaxReceiveMessageSize</span> <span class="cm-operator">=</span> <span class="cm-number">2</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span>; <span class="cm-comment">// 2 MB</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">options</span>.<span class="cm-variable">EnableDetailedErrors</span> <span class="cm-operator">=</span> <span class="cm-atom">true</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">options</span>.<span class="cm-variable">CompressionProviders</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">ICompressionProvider</span><span class="cm-operator">&gt;</span> { <span class="cm-keyword">new</span> <span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable">GzipCompressionProvider</span>(<span class="cm-variable">CompressionLevel</span>.<span class="cm-variable">Optimal</span>) };</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">})</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">.<span class="cm-variable">AddServiceOptions</span><span class="cm-operator">&lt;</span><span class="cm-variable">AdvancedService</span><span class="cm-operator">&gt;</span>(<span class="cm-variable">options</span> <span class="cm-operator">=&gt;</span> <span class="cm-comment">// Specific Service</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">options</span>.<span class="cm-variable">MaxSendMessageSize</span> <span class="cm-operator">=</span> <span class="cm-number">1</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span>; <span class="cm-comment">// 1 MB</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">});</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 338px;"></div><div class="CodeMirror-gutters" style="display: none; height: 338px;"></div></div></div></pre>
+        <h3 id="clientseitig"><span>Clientseitig</span></h3>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th><span>Option</span></th>
+                <th><span>Default</span></th>
+                <th><span>Beschreibung</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span>HttpClient</span></td>
+                <td><span>Objekt</span></td>
+                <td>
+                  <span
+                    >HttpClient für gRPC Verbindung. Kann verändert werden z.B.
+                    um weitere HTTP Headers zu schicken.</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>DisposeHttpClient</span></td>
+                <td><span>false</span></td>
+                <td>
+                  <span
+                    >Wenn true und Verwendung eines Custom HttpClient (siehe
+                    oben) wird der Client mit dem gRPC Channel disposed</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>LoggerFactory</span></td>
+                <td><span>null</span></td>
+                <td><span>Logger Factory für gRPC Calls</span></td>
+              </tr>
+              <tr>
+                <td><span>MaxSendMessageSize</span></td>
+                <td><span>null</span></td>
+                <td>
+                  <span
+                    >Maximale Message-Grösse beim Senden (Exception falls
+                    grösser).</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>MaxReceiveMessageSize</span></td>
+                <td><span>4MB</span></td>
+                <td>
+                  <span
+                    >Maximale Message-Grösse beim Empfangen (Exception falls
+                    grösser).</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><span>Credentials</span></td>
+                <td><span>null</span></td>
+                <td>
+                  <span>Credentials für die Authentifizierung am Server</span>
+                </td>
+              </tr>
+              <tr>
+                <td><span>CompressionProviders</span></td>
+                <td><span>gzip</span></td>
+                <td><span>Kompressions-Algorithmus</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">GrpcChannel</span> <span class="cm-variable">channel</span> <span class="cm-operator">=</span> <span class="cm-variable">GrpcChannel</span>.<span class="cm-variable">ForAddress</span>(<span class="cm-string">"https://localhost:5001"</span>,</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-keyword">new</span> <span class="cm-variable">GrpcChannelOptions</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span>{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">MaxSendMessageSize</span> <span class="cm-operator">=</span> <span class="cm-number">2</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span>, <span class="cm-comment">// 2 MB</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">MaxReceiveMessageSize</span> <span class="cm-operator">=</span> <span class="cm-number">5</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span> <span class="cm-operator">*</span> <span class="cm-number">1024</span>, <span class="cm-comment">// 5 MB</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-comment">// ...</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">);</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 208px;"></div><div class="CodeMirror-gutters" style="display: none; height: 208px;"></div></div></div></pre>
+        <h2 id="logging"><span>Logging</span></h2>
+        <p><span>via appsettings.json</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="json"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="json"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre>x</pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-string cm-property">"Logging"</span>: {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-string cm-property">"LogLevel"</span>: {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-string cm-property">"Default"</span>: <span class="cm-string">"Warning"</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-string cm-property">"Microsoft.Hosting.Lifetime"</span>: <span class="cm-string">"Information"</span>,</span></pre><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-string cm-property">"Grpc"</span>: <span class="cm-string">"Debug"</span></span></pre></div><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span>}</span></pre></div><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">},</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-string cm-property">"AllowedHosts"</span>: <span class="cm-string">"*"</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-string cm-property">"Kestrel"</span>: {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-string cm-property">"EndpointDefaults"</span>: {</span></pre><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-string cm-property">"Protocols"</span>: <span class="cm-string">"Http2"</span></span></pre></div><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  }</span></pre></div><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre></div><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 390px;"></div><div class="CodeMirror-gutters" style="display: none; height: 390px;"></div></div></div></pre>
+        <p><span>via Program.cs</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">builder</span>.<span class="cm-variable">Logging</span>.<span class="cm-variable">AddFilter</span>(<span class="cm-string">"Grpc"</span>, <span class="cm-variable">LogLevel</span>.<span class="cm-variable">Debug</span>);</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+      </div>
+    </div>
+  </body>
+</html>

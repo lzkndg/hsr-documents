@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>6-Nullability-Record-Types</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="nullable-record-types"><span>Nullable, Record Types</span></h1>
+        <h2 id="default-operator"><span>Default Operator</span></h2>
+        <p>
+          <code>default(T) / default</code
+          ><span>
+            Liefert einen Default-Wert für jeden angegebenen Typen. Bei
+            Reference Types: </span
+          ><code>null</code><span>, bei Value Types </span><code>0</code
+          ><span>, </span><code>\0</code><span> oder </span><code>false</code
+          ><span>.</span>
+        </p>
+        <h2 id="nullable"><span>Nullable</span></h2>
+        <p>
+          <code>Null</code
+          ><span>
+            = ein Null Pointer, also eine Referenz die (noch) keine Zuweisung
+            hat.
+          </span>
+        </p>
+        <h3 id="value-types"><span>Value Types</span></h3>
+        <p>
+          <span>Ein </span><code>int</code
+          ><span> kann normalerweise nur 0 sein, nicht </span><code>null</code
+          ><span>. Mit dem </span><code>?</code
+          ><span> Operator kann jeder Value Type auch </span><code>null</code
+          ><span
+            >sein. Meist bei Datenverbindungen benötigt, da dort jeder Wert auch
+            &quot;nicht vorhanden&quot; sein kann.</span
+          >
+        </p>
+        <p>
+          <code>System.Nullable&lt;T&gt;.HasValue</code
+          ><span>
+            um auf Null zu prüfen. Einfacher Wrapper, der den Null-Zustand für
+            Value Types abbildet. Zugriff auf die Variable, wenn der Zustand
+            Null ist, wirft eine </span
+          ><code>InvalidOperationException</code><span>.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">struct</span> <span class="cm-def">Nullable</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">where</span> <span class="cm-variable">T</span> : <span class="cm-keyword">struct</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Nullable</span> (<span class="cm-variable">T</span> <span class="cm-keyword">value</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">bool</span> <span class="cm-variable">HasValue</span> { <span class="cm-keyword">get</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">T</span> <span class="cm-variable">Value</span> { <span class="cm-keyword">get</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span><span class="cm-operator">?</span> <span class="cm-variable">x</span> <span class="cm-operator">=</span> <span class="cm-number">123</span>; <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// entspricht einem System.Nullable&lt;int&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">x1</span> <span class="cm-operator">=</span> <span class="cm-variable">x</span>.<span class="cm-variable">HasValue</span> <span class="cm-operator">?</span> <span class="cm-variable">x</span>.<span class="cm-variable">Value</span> : <span class="cm-keyword">default</span>; <span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-comment">// Umwandlung zurück zum Int in 3 Varianten</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">x2</span> <span class="cm-operator">=</span> <span class="cm-variable">x</span>.<span class="cm-variable">GetValueOrDefault</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">x3</span> <span class="cm-operator">=</span> <span class="cm-variable">x</span>.<span class="cm-variable">GetValueOrDefault</span>(<span class="cm-operator">-</span><span class="cm-number">1</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">i</span> <span class="cm-operator">=</span> <span class="cm-number">123</span> ; <span class="cm-variable-3">int</span><span class="cm-operator">?</span> <span class="cm-variable">x</span> <span class="cm-operator">=</span> <span class="cm-variable">i</span>; <span class="cm-variable-3">int</span> <span class="cm-variable">j</span> <span class="cm-operator">=</span> (<span class="cm-variable-3">int</span>)<span class="cm-variable">x</span>;<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-comment">// Mögliche InvalidOperationException.</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 290px;"></div><div class="CodeMirror-gutters" style="display: none; height: 290px;"></div></div></div></pre>
+        <h3 id="reference-types"><span>Reference Types</span></h3>
+        <p>
+          <span>Nullable Reference Type: </span><span> </span
+          ><span>Muss enabled oder disabled werden. Geschieht im </span
+          ><code>.csproj</code><span> File oder im Code mit </span
+          ><code>#nullable enable</code><span> oder </span
+          ><code>#nullable disable</code><span>, bzw. </span
+          ><code>#nullable restore</code><span> für Projekt-Default.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="xml"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">PropertyGroup</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">…</span><span class="cm-tag cm-bracket">/&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">Nullable</span><span class="cm-tag cm-bracket">&gt;</span>[disable|enable]<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">Nullable</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">…</span><span class="cm-tag cm-bracket">/&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">PropertyGroup</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 130px;"></div><div class="CodeMirror-gutters" style="display: none; height: 130px;"></div></div></div></pre>
+        <p>
+          <strong><span>Wenn Nullable disabled</span></strong
+          ><span>: Jeder Reference Type kann jederzeit auch </span
+          ><code>null</code><span> sein.</span>
+          <strong><span>Wenn Nullable enabled</span></strong
+          ><span>: Wenn ein Reference Type </span><code>null</code
+          ><span> sein kann, muss er mit dem </span><code>?</code
+          ><span> Operator versehen werden.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span><span class="cm-operator">?</span> <span class="cm-variable">x</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span> <span class="cm-variable">y</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>; <span class="cm-comment">// Compiler-Fehler.</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 52px;"></div><div class="CodeMirror-gutters" style="display: none; height: 52px;"></div></div></div></pre>
+        <h3 id="null-checks"><span>Null-Checks</span></h3>
+        <p>
+          <span> </span><code>x is null</code><span> / </span
+          ><code>is not null</code
+          ><span>
+            prüft in jedem Fall auf eine Null-Referenz. Bei Value Types wird </span
+          ><code>HasValue</code><span> geprüft, bei Reference Types gilt </span
+          ><code>object.ReferenceEquals(x, null);</code>
+        </p>
+        <p>
+          <code>x == null</code
+          ><span>
+            wahrscheinlich auch, der == Operator könnte aber überschrieben
+            worden sein.</span
+          >
+        </p>
+        <h3 id="weitere-operatoren"><span>Weitere Operatoren</span></h3>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span><span class="cm-operator">?</span> <span class="cm-variable">x</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>; </span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">i</span> <span class="cm-operator">=</span> <span class="cm-variable">x</span> <span class="cm-operator">??</span> <span class="cm-operator">-</span><span class="cm-number">1</span>;<span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// null-coalescing operator: entweder Wert von x oder -1 wenn null</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span><span class="cm-operator">?</span> <span class="cm-variable">x</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">i</span> <span class="cm-operator">??=</span> <span class="cm-operator">-</span><span class="cm-number">1</span>;<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// null-coalescing assignment-operator: wenn i = null dann -1 zuweisen</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Action</span> <span class="cm-variable">a</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">a</span><span class="cm-operator">?</span>.<span class="cm-variable">Invoke</span>();<span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// null-conditional operator: rechten Teil ausführen, wenn nicht null</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span><span class="cm-operator">?</span> <span class="cm-variable">x</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">y</span> <span class="cm-operator">=</span> <span class="cm-variable">x</span><span class="cm-operator">!</span><span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// null-forgiving operator: übersteuert den Compiler (wenn du denkst, du weisst es besser)</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 291px;"></div><div class="CodeMirror-gutters" style="display: none; height: 291px;"></div></div></div></pre>
+        <h2 id="record-types"><span>Record Types</span></h2>
+        <p>
+          <span
+            >Reines Compiler-Feature zur Darstellung von Klassen, die Daten
+            repräsentieren. Ziele:</span
+          >
+        </p>
+        <ul>
+          <li><span>Reduziert den Boilerplate Code</span></li>
+          <li>
+            <span>Vereinfacht die Arbeit mit Nullable Reference Types</span>
+          </li>
+          <li><span>Record Types sollen immutable sein</span></li>
+        </ul>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Beispiel Positional Syntax, kompakteste Schreibweise. Definition von Werten in Klammern nach Header</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable">record</span> [<span class="cm-keyword">class</span><span class="cm-operator">|</span><span class="cm-keyword">struct</span>] <span class="cm-def">Person</span>(</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">int</span> <span class="cm-variable">id</span>, </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">string</span> <span class="cm-variable">name</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Beispiel "normale" Syntax, mehr manuelle Implementation. Automatisch: ToString und Equality wird generiert</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable">record</span> <span class="cm-variable">Person</span> </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Person</span>() : <span class="cm-keyword">this</span>(<span class="cm-number">0</span>, <span class="cm-string">""</span>) { }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Person</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">id</span>, <span class="cm-variable-3">string</span> <span class="cm-variable">name</span>) { <span class="cm-variable">Id</span> <span class="cm-operator">=</span> <span class="cm-variable">id</span>; <span class="cm-variable">Name</span> <span class="cm-operator">=</span> <span class="cm-variable">name</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">int</span> <span class="cm-variable">Id</span> { <span class="cm-keyword">get</span>; <span class="cm-variable">init</span>; }<span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Init Only Properties</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">string</span> <span class="cm-variable">Name</span> { <span class="cm-keyword">get</span>; <span class="cm-variable">init</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Mischung von beiden Varianten ist möglich. </span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 391px;"></div><div class="CodeMirror-gutters" style="display: none; height: 391px;"></div></div></div></pre>
+        <p><span>Der Compiler generiert dazu bestimmte Members:</span></p>
+        <ul>
+          <li><span>Konstruktor</span></li>
+          <li><span>Properties (init-only)</span></li>
+          <li><span>Value equality</span></li>
+          <li><span>Darstellung mit ToString</span></li>
+          <li><span>Vererbung (z.B. Equality) wird berücksichtigt</span></li>
+        </ul>
+        <h3 id="weitere-features"><span>Weitere Features</span></h3>
+        <p>
+          <span
+            >Vererbung: Basisklasse entweder System.Object oder auch ein
+            Record.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">abstract</span> <span class="cm-variable">record</span> <span class="cm-def">Person</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">Id</span>);</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable">record</span> <span class="cm-def">SpecialPerson</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">Id</span>, <span class="cm-variable-3">string</span> <span class="cm-variable">Name</span>) : <span class="cm-variable">Person</span>(<span class="cm-variable">Id</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Legt das Id Property in der SpecialPerson Klasse nicht neu an.</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 78px;"></div><div class="CodeMirror-gutters" style="display: none; height: 78px;"></div></div></div></pre>
+        <p>
+          <span>Value Equality: Vergleich mit </span><code>==</code
+          ><span> oder </span><code>.Equals()</code
+          ><span>
+            vergleicht jedes einzelne Property, involviert auch Properties
+            allfälliger Basisklassen. Nur </span
+          ><code>ReferenceEquals()</code
+          ><span> vergleicht wirklich die Memory Adresse.</span>
+        </p>
+        <p>
+          <span
+            >Nondestructive Mutation: Vereinfacht das Erzeugen leicht
+            modifizierter Kopien.
+          </span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Person</span> <span class="cm-variable">p1</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>(<span class="cm-number">0</span>, <span class="cm-string">"Ava"</span>);</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Person</span> <span class="cm-variable">p2</span> <span class="cm-operator">=</span> <span class="cm-variable">p1</span> <span class="cm-variable">with</span> { <span class="cm-variable">Id</span> <span class="cm-operator">=</span> <span class="cm-number">1</span> }; <span class="cm-comment">// Gleicher Name, andere Id</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 52px;"></div><div class="CodeMirror-gutters" style="display: none; height: 52px;"></div></div></div></pre>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>6-Generics</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="generics"><span>Generics</span></h1>
+        <h2 id="grundlagen"><span>Grundlagen</span></h2>
+        <p>
+          <span
+            >Typsichere Datenstrukturen ohne Festlegung auf einen fixen Typen.
+            Anstelle dessen wird </span
+          ><code>&lt;T&gt;</code
+          ><span>
+            verwendet. Bei der Verwendung wird T jeweils als spezifischer Typ
+            deklariert. Hat gegenüber der Verwendung von </span
+          ><code>object</code
+          ><span>
+            den Vorteil der Typsicherheit. Weiter hohe Wiederverwendbarkeit und
+            Performance.</span
+          >
+        </p>
+        <p>
+          <span
+            >Hauptanwendungsfall: Collections. Ohne Generics müsste eine
+            Variante pro Collection für jeden einzelnen Typ implementiert
+            werden. Oder bei Verwendung von Object wären ständig
+            Boxing/Typumwandlungen nötig.</span
+          >
+        </p>
+        <p>
+          <span>Generisch sein kann </span
+          ><em><span>Klasse / Struct / Interface / Delegate / Event</span></em
+          ><span
+            >. Sowie einzelne Methoden, auch wenn die Klasse nicht generisch
+            ist.</span
+          >
+        </p>
+        <p><span>Deklaration von T immer nach dem Namen des Elements.</span></p>
+        <p>
+          <span
+            >Standard-Namensgebung bei einem generischen Parameter:
+            &quot;T&quot;, bei mehreren: &quot;T1&quot;, &quot;T2&quot; etc.
+            oder &quot;TElement&quot;, &quot;TKey&quot; etc.</span
+          >
+        </p>
+        <p>
+          <img src=".\res\csharp-generics-laufzeiteffizienz.png" />
+        </p>
+        <h2 id="type-constraints"><span>Type Constraints</span></h2>
+        <p>
+          <span
+            >Verschiedene Varianten von Constraints sind auf generischen Typen
+            möglich. Angabe jeweils direkt nach bzw. auf der nächsten Zeile nach
+            der Definition. Compiler prüft den Constraint. Kombinationen von
+            verschiedenen Constraints kommagetrennt, pro T-Parameter eine
+            where-Klausel mit Leerzeichen getrennt.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">OrderedBuffer</span><span class="cm-operator">&lt;</span><span class="cm-variable">TElement</span>, <span class="cm-variable">TPriority</span><span class="cm-operator">&gt;</span> </span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">where</span> <span class="cm-variable">TPriority</span> : <span class="cm-variable">IComparable</span>, <span class="cm-variable">SomeConstraint</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">where</span> <span class="cm-variable">TElement</span> : <span class="cm-variable">SomeConstraint</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ ... }</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 104px;"></div><div class="CodeMirror-gutters" style="display: none; height: 104px;"></div></div></div></pre>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th><span>Constraint</span></th>
+                <th><span>Bedeutet</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>where T : struct</code></td>
+                <td>
+                  <span
+                    >T muss ein Value Type sein, heisst liegt auf dem Stack oder
+                    inline im anderen Objekt.</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><code>where T : class</code></td>
+                <td>
+                  <span
+                    >T muss ein Reference Type sein, also Klassen oder auch
+                    Interfaces, Delegates. Liegt auf dem Heap.</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><code>where T : new()</code></td>
+                <td>
+                  <span
+                    >T muss einen parameterlosen &quot;public&quot; Konstruktor
+                    haben, kann also instanziert werden. </span
+                  ><em
+                    ><span
+                      >Muss immer zuletzt angeführt werden, wenn mit anderen
+                      Constraints kombiniert.</span
+                    ></em
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><code>where T : &quot;ClassName&quot;</code></td>
+                <td>
+                  <span
+                    >T muss von der angegebenen Klasse ableiten, bietet also
+                    alle Members.</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><code>where T : &quot;InterfaceName&quot;</code></td>
+                <td><span>T muss das Interface implementieren</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <em><code>where T : TOther</code></em>
+                </td>
+                <td>
+                  <em
+                    ><span
+                      >T muss identisch sein wie oder ableiten von TOther -&gt;
+                      bei Extension Methods verwendet</span
+                    ></em
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><code>where T : class?</code></td>
+                <td>
+                  <span
+                    >T muss ein Nullable Reference Type sein. (Klassen,
+                    Interfaces, Delegates)</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td><code>where T : not null</code></td>
+                <td>
+                  <span
+                    >T muss ein Non-Nullable Value Type oder Reference Type
+                    sein</span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <p>
+          <span
+            >Motivation: möglichst wenige Einschränkung, nur genug um die
+            gewünschte Logik zu implementieren.</span
+          >
+        </p>
+        <h2 id="vererbung"><span>Vererbung</span></h2>
+        <p><span>Verschiedene Varianten möglich:</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11.6667px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> : <span class="cm-variable">List</span> { }<span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Erben von normalen Klassen</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> : <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> { }<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-comment">// Weitergabe des Typparameters an generische Basisklasse</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyIntList</span> : <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> { }<span class="cm-tab" role="presentation" cm-text="	"> </span><span class="cm-comment">// Konkretisierte generische Basisklasse</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyIntKeyDict</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> : <span class="cm-variable">Dictionary</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span>, <span class="cm-variable">T</span><span class="cm-operator">&gt;</span> { }<span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-comment">// Mischform</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Achtung: Typparameter werden nicht vererbt</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyList</span> : <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> { } <span class="cm-comment">// Compilerfehler!</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 161px;"></div><div class="CodeMirror-gutters" style="display: none; height: 161px;"></div></div></div></pre>
+        <h3 id="zuweisungen"><span>Zuweisungen</span></h3>
+        <p>
+          <span
+            >Zuweisung einer Instanz eines generischen Typen an nicht-generische
+            Basistypen ist immer möglich. Wenn die Basisklasse schon generisch
+            ist, müsseen Typparameter auf jeden Fall kompatibel sein.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> { }</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyList2</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> : <span class="cm-variable">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> { }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">myDict</span><span class="cm-operator">&lt;</span><span class="cm-variable">TKey</span>, <span class="cm-variable">TValue</span><span class="cm-operator">&gt;</span> : <span class="cm-variable">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable">TKey</span><span class="cm-operator">&gt;</span> { }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">Examples</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">void</span> <span class="cm-variable">Test</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> <span class="cm-variable">l1</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">MyList2</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> <span class="cm-variable">l2</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">MyDict</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span>, <span class="cm-variable-3">float</span><span class="cm-operator">&gt;</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-comment">// Compilerfehler</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> <span class="cm-variable">l3</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">float</span><span class="cm-operator">&gt;</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">object</span><span class="cm-operator">&gt;</span> <span class="cm-variable">l4</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">MyList</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">float</span><span class="cm-operator">&gt;</span>(); <span class="cm-comment">// wg. Co-/Contravarianz, einfügen von Objects </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 364px;"></div><div class="CodeMirror-gutters" style="display: none; height: 364px;"></div></div></div></pre>
+        <h3 id="methoden-überschreiben"><span>Methoden überschreiben</span></h3>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">Buffer</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> { <span class="cm-keyword">public</span> <span class="cm-keyword">virtual</span> <span class="cm-keyword">void</span> <span class="cm-variable">Put</span>(<span class="cm-variable">T</span> <span class="cm-variable">x</span>) } <span class="cm-comment">// Basis</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Konkretisierte Basisklasse</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyIntBuffer</span> : <span class="cm-variable">Buffer</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ <span class="cm-keyword">public</span> <span class="cm-variable">overrride</span> <span class="cm-keyword">void</span> <span class="cm-variable">Put</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">x</span>) { ... } }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Generische Vererbung</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">MyBuffer</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> : <span class="cm-variable">Buffer</span> <span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ <span class="cm-keyword">public</span> <span class="cm-keyword">override</span> <span class="cm-keyword">void</span> <span class="cm-variable">Put</span>(<span class="cm-variable">T</span> <span class="cm-variable">x</span>) { ... } }</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <h3 id="typprüfungen-und-type-casts">
+          <span>Typprüfungen und Type Casts</span>
+        </h3>
+        <p>
+          <span
+            >Können beide wie mit normalen Typen durchgeführt werden. Prüfung
+            identisch wie für normale Typen mit </span
+          ><code>is</code><span>-Operator, Cast mit Klammer oder </span
+          ><code>as</code
+          ><span
+            >-Operator. Reflection unterstützt abfrage von konkretisierten und
+            nicht konkretisierten Typparametern:</span
+          >
+          <code>Type t = typeof(Buffer&lt;int&gt;)</code><span>.</span>
+        </p>
+        <h3 id="generic-type-inference"><span>Generic Type Inference</span></h3>
+        <p>
+          <span
+            >Bei Methoden kann der Typparameter weggelassen werden, wenn T ein
+            formaler Parameter ist. Damit wird der Typ vom Compiler ermittelt.
+            Rückgabewert zählt nicht.</span
+          >
+          <span>Methode </span><code>public void Print&lt;T&gt;(T t) { }</code
+          ><span> kann direkt aufgerufen werden als </span><code>Print(12)</code
+          ><span>. </span> <span>Methode </span
+          ><code>public T Get&lt;T&gt;() { }</code
+          ><span> muss immer der Typ mitgegeben werden mit </span
+          ><code>Get&lt;int&gt;()</code><span>.</span>
+        </p>
+        <h3 id="konkretisierung-auf-clr-ebene">
+          <span>Konkretisierung auf CLR Ebene</span>
+        </h3>
+        <p>
+          <span
+            >Bei Value Types wird für jeden neuen Typen eine eigene Klasse mit
+            konkreter Implementierung erstellt -&gt; Performance. Für Reference
+            Types wird einmal eine Klasse mit Typ </span
+          ><code>&lt;object&gt;</code
+          ><span> erzeugt und für jeden anderen Typen wiederverwendet.</span>
+        </p>
+        <h2 id="generische-delegates"><span>Generische Delegates</span></h2>
+        <p><span>Auch Delegates unterstützen generische Typen. </span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">delegate</span> <span class="cm-keyword">void</span> <span class="cm-variable-3">Action</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> (<span class="cm-variable">T</span> <span class="cm-variable">i</span>);</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">MyClass</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-keyword">void</span> <span class="cm-variable">PrintValues</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span>(<span class="cm-variable">T</span> <span class="cm-variable">i</span>) { <span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-string">"Value {0}"</span>, <span class="cm-variable">i</span>); }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">FunctionParameterTest</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">static</span> <span class="cm-keyword">void</span> <span class="cm-variable">ForAll</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span>(<span class="cm-variable">T</span>[] <span class="cm-variable">array</span>, <span class="cm-variable-3">Action</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">a</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-string">"ForAll called..."</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">if</span> (<span class="cm-variable">a</span> <span class="cm-operator">==</span> <span class="cm-atom">null</span>) { <span class="cm-keyword">return</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">foreach</span> (<span class="cm-variable">T</span> <span class="cm-variable">t</span> <span class="cm-keyword">in</span> <span class="cm-variable">array</span>) { <span class="cm-variable">a</span>(<span class="cm-variable">t</span>); }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 364px;"></div><div class="CodeMirror-gutters" style="display: none; height: 364px;"></div></div></div></pre>
+        <p>
+          <span
+            >In .NET vorimplementierte Delegates (in/out =&gt;
+            Ko-/Kontravarianz)</span
+          >
+        </p>
+        <ul>
+          <li>
+            <code
+              >public delegate void Action&lt;in T1, in T2&gt;(T obj1[, T
+              obj2])</code
+            >
+          </li>
+          <li>
+            <code
+              >public delegate TResult Func&lt;in T1, in T2, out TResult&gt;(T1
+              arg1, T2 arg2)</code
+            >
+          </li>
+          <li>
+            <code
+              >public delegate bool Predicate&lt;in T1, in T2&gt;(T1 obj1, T2
+              obj2)</code
+            ><span>
+              (spezialfall vom Func Delegate. Rückgabetyp fixiert auf
+              Boolean)</span
+            >
+          </li>
+        </ul>
+        <p><span>Event Handler Delegate: </span></p>
+        <p>
+          <code
+            >public delegate void EventHandler&lt;TEventArgs&gt;(object sender,
+            TEventArgs e)</code
+          >
+        </p>
+        <h2 id="generische-collections"><span>Generische Collections</span></h2>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <span>Namespace </span><code>System.Collections.Generic</code>
+                </th>
+                <th><span>Namespace </span><code>System.Collections</code></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>List&lt;T&gt; / IList&lt;T&gt;</code></td>
+                <td><span>ArrayLIist / IList</span></td>
+              </tr>
+              <tr>
+                <td><code>SortedList&lt;TKey, TValue&gt;</code></td>
+                <td><span>SortedList</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Dictionary / IDictionary&lt;TKey, TValue&gt;</code>
+                </td>
+                <td><span>Hashtable / IDictionary</span></td>
+              </tr>
+              <tr>
+                <td><code>SortedDictionary&lt;TKey, TValue&gt;</code></td>
+                <td><span>SortedList</span></td>
+              </tr>
+              <tr>
+                <td><code>LinkedList&lt;T&gt;</code></td>
+                <td><span>-</span></td>
+              </tr>
+              <tr>
+                <td><code>Stack&lt;T&gt;</code></td>
+                <td><span>Stack</span></td>
+              </tr>
+              <tr>
+                <td><code>Queue&lt;T&gt;</code></td>
+                <td><span>Queue</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <code>IEnumerable&lt;T&gt; / IEnumerator&lt;T&gt;</code>
+                </td>
+                <td><span>IEnumerable / IEnumerator</span></td>
+              </tr>
+              <tr>
+                <td><code>ICollection&lt;T&gt;</code></td>
+                <td><span>ICollection</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <p>
+          <span> </span><img src=".\res\csharp-collections-interfaces.png" />
+        </p>
+        <h2 id="ko--und-kontravarianz"><span>Ko- und Kontravarianz</span></h2>
+        <p><span>Nicht prüfungsrelevant.</span></p>
+      </div>
+    </div>
+  </body>
+</html>

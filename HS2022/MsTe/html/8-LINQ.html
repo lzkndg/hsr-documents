@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>8-LINQ</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="linq"><span>LINQ</span></h1>
+        <p>
+          <span
+            >Language INtegradted Query. Erlaubt es, auf beliebigen Datenquellen
+            (Objekte, XML, Datenbanken etc.) SQL-ähnliche Abfragen zu
+            schreiben.</span
+          >
+        </p>
+        <ul>
+          <li><span>Compiler-Geprüft</span></li>
+          <li><span>Typsicher</span></li>
+          <li><span>Führt die Lambda-Expression ein</span></li>
+          <li>
+            <span
+              >erlaubt deklarativen Programmierstil mit &quot;Anonymous
+              Types&quot; und &quot;Object Initializers&quot;</span
+            >
+          </li>
+          <li>
+            <span
+              >redundante Typinformationen können im Code weggelassen
+              werden</span
+            >
+          </li>
+        </ul>
+        <p>
+          <span>Namespaces: </span><code>System.Xml.Linq</code><span>, </span
+          ><code>System.Data.Linq</code><span>, etc.</span>
+        </p>
+        <h2 id="architektur"><span>Architektur</span></h2>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span> <span class="cm-variable">cities</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>() { <span class="cm-string">"Rapperswil"</span>, <span class="cm-string">"Luzern"</span>, <span class="cm-string">"Buchs"</span>, <span class="cm-string">"Lausanne"</span> };</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">IEnumerator</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span> <span class="cm-variable">enumerator</span> <span class="cm-operator">=</span> <span class="cm-variable">cities</span>.<span class="cm-variable">GetEnumerator</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span> <span class="cm-variable">elem</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">while</span> (<span class="cm-variable">enumerator</span>.<span class="cm-variable">MoveNext</span>())</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">elem</span> <span class="cm-operator">=</span> <span class="cm-variable">enumerator</span>.<span class="cm-variable">Current</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-variable">elem</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 234px;"></div><div class="CodeMirror-gutters" style="display: none; height: 234px;"></div></div></div></pre>
+        <p>
+          <span
+            >LINQ Providers: LINQ To Objects, to Entities (SQL Server), </span
+          ><em><span>to SQL (veraltet)</span></em
+          ><span>, to XML, to anything..</span>
+        </p>
+        <p><span>Array in Query wiedergegeben: SELECT * FROM table;</span></p>
+        <p>
+          <span>Query benötigt zum speichern ein Objekt mit Interface </span
+          ><code>IEnumerable&lt;T&gt;</code
+          ><span
+            >, um über eine Collection iterieren zu können. LINQ Syntax wird vom
+            Compiler auf Variante Extension Methods umgewandelt.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span>[] <span class="cm-variable">cities</span> <span class="cm-operator">=</span> { <span class="cm-string">"Bern"</span>, <span class="cm-string">"Basel"</span>, <span class="cm-string">"Luzern"</span>, <span class="cm-string">"Rapperswil"</span>, <span class="cm-string">"Buchs"</span>};</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// LINQ Query Expression: Reine Selektion auf ganzes Objekt</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">IEnumerable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span> <span class="cm-variable">q1</span> <span class="cm-operator">=</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">from</span> <span class="cm-variable">c</span> <span class="cm-keyword">in</span> <span class="cm-variable">cities</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-variable">c</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Extension Method Variante</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">IEnumerable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span> <span class="cm-variable">l1</span> <span class="cm-operator">=</span> <span class="cm-variable">cities</span>.<span class="cm-variable">Select</span>(<span class="cm-variable">c</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">c</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// LINQ Query Expression</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">IEnumerable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span> <span class="cm-variable">q2</span> <span class="cm-operator">=</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">from</span> <span class="cm-variable">c</span> <span class="cm-keyword">in</span> <span class="cm-variable">cities</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">where</span> <span class="cm-variable">c</span>.<span class="cm-variable">StartsWith</span>(<span class="cm-string">"B"</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">orderby</span> <span class="cm-variable">c</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-variable">c</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Extension Method Variante</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">IEnumerable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span> <span class="cm-variable">l2</span> <span class="cm-operator">=</span> <span class="cm-variable">cities</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  .<span class="cm-variable">Where</span>(<span class="cm-variable">c</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">c</span>.<span class="cm-variable">StartsWith</span>(<span class="cm-string">"B"</span>))</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  .<span class="cm-variable">OrderBy</span>(<span class="cm-variable">c</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">c</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  .<span class="cm-variable">Select</span>()</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 572px;"></div><div class="CodeMirror-gutters" style="display: none; height: 572px;"></div></div></div></pre>
+        <h2 id="extension-methods"><span>Extension Methods</span></h2>
+        <p>
+          <span
+            >Gesamter Funktionsumfang von LINQ ist beinhaltet in Klasse </span
+          ><code>System.Linq.Enumerable</code
+          ><span
+            >. Extension Methods erlauben Ausführung auf einem bestehenden
+            Objekt. Erster Parameter der Definition mit </span
+          ><code>this</code><span> Keyword beschreibt dieses Objekt.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">namespace</span> <span class="cm-def">System</span>.<span class="cm-variable">Linq</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-keyword">class</span> <span class="cm-def">Enumerable</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable">IEnumerable</span><span class="cm-operator">&lt;</span><span class="cm-variable">TSource</span><span class="cm-operator">&gt;</span> <span class="cm-variable">Skip</span><span class="cm-operator">&lt;</span><span class="cm-variable">TSource</span><span class="cm-operator">&gt;</span>(</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">this</span> <span class="cm-variable">IEnumerable</span><span class="cm-operator">&lt;</span><span class="cm-variable">TSource</span><span class="cm-operator">&gt;</span> <span class="cm-variable">source</span>, <span class="cm-variable-3">Func</span><span class="cm-operator">&lt;</span><span class="cm-variable">TSource</span>, <span class="cm-variable-3">bool</span><span class="cm-operator">&gt;</span> <span class="cm-variable">predicate</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  { ... }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Beispiel Verwendung </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span>[] <span class="cm-variable">numbers</span> <span class="cm-operator">=</span> { <span class="cm-number">1</span>, <span class="cm-number">4</span>, <span class="cm-number">2</span>, <span class="cm-number">9</span>, <span class="cm-number">13</span>, <span class="cm-number">8</span>, <span class="cm-number">9</span>, <span class="cm-number">0</span>, <span class="cm-operator">-</span><span class="cm-number">6</span>, <span class="cm-number">12</span> };</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">IEnumerable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> <span class="cm-variable">res</span> <span class="cm-operator">=</span> <span class="cm-variable">numbers</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  .<span class="cm-variable">Skip</span>(<span class="cm-number">2</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  .<span class="cm-variable">Take</span>(<span class="cm-number">4</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  .<span class="cm-variable">Select</span>(<span class="cm-variable">k</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">k</span> <span class="cm-operator">*</span> <span class="cm-variable">k</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// res = { 4, 81, 256, 64 }</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 442px;"></div><div class="CodeMirror-gutters" style="display: none; height: 442px;"></div></div></div></pre>
+        <h3 id="deferred-evaluation"><span>Deferred Evaluation</span></h3>
+        <p>
+          <span
+            >Query wird erst ausgeführt, wenn auch wirklich eine Abfrage auf dem
+            Enumerator ausgeführt wird mit </span
+          ><code>MoveNext()</code><span>, dies wird mittels </span
+          ><code>yield return</code><span> implementiert. Klappt nur mit </span
+          ><code>IEnumerable</code
+          ><span>
+            Typen, andernfalls wird Immediate Evaluation gemacht (Rückgabetyp
+            Liste o.ä).</span
+          >
+        </p>
+        <h3 id="immediate-evaluation"><span>Immediate Evaluation</span></h3>
+        <p>
+          <span>Immer dann, wenn der Rückgabetyp kein </span
+          ><code>IEnumerable</code
+          ><span>
+            ist oder eine Aggregierung über alle Elemente gemacht wird.
+          </span>
+        </p>
+        <p>
+          <span>Beispiele: </span><code>.ToList()</code><span>, </span
+          ><code>.ToArray()</code><span>, </span><code>.Count()</code
+          ><span>, </span><code>.First()</code><span>, </span><code>.Sum()</code
+          ><span>, </span><code>.Average()</code>
+        </p>
+        <h2 id="object-initializers"><span>Object Initializers</span></h2>
+        <p>
+          <span
+            >Erlaubt das Instanzieren und Initialisieren einer Klasse in einem
+            einzigen Statement, auch ohne passenden Konstruktor. Reine
+            Compilertechnologie, wird aufgeschlüsselt in einzelne
+            Zuweisungsstatements.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">new</span> <span class="cm-variable">Test</span> { <span class="cm-variable">member</span> <span class="cm-operator">=</span> <span class="cm-keyword">value</span>, ... }; <span class="cm-comment">// Default Konstruktor</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">new</span> <span class="cm-variable">Test</span>(<span class="cm-keyword">value</span>) { <span class="cm-variable">member</span> <span class="cm-operator">=</span> <span class="cm-keyword">value</span>, ... }; <span class="cm-comment">// Konstruktor mit Argumenten</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Beispiel innerhalb LINQ</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">Student</span> { ... }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">void</span> <span class="cm-variable">Test</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">int</span>[] <span class="cm-variable">ids</span> <span class="cm-operator">=</span> { <span class="cm-number">2009001</span>, <span class="cm-number">2009002</span>, <span class="cm-number">2009003</span> };</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">IEnumerable</span><span class="cm-operator">&lt;</span><span class="cm-variable">Student</span><span class="cm-operator">&gt;</span> <span class="cm-variable">students</span> <span class="cm-operator">=</span> <span class="cm-variable">ids</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp;  .<span class="cm-variable">Select</span>(<span class="cm-variable">n</span> <span class="cm-operator">=&gt;</span> <span class="cm-keyword">new</span> <span class="cm-variable">Student</span> { <span class="cm-variable">Id</span> <span class="cm-operator">=</span> <span class="cm-variable">n</span> });</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 312px;"></div><div class="CodeMirror-gutters" style="display: none; height: 312px;"></div></div></div></pre>
+        <h2 id="collection-initializers">
+          <span>Collection Initializers</span>
+        </h2>
+        <p><span>Dasselbe gilt für Collections: </span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Listen</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> <span class="cm-variable">list1</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>() { <span class="cm-number">1</span>, <span class="cm-number">2</span>, <span class="cm-number">3</span>, <span class="cm-number">4</span> };</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Dictionaries, Hashmap, Hashset</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Dictionary</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span>, <span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span> <span class="cm-variable">dict1</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> ()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {<span class="cm-number">1</span>, <span class="cm-string">"a"</span>},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {<span class="cm-number">2</span>, <span class="cm-string">"b"</span>},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {<span class="cm-number">3</span>, <span class="cm-string">"c"</span>}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">};</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// oder</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">dict1</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  [<span class="cm-number">1</span>] <span class="cm-operator">=</span> <span class="cm-string">"a"</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  [<span class="cm-number">2</span>] <span class="cm-operator">=</span> <span class="cm-string">"b"</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  [<span class="cm-number">3</span>] <span class="cm-operator">=</span> <span class="cm-string">"c"</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 442px;"></div><div class="CodeMirror-gutters" style="display: none; height: 442px;"></div></div></div></pre>
+        <p>
+          <img
+            src=".\res\csharp-collection-initializers-dictionary.png"
+            referrerpolicy="no-referrer"
+            alt="Collection Initializers"
+          />
+        </p>
+        <p>
+          <span
+            >Können in Kombination verwendet werden, um komplexe
+            Objektstrukturen aufzubauen.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Macht zwar keinen Sinn, aber hey :)</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Dictionary</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span>, <span class="cm-variable">Student</span><span class="cm-operator">&gt;</span> <span class="cm-variable">s</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  { <span class="cm-number">2009001</span>, <span class="cm-keyword">new</span>(<span class="cm-string">"John"</span>) {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">Id</span> <span class="cm-operator">=</span> <span class="cm-number">2009001</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">Subject</span> <span class="cm-operator">=</span> <span class="cm-string">"Computing"</span> } },</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  { <span class="cm-number">2009002</span>, <span class="cm-keyword">new</span>() {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">name</span> <span class="cm-operator">=</span> <span class="cm-string">"Ann"</span>, <span class="cm-variable">Id</span> <span class="cm-operator">=</span> <span class="cm-number">2009002</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">Subject</span> <span class="cm-operator">=</span> <span class="cm-string">"Mathematics"</span> } }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">};</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 260px;"></div><div class="CodeMirror-gutters" style="display: none; height: 260px;"></div></div></div></pre>
+        <h2 id="keyword-var"><span>Keyword &quot;var&quot;</span></h2>
+        <p>
+          <span
+            >Definiert einen Typ, dessen Namen man nicht kennt. Kommt
+            ausschliesslich in Kombination mit </span
+          ><code>var</code
+          ><span>
+            zum Einsatz. Compiler ermittelt, was für ein Typ zugewiesen wird
+            (Type Inference).</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Vereinfachung der Lesbarkeit</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Dictionary</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span>, <span class="cm-variable">IComparable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">object</span><span class="cm-operator">&gt;&gt;</span> <span class="cm-variable">dict1</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Dictionary</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span>, <span class="cm-variable">IComparable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">object</span><span class="cm-operator">&gt;&gt;</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">dict1</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Dictionary</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span>, <span class="cm-variable">IComparable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">object</span><span class="cm-operator">&gt;&gt;</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Erlaubt anonyme Typen</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">a</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> {<span class="cm-variable">Id</span> <span class="cm-operator">=</span> <span class="cm-number">1</span>, <span class="cm-variable">Name</span> <span class="cm-operator">=</span> <span class="cm-string">"John"</span>};</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 156px;"></div><div class="CodeMirror-gutters" style="display: none; height: 156px;"></div></div></div></pre>
+        <h2 id="anonymous-types"><span>Anonymous Types</span></h2>
+        <p>
+          <span
+            >Erzeugung eines strukturierten Wertes, ohne dass der Typ explizit
+            selber angegeben werden muss. Meist für Projektion in LINQ Queries
+            verwendet. Ziel: Zwischenresultate, die nur für eine einzelne
+            Abfrage gelten, müssen mit möglichst wenig Aufwand
+            zwischengespeichert werden.</span
+          >
+        </p>
+        <p><span>Syntax: </span></p>
+        <p>
+          <code
+            >new { &quot;p1&quot; = &quot;v1&quot;, &quot;p2&quot; =
+            &quot;v2&quot;, ... }</code
+          ><span>: der Propertyname </span><code>p1</code><span> - </span
+          ><code>pn</code><span> ist frei wählbar. </span>
+        </p>
+        <ul>
+          <li><span>Alle Properties sind readonly</span></li>
+          <li>
+            <span
+              >Implizite und explizite Angabe der Property Namen können gemischt
+              werden</span
+            >
+          </li>
+          <li>
+            <span
+              >Leitet von System.Object ab, Compiler generiert Methoden </span
+            ><code>equals()</code><span>, </span><code>GetHashCode()</code
+            ><span> und </span><code>ToString()</code>
+          </li>
+          <li>
+            <span>Kann nur einer Variable vom Typ </span><code>var</code
+            ><span> zugewiesen werden. </span>
+          </li>
+          <li>
+            <span
+              >Name des Typen wird vom Compiler so generiert, dass eine
+              Kollision mit User-Vergebenen Names unmöglich ist (beginnend mit </span
+            ><code>&lt;&gt;</code><span>).</span>
+          </li>
+        </ul>
+        <h2 id="query-expressions"><span>Query Expressions</span></h2>
+        <p>
+          <span
+            >LINQ Query Expressions werden in drei Schritten ausgeführt.
+          </span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// 1. Datenquelle auswählen</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span>[] <span class="cm-variable">numbers</span> <span class="cm-operator">=</span> { <span class="cm-number">0</span>, <span class="cm-number">1</span>, <span class="cm-number">2</span>, <span class="cm-number">3</span>, <span class="cm-number">4</span>, <span class="cm-number">5</span> }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// 2. Query erstellen</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">numQuery</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">num</span> <span class="cm-keyword">in</span> <span class="cm-variable">numbers</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-def">where</span> (<span class="cm-variable">num</span> <span class="cm-operator">%</span> <span class="cm-number">2</span>) <span class="cm-operator">==</span> <span class="cm-number">0</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-variable">num</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// 3. Query ausführen</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">foreach</span> (<span class="cm-variable-3">int</span> <span class="cm-variable">num</span> <span class="cm-keyword">in</span> <span class="cm-variable">numQuery</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Console</span>.<span class="cm-variable">Write</span>(<span class="cm-string">"{0, 1} "</span>, <span class="cm-variable">num</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 286px;"></div><div class="CodeMirror-gutters" style="display: none; height: 286px;"></div></div></div></pre>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th><span>Schlüsselwort</span></th>
+                <th><span>Bedeutung</span></th>
+                <th><span>Speziell</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>from</code></td>
+                <td><span>Definiert Range-Variable und Datenquelle</span></td>
+                <td><span>Beginnt immer das Query</span></td>
+              </tr>
+              <tr>
+                <td><code>where</code></td>
+                <td><span>Filter</span></td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td><code>orderby field [asc | desc]</code></td>
+                <td><span>Sortierung</span></td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td><code>select</code></td>
+                <td><span>Projektion</span></td>
+                <td>
+                  <span>Beendet das Query, wenn kein </span><code>group</code
+                  ><span> vorhanden ist</span>
+                </td>
+              </tr>
+              <tr>
+                <td><code>group</code></td>
+                <td>
+                  <span>Gruppierung in eine Sequenz von Gruppenelementen</span>
+                </td>
+                <td><span>Beendet das Query</span></td>
+              </tr>
+              <tr>
+                <td><code>join</code></td>
+                <td><span>Verknüpfung zweier Datenquellen</span></td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td><code>let</code></td>
+                <td><span>Definition von Hilfsvariablen</span></td>
+                <td>&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <p><span>Extension Methoden</span></p>
+        <figure>
+          <table>
+            <thead>
+              <tr>
+                <th><span>Standard</span></th>
+                <th><span>Positional</span></th>
+                <th><span>Set Operations (bei Joins)</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Select</code></td>
+                <td><code>First[OrDefault]</code></td>
+                <td><code>Distinct</code></td>
+              </tr>
+              <tr>
+                <td><code>Where</code></td>
+                <td><code>Single[OrDefault]</code></td>
+                <td><code>Union</code></td>
+              </tr>
+              <tr>
+                <td><code>OrderBy[Descending]</code></td>
+                <td><code>ElementAt</code></td>
+                <td><code>Intersection</code></td>
+              </tr>
+              <tr>
+                <td><code>ThenBy[Descending]</code></td>
+                <td><code>Take / Skip</code></td>
+                <td><code>Except</code></td>
+              </tr>
+              <tr>
+                <td><code>GroupBy</code></td>
+                <td><code>TakeWhile / SkipWhile</code></td>
+                <td><code>Repeat</code></td>
+              </tr>
+              <tr>
+                <td><code>Join / GroupJoin</code></td>
+                <td><code>Reverse</code></td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td><code>Count / Sum / Min / Max / Average</code></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+        <h3 id="range-variablen"><span>Range Variablen</span></h3>
+        <p>
+          <span>Entstehen durch Klauseln </span><code>from, join, into</code
+          ><span
+            >. Sind Readonly, und nur innerhalb der Expression bis zur nächsten </span
+          ><code>into</code><span> Klausel sichtbar. Typ ist immer </span
+          ><code>T</code><span> bei Datenquelle </span
+          ><code>IEnumerable&lt;T&gt;</code><span>.</span>
+        </p>
+        <h3 id="gruppierung"><span>Gruppierung</span></h3>
+        <p>
+          <span
+            >Bringt eine flache Liste in eine strukturierte Form. Ausgabe </span
+          ><code>IGrouping&lt;TKey, TElement&gt;</code
+          ><span>
+            implementiert ein IEnumerable mit zusätzlichem Namen (Key). Dieser
+            repräsentiert das Attribut, welches gruppiert wurde bzw. bei allen
+            Elementen im </span
+          ><code>IEnumerable</code
+          ><span>
+            gleich ist. Zugriff auf die Members genau gleich wie bei </span
+          ><code>IEnumerable</code><span> Typen.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">q</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">s</span> <span class="cm-keyword">in</span> <span class="cm-variable">Students</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">group</span> <span class="cm-variable">s</span>.<span class="cm-variable">Name</span> <span class="cm-variable">by</span> <span class="cm-variable">s</span>.<span class="cm-variable">Subject</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Ergibt zuerst ein Key Value Pair</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {<span class="cm-variable">Computing</span>, <span class="cm-variable">John</span>},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {<span class="cm-variable">Computing</span>, <span class="cm-variable">Sue</span>},</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {<span class="cm-variable">Mathematics</span>, <span class="cm-variable">Ann</span>}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Danach ein IGrouping&lt;TKey, TElement&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Computing</span>, [ <span class="cm-variable">John</span>, <span class="cm-variable">Sue</span> ],</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Mathematics</span>, [ <span class="cm-variable">Ann</span> ]</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Ausgabe mit doppeltem ForEach Loop</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">foreach</span> (<span class="cm-keyword">var</span> <span class="cm-keyword">group</span> <span class="cm-keyword">in</span> <span class="cm-variable">q</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-keyword">group</span>.<span class="cm-variable">Key</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">foreach</span> (<span class="cm-keyword">var</span> <span class="cm-def">name</span> <span class="cm-keyword">in</span> <span class="cm-keyword">group</span>) { <span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-string">" "</span> <span class="cm-operator">+</span> <span class="cm-variable">name</span>); }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Direkte weiterverwendung mit "into"</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">q</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">s</span> <span class="cm-keyword">in</span> <span class="cm-variable">Students</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">group</span> <span class="cm-variable">s</span>.<span class="cm-variable">Name</span> <span class="cm-variable">by</span> <span class="cm-variable">s</span>.<span class="cm-variable">Subject</span> <span class="cm-keyword">into</span> <span class="cm-variable">g</span> <span class="cm-comment">// ab hier kann nur noch g verwendet werden</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-keyword">new</span> </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">Field</span> <span class="cm-operator">=</span> <span class="cm-variable">g</span>.<span class="cm-variable">Key</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">N</span> <span class="cm-operator">=</span> <span class="cm-variable">g</span>.<span class="cm-variable">Count</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  };</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 780px;"></div><div class="CodeMirror-gutters" style="display: none; height: 780px;"></div></div></div></pre>
+        <h3 id="inner-joins"><span>Inner Joins</span></h3>
+        <p>
+          <span
+            >Datensätze, die auf der anderen Tabelle keine Einträge besitzen,
+            fallen weg.
+          </span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Explizit - besser für Performance</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// on a.X equals b.Y</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">q</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">s</span> <span class="cm-keyword">in</span> <span class="cm-variable">Students</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">join</span> <span class="cm-variable">m</span> <span class="cm-keyword">in</span> <span class="cm-variable">Markinggs</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable">on</span> <span class="cm-variable">s</span>.<span class="cm-variable">Id</span> <span class="cm-variable">equals</span> <span class="cm-variable">m</span>.<span class="cm-variable">StudentId</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-variable">s</span>.<span class="cm-variable">Name</span> <span class="cm-operator">+</span> <span class="cm-string">", "</span> <span class="cm-operator">+</span> <span class="cm-variable">m</span>.<span class="cm-variable">Course</span> <span class="cm-operator">+</span> <span class="cm-string">", "</span> <span class="cm-operator">+</span> <span class="cm-variable">m</span>.<span class="cm-variable">Mark</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Implizit - gesamtes Kreuzprodukt wird anschliessend gefiltert</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// where a.X == b.Y</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">q</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">s</span> <span class="cm-keyword">in</span> <span class="cm-variable">Students</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">from</span> <span class="cm-variable">m</span> <span class="cm-keyword">in</span> <span class="cm-variable">Markings</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">where</span> <span class="cm-variable">s</span>.<span class="cm-variable">Id</span> <span class="cm-operator">==</span> <span class="cm-variable">m</span>.<span class="cm-variable">StudentId</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-variable">s</span>.<span class="cm-variable">Name</span> <span class="cm-operator">+</span> <span class="cm-string">", "</span> <span class="cm-operator">+</span> <span class="cm-variable">m</span>.<span class="cm-variable">Course</span> <span class="cm-operator">+</span> <span class="cm-string">", "</span> <span class="cm-operator">+</span> <span class="cm-variable">m</span>.<span class="cm-variable">Mark</span>;</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 339px;"></div><div class="CodeMirror-gutters" style="display: none; height: 339px;"></div></div></div></pre>
+        <h3 id="group-joins"><span>Group Joins</span></h3>
+        <p>
+          <span
+            >Pro Student wird eine Liste für alle Markings erstellt.
+            Ursprüngliche Tabelle bleibt sichtbar.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">q</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">s</span> <span class="cm-keyword">in</span> <span class="cm-variable">Students</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">join</span> <span class="cm-variable">m</span> <span class="cm-keyword">in</span> <span class="cm-variable">Markings</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable">on</span> <span class="cm-variable">s</span>.<span class="cm-variable">Id</span> <span class="cm-variable">equals</span> <span class="cm-variable">m</span>.<span class="cm-variable">StudentId</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-keyword">into</span> <span class="cm-variable">list</span><span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Enthält die Werte der zweiten Tabelle</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-keyword">new</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">Name</span> <span class="cm-operator">=</span> <span class="cm-variable">s</span>.<span class="cm-variable">Name</span>,</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">marks</span> <span class="cm-operator">=</span> <span class="cm-variable">list</span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Enthält die Werte der zweiten Tabelle</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  };</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Ausgabe</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">foreach</span> (<span class="cm-keyword">var</span> <span class="cm-keyword">group</span> <span class="cm-keyword">in</span> <span class="cm-variable">q</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-keyword">group</span>.<span class="cm-variable">Name</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">foreach</span> (<span class="cm-keyword">var</span> <span class="cm-def">m</span> <span class="cm-keyword">in</span> <span class="cm-keyword">group</span>.<span class="cm-variable">Marks</span>) { <span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-variable">m</span>.<span class="cm-variable">Course</span>); }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 394px;"></div><div class="CodeMirror-gutters" style="display: none; height: 394px;"></div></div></div></pre>
+        <h3 id="left-outer-joins"><span>Left Outer Joins</span></h3>
+        <p>
+          <span
+            >Wie Inner bzw. Group Join, aber Elemente, für die kein Äquivalent
+            gefunden wird, bleiben bestehen. Zwei </span
+          ><code>from</code><span> Statements nötig.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">q</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">s</span> <span class="cm-keyword">in</span> <span class="cm-variable">Students</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">join</span> <span class="cm-variable">m</span> <span class="cm-keyword">in</span> <span class="cm-variable">Markings</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable">on</span> <span class="cm-variable">s</span>.<span class="cm-variable">Id</span> <span class="cm-variable">equals</span> <span class="cm-variable">m</span>.<span class="cm-variable">StudentId</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-keyword">into</span> <span class="cm-variable">list</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">from</span> <span class="cm-variable">sm</span> <span class="cm-keyword">in</span> <span class="cm-variable">list</span>.<span class="cm-variable">DefaultIfEmpty</span>()</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-variable">s</span>.<span class="cm-variable">Name</span> <span class="cm-operator">+</span> <span class="cm-string">", "</span> <span class="cm-operator">+</span> (<span class="cm-variable">sm</span> <span class="cm-operator">==</span> <span class="cm-atom">null</span> <span class="cm-operator">?</span> <span class="cm-string">"?"</span> : <span class="cm-variable">sm</span>.<span class="cm-variable">Course</span> <span class="cm-operator">+</span> <span class="cm-string">", "</span> <span class="cm-operator">+</span> <span class="cm-variable">sm</span>.<span class="cm-variable">Mark</span>);</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 159px;"></div><div class="CodeMirror-gutters" style="display: none; height: 159px;"></div></div></div></pre>
+        <h3 id="let-klausel"><code>let</code><span> Klausel</span></h3>
+        <p>
+          <span
+            >Zur Definition von Hilfsvariablen, die berechnet werden können.
+            Lebt für den Rest des Queries.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">result</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">s</span> <span class="cm-keyword">in</span> <span class="cm-variable">Students</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">let</span> <span class="cm-variable">year</span> <span class="cm-operator">=</span> <span class="cm-variable">s</span>.<span class="cm-variable">Id</span> <span class="cm-operator">/</span> <span class="cm-number">1000</span><span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Hilfsvariable berechnen</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">where</span> <span class="cm-variable">year</span> <span class="cm-operator">==</span> <span class="cm-number">2009</span><span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Hilfsvariable filtern</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-variable">s</span>.<span class="cm-variable">Name</span> <span class="cm-operator">+</span> <span class="cm-string">" "</span> <span class="cm-operator">+</span> <span class="cm-variable">year</span>.<span class="cm-variable">ToString</span>();<span class="cm-tab" role="presentation" cm-text="	">  </span> &nbsp;<span class="cm-comment">// Hilfsvariable ausgeben</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 108px;"></div><div class="CodeMirror-gutters" style="display: none; height: 108px;"></div></div></div></pre>
+        <h3 id="select-many"><span>Select Many</span></h3>
+        <p>
+          <span
+            >Erleichtert das Zusammenfassen verschachtelter Listen, z.B. </span
+          ><code>List&lt;List&lt;string&gt;&gt;</code
+          ><span
+            >. Innere Listen von verschiedenen Elementen werden so als eine
+            grosse Liste dargestellt.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Extension Method</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">q1</span> <span class="cm-operator">=</span> <span class="cm-variable">list</span>.<span class="cm-variable">SelectMany</span>(<span class="cm-variable">s</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">s</span>.<span class="cm-variable">SomeList</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Query Syntax</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">var</span> <span class="cm-def">q2</span> <span class="cm-operator">=</span> <span class="cm-keyword">from</span> <span class="cm-variable">segment</span> <span class="cm-keyword">in</span> <span class="cm-variable">list</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">from</span> <span class="cm-variable">token</span> <span class="cm-keyword">in</span> <span class="cm-variable">segment</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">select</span> <span class="cm-variable">token</span>;</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 156px;"></div><div class="CodeMirror-gutters" style="display: none; height: 156px;"></div></div></div></pre>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+  </body>
+</html>

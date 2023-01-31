@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>4-Vererbung</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="vererbung"><span>Vererbung</span></h1>
+        <h2 id="grundlagen"><span>Grundlagen</span></h2>
+        <p><span>Regeln:</span></p>
+        <ul>
+          <li><span>Nur eine Basisklasse, beliebig viele Interfaces</span></li>
+          <li>
+            <span
+              >Structs können nicht erweitert werden oder erben, aber Interfaces
+              implementieren</span
+            >
+          </li>
+          <li>
+            <span>Alle Klassen sind direkt oder indirekt von </span
+            ><code>System.Object</code><span> abgeleitet</span>
+          </li>
+          <li>
+            <span>Structs sind über Boxing mit </span><code>System.Object</code
+            ><span> kompatibel</span>
+          </li>
+        </ul>
+        <p>
+          <span>Unterschieden wird zwischen dem </span
+          ><strong><span>statischen Typ</span></strong
+          ><span> der Variable und dem </span
+          ><strong><span>dynamischen Typ</span></strong
+          ><span> des Objekts auf dem Heap.</span>
+        </p>
+        <p>
+          <span
+            >Zuweisung ist erlabut wenn statisch = dynamisch oder statisch
+            Basisklasse von dynamisch, nicht erlaubt wenn statisch Subklasse von
+            dynamisch, oder beide nicht in derselben Vererbungshierarchie
+            sind.</span
+          >
+        </p>
+        <h3 id="typprüfungen"><span>Typprüfungen</span></h3>
+        <ul>
+          <li>
+            <code>&lt;var&gt; is &lt;Class&gt;</code
+            ><span>
+              liefert true oder false zurück, wenn der Typ identisch oder eine
+              Subklasse davon ist.
+            </span>
+          </li>
+          <li>
+            <span>Explizite Type Casts mit </span
+            ><code>(&lt;class&gt;)&lt;var&gt;</code
+            ><span>
+              weisen den Compiler an, einen Typ in einen anderen
+              umzuwandeln</span
+            >
+          </li>
+          <li>
+            <span>Umwandlung mit </span><code>&lt;var&gt; as &lt;Class&gt;</code
+            ><span> bewirkt den Output </span
+            ><code>obj is T ? (T)obj : (T)null</code>
+          </li>
+          <li>
+            <span>Prüfen mit casted als </span
+            ><code>if (a is SubSub something) { .. }</code><span> =&gt; </span
+            ><code
+              >SubSub something = default; if (a is SubSub) { something =
+              (SubSub) a}</code
+            ><span>. Arbeitet also mit </span><code>default</code
+            ><span> statt </span><code>null</code
+            ><span> wie &quot;as&quot;-Operator.</span>
+          </li>
+        </ul>
+        <h2 id="klassen"><span>Klassen</span></h2>
+        <h3 id="methoden"><span>Methoden</span></h3>
+        <p>
+          <span
+            >Subklasse kann Members der Basisklasse überschreiben. Schlüsselwort </span
+          ><code>virtual</code><span> macht Basis-Methode überschreibbar, </span
+          ><code>override</code
+          ><span>
+            um in Subklasse effektiv zu überschreiben. Wichtig: beide müssen
+            immer in Kombination angegeben werden, sonst wird nichts
+            überschrieben. Signatur der Methoden muss exakt gleich sein.</span
+          >
+        </p>
+        <p>
+          <span>Kombination </span><code>virtual</code
+          ><span> nicht möglich mit </span><code>static, private, override</code
+          ><span>, auch nicht mit </span><code>abstract</code
+          ><span> da dies </span><code>virtual</code><span> impliziert.</span>
+        </p>
+        <h3 id="dynamic-binding"><span>Dynamic Binding</span></h3>
+        <p>
+          <span
+            >Erlaubt das Aufrufen einer Methode vom dynamischen Typ, auch wenn
+            der statische Typ ein anderer ist. FALLS die Methode im statischen
+            Typ </span
+          ><code>virtual</code
+          ><span>
+            markiert ist, suche Vererbungshierarchie von oben nach unten nach
+            konkretester Methode mit Schlüsselwort </span
+          ><code>override</code><span>.</span>
+        </p>
+        <p>
+          <span>Methoden überdecken: wenn gewünscht, Keyword </span
+          ><code>new</code><span> verwenden.</span>
+        </p>
+        <p>
+          <span
+            >Ablauf der Methodenwahl: Für jeden Type der Hierarchie zwischen
+            static type und dynamic type: wenn override Method vorhanden, wähle
+            diese. sobald eine non-override methode (new) gefunden wird, breche
+            ab und verwende die zuletzt gefundene Methode.</span
+          >
+        </p>
+        <p>
+          <strong><span>Achtung</span></strong
+          ><span>: Gecastet wird immer der Static Type!</span>
+        </p>
+        <h3 id="abstrakte-klassen"><span>Abstrakte Klassen</span></h3>
+        <p>
+          <span
+            >Mischung aus Klasse und Interface. Kann nicht direkt instanziert
+            werden. Kann beliebig viele Interfaces implementieren, wenn alle
+            Members deklariert sind. Abgeleitete Klassen müssen alle abstrakten
+            Members implementieren, Abstrakte Members können nur innerhalb
+            abstrakter Klassen deklariert werden.</span
+          >
+        </p>
+        <h3 id="abstrakte-methoden"><span>Abstrakte Methoden</span></h3>
+        <p>
+          <span>Kein Anweisungsteil, sondern direkt mit ; abgeschlossen: </span
+          ><code>public abstract void Add(object x);</code
+          ><span
+            >. Implizit virtual, dürfen nicht static oder virtual deklariert
+            werden.</span
+          >
+        </p>
+        <h3 id="abstrakte-properties"><span>Abstrakte Properties</span></h3>
+        <p>
+          <span
+            >Kein Anweisungteil, get und set mit Semikolon abgeschlossen.
+            Implizit virtual, dürfen nicht static oder virtual deklariert
+            werden. </span
+          ><code>get/set</code
+          ><span> Kombination muss bei Implementation identisch sein.</span>
+        </p>
+        <h3 id="versiegelte-klassen"><span>Versiegelte Klassen</span></h3>
+        <p>
+          <span>Keyword </span><code>sealed</code
+          ><span> verhindert das Ableiten einer Klasse, analog Java </span
+          ><code>final</code
+          ><span
+            >. Aspekte: Sicherheit (kein versehentliches Erweitern), Performance
+            (Methoden können statisch gebunden werden). Verwendung bei Klassen
+            und deren Methoden, Properties, Indexern und Events.</span
+          >
+        </p>
+        <h3 id="versiegelte-members"><span>Versiegelte Members</span></h3>
+        <p>
+          <span
+            >Verhindert das Überschreiben eines bestimmten Klassenmembers. Kann
+            nicht in einer abstrakten Klasse vorkommen. Ableitung einer
+            Abstrakten Klasse kann Members </span
+          ><code>public override sealed</code
+          ><span> definieren, um weitere Ableitungen zu verhindern. </span
+          ><code>public new virtual</code
+          ><span>
+            desselben Members ist in abgeleiteten Klassen aber wiederum
+            möglich.</span
+          >
+        </p>
+        <h2 id="interfaces"><span>Interfaces</span></h2>
+        <p>
+          <span
+            >Kann nicht direkt instanziert werden, keine Sichtbarkeit auf
+            Members. Kann andere Interfaces erweitern. Members sind implizit </span
+          ><code>abstract virtual</code><span>. Dürfen nicht </span
+          ><code>static</code
+          ><span>
+            sein oder ausprogrammiert werden. Name beginnt mit grossem </span
+          ><code>I</code><span>.</span>
+        </p>
+        <p>
+          <span>Erlaubte Inhalte: Methoden, Properties, Indexers, Events</span>
+        </p>
+        <h3 id="implementieren"><span>Implementieren</span></h3>
+        <ul>
+          <li>
+            <span>Klasse kann beliebig viele Interfaces implementieren</span>
+          </li>
+          <li>
+            <span
+              >Alle Interface-Members müssen auf der Klasse vorhanden sein,
+              entweder direkt implementiert oder von anderer Basisklasse
+              geerbt</span
+            >
+          </li>
+          <li>
+            <code>override</code
+            ><span>
+              ist nicht nötig, ausser Basisklasse definiert den gleichen
+              Member</span
+            >
+          </li>
+          <li>
+            <span>Kombination mit </span><code>virtual</code><span> und </span
+            ><code>abstract</code><span> ist erlaubt</span>
+          </li>
+          <li>
+            <span>Implementierte Interface-Members müssen </span
+            ><code>public</code><span> und nicht </span><code>static</code
+            ><span> sein.</span>
+          </li>
+        </ul>
+        <h3 id="verwenden"><span>Verwenden</span></h3>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre>x</pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">interface</span> <span class="cm-def">ISequence</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-keyword">void</span> <span class="cm-variable">Add</span> (<span class="cm-variable-3">object</span> <span class="cm-variable">x</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable-3">string</span> <span class="cm-variable">Name</span> { <span class="cm-keyword">get</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-variable-3">object</span> <span class="cm-keyword">this</span>[<span class="cm-variable-3">int</span> <span class="cm-variable">i</span>] { <span class="cm-keyword">get</span>; <span class="cm-keyword">set</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-keyword">event</span> <span class="cm-variable">EventHandler</span> <span class="cm-variable">OnAdd</span>;</span></pre><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">List</span> : <span class="cm-variable">ISequence</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-keyword">public</span> <span class="cm-keyword">void</span> <span class="cm-keyword">add</span>(<span class="cm-variable-3">Object</span> <span class="cm-variable">x</span>) { <span class="cm-comment">/* Implementierung */</span>}</span></pre><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">string</span> <span class="cm-variable">Name</span> { <span class="cm-keyword">get</span> { <span class="cm-comment">/* Implementierung */</span> } }</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">object</span> <span class="cm-keyword">this</span>[<span class="cm-variable-3">int</span> <span class="cm-variable">i</span>] { <span class="cm-keyword">get</span> { <span class="cm-comment">/* Implementierung */</span> } <span class="cm-keyword">set</span> { <span class="cm-comment">/* Implementierung */</span> } }</span></pre><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">event</span> <span class="cm-variable">EventHandler</span> <span class="cm-variable">OnAdd</span>;</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Zuweisung/Verwendugng</span></span></pre><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">List</span> <span class="cm-variable">list1</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">List</span>();</span></pre></div><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">list1</span>.<span class="cm-variable">Add</span>(<span class="cm-string">"Hello"</span>);</span></pre></div><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">ISequence</span> <span class="cm-variable">list2</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">List</span>();</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">list2</span>.<span class="cm-variable">Add</span>(<span class="cm-string">"Hello"</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Typumwandlung</span></span></pre><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">list1</span> <span class="cm-operator">=</span> (<span class="cm-variable">List</span>)<span class="cm-variable">list2</span>;</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">list1</span> <span class="cm-operator">=</span> <span class="cm-variable">list2</span> <span class="cm-keyword">as</span> <span class="cm-variable">List</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">list2</span> <span class="cm-operator">=</span> <span class="cm-variable">list1</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Typprüfung</span></span></pre><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">if</span> (<span class="cm-variable">list1</span> <span class="cm-keyword">is</span> <span class="cm-variable">ISequence</span>) { <span class="cm-comment">/* ... */</span> }</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 657px;"></div><div class="CodeMirror-gutters" style="display: none; height: 657px;"></div></div></div></pre>
+        <h2 id="naming-clashes"><span>Naming Clashes</span></h2>
+        <p>
+          <span
+            >Zwei Interfaces könnten dieselben Member definieren, was zu einer
+            Kollision führt.
+          </span>
+        </p>
+        <p>
+          <span
+            >Variante 1: Selbe Signatur, selber Rückgabetyp, und Logik ist
+            identisch. Dann kann die Methode ganz normal implementiert werden,
+            ohne weitere Angaben.</span
+          >
+        </p>
+        <p>
+          <span
+            >Variante 2: Selbe Signatur, selber Rückgabetyp, Logisch ist
+            unterschiedlich. Dann müssen die Methoden zur Implementierung
+            explizit benannt werden. Bsp. </span
+          ><code
+            >void ISequence.Add(object x) { ... } void IShoppingCart.Add(object
+            x) { ... }</code
+          >
+        </p>
+        <p>
+          <span
+            >Variante 3: Selbe Signatur, selber Rückgabetyp, Logisch ist
+            unterschiedlich aber ein Default-Verhalten ist definierbar. Dann
+            kann eine Methode &#39;normal&#39; und eine Methode explizit
+            implementiert werden. Bsp. </span
+          ><code
+            >void Add(object x) { ... } void IShoppingCart.Add(object x) { ...
+            }</code
+          >
+        </p>
+        <h2 id="fragile-base-class-problem">
+          <span>Fragile Base Class Problem</span>
+        </h2>
+        <p>
+          <span>Das Markieren von </span><code>virtual</code><span> und </span
+          ><code>override</code
+          ><span>
+            verhindert, dass bei nachträglich hinzugefügten Methoden in einer
+            Basisklasse ein Konflikt mit allenfalls schon vorhandenen Methoden
+            in der Subklasse mit demselben Namen entstehen. Schlimmstenfalls
+            wirft der Compiler eine Warnung, wenn der Code neu kompiliert wird.
+            In Java beispielsweise führt das ohne Warnung zu anderem
+            Verhalten.</span
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

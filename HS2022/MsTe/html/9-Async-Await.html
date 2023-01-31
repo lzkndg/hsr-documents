@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>9-Async-Await</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="tasks-async--await"><span>Tasks, Async / Await</span></h1>
+        <h2 id="tasks"><span>Tasks</span></h2>
+        <p>
+          <span
+            >Platzhalter für ein Resultat, welches noch nicht bekannt ist, hat
+            einen Rückgabewert. Repräsentiert eine asynchrone Operation.
+            Convienence Wrapper um einen C# Thread (= 1 OS Thread) herum.
+            Vereinfacht Programmfluss mit async/await.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="cs"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="cs"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Task</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> <span class="cm-variable">t1</span> <span class="cm-operator">=</span> <span class="cm-variable-3">Task</span>.<span class="cm-variable">Factory</span>.<span class="cm-variable">StartNew</span>(() <span class="cm-operator">=&gt;</span> { <span class="cm-variable">Thread</span>.<span class="cm-variable">Sleep</span>(<span class="cm-number">2000</span>); <span class="cm-keyword">return</span> <span class="cm-number">1</span>; });</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Task</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> <span class="cm-variable">t2</span> <span class="cm-operator">=</span> <span class="cm-variable-3">Task</span>.<span class="cm-variable">Run</span>(() <span class="cm-operator">=&gt;</span> { <span class="cm-variable">Thread</span>.<span class="cm-variable">Sleep</span>(<span class="cm-number">2000</span>); <span class="cm-keyword">return</span> <span class="cm-number">1</span>; });</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 52px;"></div><div class="CodeMirror-gutters" style="display: none; height: 52px;"></div></div></div></pre>
+        <h3 id="synchrone-waits"><span>Synchrone Waits</span></h3>
+        <p>
+          <span
+            >Return aus der Methode nachdem die gesamte Logik durchlaufen wurde.
+            Blockieren den Aufrufer / aktuellen Thread (Problematisch in GUI
+            Applikationen!).
+          </span>
+          <span>Beispiele: </span
+          ><code
+            >t1.Wait(), Task.WaitAll(t1, t2), t1.Result,
+            t1.GetAwaiter().GetResult()</code
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11.6667px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">while</span> (<span class="cm-operator">!</span><span class="cm-variable">t1</span>.<span class="cm-variable">IsCompleted</span>)<span class="cm-tab" role="presentation" cm-text="	"> </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Busy Wait (bad Idea!)</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-comment">/* Do some stuff */</span> } </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" class="cm-tab-wrap-hack" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">result1</span> <span class="cm-operator">=</span> <span class="cm-variable">t1</span>.<span class="cm-variable">Result</span>;<span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">t1</span>.<span class="cm-variable">Wait</span>(); <span class="cm-variable-3">Task</span>.<span class="cm-variable">WaitAll</span>(<span class="cm-variable">t1</span>, <span class="cm-variable">t2</span>);<span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Explicit Wait</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">result2</span> <span class="cm-operator">=</span> <span class="cm-variable">t1</span>.<span class="cm-variable">Result</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">int</span> <span class="cm-variable">result3</span> <span class="cm-operator">=</span> <span class="cm-variable">t1</span>.<span class="cm-variable">GetAwaiter</span>().<span class="cm-variable">GetResult</span>(); <span class="cm-comment">// Awaiter, optimierteres Exception Handling</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 161px;"></div><div class="CodeMirror-gutters" style="display: none; height: 161px;"></div></div></div></pre>
+        <h3 id="asynchrone-waits"><span>Asynchrone Waits</span></h3>
+        <p>
+          <span
+            >Ruft eine Methode auf, ohne auf das Resultat zu warten. Möglichkeit
+            zur Benachrichtigung via Callbacks, oder Rückgabe eines </span
+          ><code>Task</code><span>-Objektes das abgefragt werden kann.</span>
+        </p>
+        <p>
+          <em><span>Continuations</span></em
+          ><span>
+            werden erst dann ausgeführt, wenn das Resultat vorhanden ist. Sind
+            somit nicht-blockierend.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="cs"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="cs"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Task</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span><span class="cm-operator">&gt;</span> <span class="cm-variable">t1</span> <span class="cm-operator">=</span> <span class="cm-variable">GetSomeCustomerIdAsync</span>();</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">t1</span>.<span class="cm-variable">ContinueWith</span>(<span class="cm-variable">id</span> <span class="cm-operator">=&gt;</span><span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// id: Result Wert vom Task, sobald vorhanden...</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">Task</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">string</span><span class="cm-operator">&gt;</span> <span class="cm-variable">t2</span> <span class="cm-operator">=</span> <span class="cm-variable">GetOrdersAsync</span>(<span class="cm-variable">id</span>.<span class="cm-variable">Result</span>);<span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// nicht mehr blockierend</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">t2</span>.<span class="cm-variable">ContinueWith</span>(<span class="cm-variable">order</span> <span class="cm-operator">=&gt;</span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// order: Result Wert vom Task, sobald vorhanden...</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-variable">order</span>.<span class="cm-variable">Result</span>)<span class="cm-tab" role="presentation" cm-text="	"> </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// nicht mehr blockierend</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  );</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">});</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 239px;"></div><div class="CodeMirror-gutters" style="display: none; height: 239px;"></div></div></div></pre>
+        <p>
+          <span
+            >Merke: Asynchron nutzt denselben Thread für verschiedene Aufgaben.
+            Parallel nutzt verschiedene Threads.</span
+          >
+        </p>
+        <p>
+          <img src=".\res\csharp-async-parallel.png" />
+        </p>
+        <p>
+          <em
+            ><span
+              >Frühstück asynchron kochen heisst, mögliche Wartezeit für die
+              nächste Aufgabe zu nutzen. Parallel kochen heisst, 3 Köche stehen
+              vor einer anderen Pfanne und warten. Geht auch nicht
+              schneller...</span
+            ></em
+          >
+        </p>
+        <h2 id="asyncawait"><span>async/await</span></h2>
+        <p>
+          <span>Keyword </span><code>async</code
+          ><span>
+            markiert eine Methode als asynchron. Rückgabetypen sind dabei
+            eingeschränkt auf </span
+          ><code>Task</code><span> (Methode ohne Rückgabewert), </span
+          ><code>Task&lt;T&gt;</code
+          ><span> (Methode mit Rückgabewert vom Typ </span><code>T</code
+          ><span>), oder void (fire and forget). </span>
+        </p>
+        <p>
+          <span>Alles was nach dem Keyword </span><code>await</code
+          ><span>
+            folgt, wird vom Compiler in eine Continuation umgewandelt. Keyword
+            ist nur in async-Methoden erlaubt.
+          </span>
+        </p>
+        <p>
+          <code>Task.WhenAll(t1, t2)</code
+          ><span>
+            wandelt das abwarten von mehreren Tasks in einen einzigen Task um,
+            der erst beendet ist, wenn alle Subtasks auch fertig sind:</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span>[] <span class="cm-variable">allResults</span> <span class="cm-operator">=</span> <span class="cm-keyword">await</span> <span class="cm-variable-3">Task</span>.<span class="cm-variable">WhenAll</span>(<span class="cm-variable">t1</span>, <span class="cm-variable">t2</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+        <p>
+          <span
+            >Overhead für Task bei ca 10ms (?) -&gt; lohnt sich erst bei
+            grösseren Tasks.</span
+          >
+        </p>
+        <p>
+          <span
+            >.. eine asynchrone Methode (computePiAsync()) zu implementieren,
+            bedeutet NICHT dass die Methode an sich </span
+          ><em><span>async</span></em
+          ><span> sein muss. Sie gibt einfach einen Task zurück.</span>
+        </p>
+        <h2 id="cancellation-support"><span>Cancellation Support</span></h2>
+        <p>
+          <span
+            >Integriertes Programmiermodell für das Abbrechen von lange
+            dauernder Programmlogik. Ein CancellationToken wird durch die
+            gesamte Aufrufkette durchgereicht. Ist bei jeder asynchrone Methode
+            der letzte Parameter (Best Practice).</span
+          >
+        </p>
+        <p>
+          <span>Kann erstellt werden über die Klasse </span
+          ><code>CancellationTokenSource</code
+          ><span
+            >. Wenn der Abbruch via Source ausgelöst wird, wird für alle ihre
+            Tokens ein Abbruch angefordert.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">CancellationTokenSource</span> <span class="cm-variable">cts</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>(); <span class="cm-comment">// Source wird instanziert</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">CancellationToken</span> <span class="cm-variable">ct1</span> <span class="cm-operator">=</span> <span class="cm-variable">cts</span>.<span class="cm-variable">Token</span>; <span class="cm-comment">// Emittierung eines Token via Property</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">cts</span>.<span class="cm-variable">Cancel</span>(); <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span> <span class="cm-comment">// Bricht alle laufenden Operationen ab</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 79px;"></div><div class="CodeMirror-gutters" style="display: none; height: 79px;"></div></div></div></pre>
+        <p><span>Beispiel: </span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">CancellationTokenSource</span> <span class="cm-variable">cts</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>();</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">CancellationToken</span> <span class="cm-variable">ct</span> &nbsp;<span class="cm-operator">=</span> <span class="cm-variable">cts</span>.<span class="cm-variable">Token</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Task</span> <span class="cm-variable">t1</span> <span class="cm-operator">=</span> <span class="cm-variable">LongRunning</span>(<span class="cm-number">1000</span>, <span class="cm-variable">ct</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Task</span> <span class="cm-variable">t2</span> <span class="cm-operator">=</span> <span class="cm-variable">LongRunning</span>(<span class="cm-number">2000</span>, <span class="cm-variable">ct</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Task</span> <span class="cm-variable">t3</span> <span class="cm-operator">=</span> <span class="cm-variable">Longrunning</span>(<span class="cm-number">3000</span>, <span class="cm-keyword">default</span>); <span class="cm-comment">// independent, not cancellable</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">await</span> <span class="cm-variable-3">Task</span>.<span class="cm-variable">Delay</span>(<span class="cm-number">2000</span>, <span class="cm-variable">ct</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">cts</span>.<span class="cm-variable">Cancel</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">async</span> <span class="cm-variable-3">Task</span> <span class="cm-def">LongRunning</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">ms</span>, <span class="cm-variable">CancellationToken</span> <span class="cm-variable">ct</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-variable">$</span><span class="cm-string">"{ms}ms Task started."</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">await</span> <span class="cm-variable-3">Task</span>.<span class="cm-variable">Delay</span>(<span class="cm-variable">ms</span>, <span class="cm-variable">ct</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-variable">$</span><span class="cm-string">"{ms}ms Task completed."</span>); &nbsp; &nbsp;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 390px;"></div><div class="CodeMirror-gutters" style="display: none; height: 390px;"></div></div></div></pre>
+        <p>
+          <span>Auslösen von </span><code>cts.Cancel()</code
+          ><span> wird meist mit Ctrl-C auf der Konsole verknüpft.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Console</span>.<span class="cm-variable">CancelKeyPress</span> <span class="cm-operator">+=</span> (<span class="cm-variable">_</span>, <span class="cm-variable">e</span>) <span class="cm-operator">=&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">cts</span>.<span class="cm-variable">Cancel</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">e</span>.<span class="cm-variable">Cancel</span> <span class="cm-operator">=</span> <span class="cm-atom">true</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">};</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 130px;"></div><div class="CodeMirror-gutters" style="display: none; height: 130px;"></div></div></div></pre>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+  </body>
+</html>

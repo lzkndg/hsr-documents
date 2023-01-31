@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>5-Delegates-Events-Lambdas</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="delegates-events-lambdas">
+          <span>Delegates, Events, Lambdas</span>
+        </h1>
+        <h2 id="normale-delegates">
+          <span>&quot;Normale&quot; Delegates</span>
+        </h2>
+        <p>
+          <span
+            >Verwendungszwecke: Methoden als Funktionsparameter, Callback /
+            Observer Pattern</span
+          >
+        </p>
+        <p>
+          <span
+            >Delegates sind typsichere Funktionspointer, abgeleitet von </span
+          ><code>System.Delegate</code
+          ><span
+            >, somit eine Referenz auf 0-n Methoden. Analog Function Pointers in
+            C++. Deklaration geschieht auf Namespace-Level.</span
+          >
+          <span
+            >Jeder Delegate ird vom Compiler als Klasse generiert (abgeleitet
+            von </span
+          ><code>MulticastDelegate</code
+          ><span
+            >) und kann danach instanziert und zugewiesen werden. Null-Zuweisung
+            ist möglich, wirft bei Ausführung NullReferenceException. Inversion
+            of Control, Möglichkeit auch mit Interfaces.
+          </span>
+        </p>
+        <p>
+          <em
+            ><span
+              >Delegates sind eine explizite Vereinfachung von Interfaces mit
+              genau einer Methode.</span
+            ></em
+          ><span>
+            Zuweisung einer Methode zur Delegate Variable entspricht der
+            Instanzierung eines Interfaces.</span
+          >
+        </p>
+        <p>
+          <img src=".\res\csharp-delegate-interface.png" />
+        </p>
+        <p><span>Eine Variable vom Typ Delegate hat 3 Felder</span></p>
+        <ul>
+          <li>
+            <code>Target</code
+            ><span
+              >: Klasseninstanz, wenn die angegebene Methode nicht statisch ist.
+            </span>
+          </li>
+          <li>
+            <code>Method</code
+            ><span>: Methode die zugewiesen wurde / ausgeführt wird</span>
+          </li>
+          <li><code>Prev</code><span>: siehe Multicast Delegates</span></li>
+        </ul>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Verwendung von Delegate zur Übergabe von Funktionen als Methodenparameter</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">delegate</span> <span class="cm-keyword">void</span> <span class="cm-variable">Comparer</span>(<span class="cm-variable-3">object</span> <span class="cm-variable">x</span>, <span class="cm-variable-3">object</span> <span class="cm-variable">y</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">Program</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">static</span> <span class="cm-variable-3">int</span> <span class="cm-variable">CompareFraction</span>(<span class="cm-variable-3">object</span> <span class="cm-variable">x</span>, <span class="cm-variable-3">object</span> <span class="cm-variable">y</span>) { ... }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-keyword">static</span> <span class="cm-variable-3">int</span> <span class="cm-variable">CompareString</span>(<span class="cm-variable-3">object</span> <span class="cm-variable">x</span>, <span class="cm-variable-3">object</span> <span class="cm-variable">y</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  { <span class="cm-keyword">return</span> ( (<span class="cm-variable-3">string</span>)<span class="cm-variable">x</span> ).<span class="cm-variable">CompareTo</span>(<span class="cm-variable">y</span>); }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">static</span> <span class="cm-keyword">void</span> <span class="cm-variable">Sort</span>(<span class="cm-variable-3">object</span>[] <span class="cm-variable">a</span>, <span class="cm-variable">Comparer</span> <span class="cm-variable">compare</span>) { <span class="cm-comment">/* do some comparison using delegate */</span> }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Comparer</span> <span class="cm-variable">cf</span> <span class="cm-operator">=</span> <span class="cm-variable">CompareFraction</span>;<span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Methode zu Delegate zuweisen</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Fraction</span>[] <span class="cm-variable">fractions</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Fraction</span>[] { <span class="cm-keyword">new</span>(<span class="cm-number">1</span>, <span class="cm-number">2</span>), <span class="cm-keyword">new</span>(<span class="cm-number">3</span>,<span class="cm-number">4</span>) };</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">Sort</span>(<span class="cm-variable">fractions</span>, <span class="cm-variable">cf</span>)<span class="cm-tab" role="presentation" cm-text="	"> </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Delegate übergeben</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 316px;"></div><div class="CodeMirror-gutters" style="display: none; height: 316px;"></div></div></div></pre>
+        <p>
+          <span
+            >Wenn die Methode in derselben Klasse ist wie die Delegate Variable,
+            ist </span
+          ><code>obj</code
+          ><span> &quot;this&quot; und kann weggelassen werden. </span>
+          <span>Bei statischer Methode der Klassenname.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Zuweisungs-Syntax</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">DelegateType</span> <span class="cm-variable">delegateVar</span> <span class="cm-operator">=</span> <span class="cm-variable">obj</span>.<span class="cm-variable">Method</span>;</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 52px;"></div><div class="CodeMirror-gutters" style="display: none; height: 52px;"></div></div></div></pre>
+        <p><span>Zugewiesene Methode </span></p>
+        <ul>
+          <li><span>darf nicht abstract sein</span></li>
+          <li><span>darf virtual, override und/oder new sein</span></li>
+          <li>
+            <span
+              >muss identisch sein in der Signatur (inkl. Anzahl, Art und Typen
+              der Parameter, Rückgabetyp) wie im Delegate definiert</span
+            >
+          </li>
+        </ul>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Aufruf-Syntax</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">object</span> <span class="cm-variable">result</span> <span class="cm-operator">=</span> <span class="cm-variable">delegateVar</span>[.<span class="cm-variable">Invoke</span>](<span class="cm-keyword">params</span>); <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Mit Rückgabetyp</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">if</span> (<span class="cm-variable">delegateVar</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span>) { <span class="cm-variable">delegateVar</span>(<span class="cm-keyword">params</span>); }<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-comment">// Mit Null-Check</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">delgegateVar</span><span class="cm-operator">?</span>.<span class="cm-variable">Invoke</span>(<span class="cm-keyword">params</span>);<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span> &nbsp;<span class="cm-comment">// Standard-Variante ab C# 6.0 mit Null-Check</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 108px;"></div><div class="CodeMirror-gutters" style="display: none; height: 108px;"></div></div></div></pre>
+        <h2 id="multicast-delegates"><span>Multicast Delegates</span></h2>
+        <p>
+          <span
+            >Mehrere registrierte Methoden werden synchron in der registrierten
+            Reihenfolge ausgeführt. Exception führt zum Abbruch aller restlichen
+            Methoden. Invoke-Methode regelt die Ausführung der jeweiligen
+            Zielmethode.</span
+          >
+        </p>
+        <p>
+          <code>Prev</code
+          ><span>
+            Feld: Referenz auf vorheriges (Multicast-)Delegate aus der Linked
+            List.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Notifier</span> <span class="cm-variable">greetings</span>;</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">greetings</span> <span class="cm-operator">=</span> <span class="cm-variable">SayHi</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">greetings</span> <span class="cm-operator">+=</span> <span class="cm-variable">SayCiao</span>; <span class="cm-comment">// fügt eine weitere Methode der Ausführungskette hinzu</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">greetings</span> <span class="cm-operator">-=</span> <span class="cm-variable">SayHi</span>; <span class="cm-comment">// sucht "von hinten" in der linked List nach dem ersten Match und entfernt ihn.</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Notifier</span> <span class="cm-variable">a</span> <span class="cm-operator">=</span> <span class="cm-variable">SayHi</span>; <span class="cm-variable">Notifier</span> <span class="cm-variable">b</span> <span class="cm-operator">=</span> <span class="cm-variable">SayCiao</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">Notifier</span> <span class="cm-variable">c</span> <span class="cm-operator">=</span> <span class="cm-variable">a</span> <span class="cm-operator">+</span> <span class="cm-variable">b</span>; <span class="cm-comment">// (Notifier)Delegate.Combine(a, b);</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 156px;"></div><div class="CodeMirror-gutters" style="display: none; height: 156px;"></div></div></div></pre>
+        <p>
+          <span
+            >Compiler wandelt jeden &quot;normal&quot; definierten Delegate in
+            eine eigene Klasse um, die von MulticastDelegate ableitet. Bei
+            Methoden mit Rückgabewerten wird jeweils nur der letzte Wert
+            behalten.</span
+          >
+        </p>
+        <h2 id="events"><span>Events</span></h2>
+        <p>
+          <img src=".\res\csharp-events.png" />
+        </p>
+        <p><span>Button: Observable / Usage: Observer</span></p>
+        <p>
+          <span
+            >Definiert wird immer Event sowie ein Delegate, der die Struktur der
+            Methode angibt, welche auf den Event hin aufgerufen wird (bzw. zum
+            Event Handling angemeldet werden kann).</span
+          >
+        </p>
+        <p>
+          <span>Der Delegate hat standardmässig </span><code>-Handler</code
+          ><span>
+            im Namen und befindet sich wiederum auf Namespace Level.</span
+          >
+          <span
+            >Der Event gibt an, welchen Delegate er &quot;verwendet&quot; und
+            wird an bestimmten Stellen im Code via EventName?.Invoke(params)
+            ausgelöst.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">delegate</span> <span class="cm-keyword">void</span> <span class="cm-variable">TickEventHandler</span> (<span class="cm-variable-3">int</span> <span class="cm-variable">ticks</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">interval</span>);</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">Clock</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-comment">// Selber definierter Event</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">event</span> <span class="cm-variable">TickEventHandler</span> <span class="cm-variable">OnTickEvent</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-comment">// Compiler-generierter Output</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">private</span> <span class="cm-variable">TickEventHandler</span> <span class="cm-variable">OnTickEvent</span>;<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Delegate Instanzierung wird private</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-comment">// Subscribe/Unsubscribe Logik wird public generiert, Zugriff via Event (+=/-=)</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">void</span> <span class="cm-variable">add_OnTickEvent</span>(<span class="cm-variable">TickEventHandler</span> <span class="cm-variable">h</span>) { <span class="cm-variable">OnTickEvent</span> <span class="cm-operator">+=</span> <span class="cm-variable">h</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">void</span> <span class="cm-variable">remove_OnTickEvent</span>(<span class="cm-variable">TickEventHandler</span>) { <span class="cm-variable">OnTickEvent</span> <span class="cm-operator">-=</span> <span class="cm-variable">h</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 287px;"></div><div class="CodeMirror-gutters" style="display: none; height: 287px;"></div></div></div></pre>
+        <p><span>Standardmässige Delegate Parameter </span></p>
+        <ul>
+          <li>
+            <code>sender</code
+            ><span>
+              Absender übergibt bei Aufruf des Delegates / Events «this» mit. In
+              UIs meist ein Button oder ähnliches.</span
+            >
+          </li>
+          <li>
+            <code>EventArgs</code
+            ><span
+              >: Argumente des Events werden als Instanz einer von EventArgs
+              abgeleiteten Klasse übergeben, falls benötigt. Klasse enthält 0-n
+              Properties, die weitere Angaben zum Event machen. Beispiel: welche
+              Maustaste beim Click, welche Zeit, welche Position...
+            </span>
+          </li>
+        </ul>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">delegate</span> <span class="cm-keyword">void</span> <span class="cm-variable">ClickEventHandler</span>(<span class="cm-variable-3">object</span> <span class="cm-variable">sender</span>, <span class="cm-variable">AnyEventArgs</span> <span class="cm-variable">e</span>);</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">ClickEventArgs</span> : <span class="cm-variable">EventArgs</span> <span class="cm-comment">/* kann beliebig um weitere parameter ergänzt werden*/</span> </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable-3">string</span> <span class="cm-variable">MouseButton</span> { <span class="cm-keyword">get</span>; <span class="cm-keyword">set</span>; } </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">Button</span> </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">event</span> <span class="cm-variable">ClickEventHandler</span> <span class="cm-variable">OnClick</span>; <span class="cm-comment">// "Returntype" definiert Delegate, der den Event "handeln" kann</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Verwendung</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">void</span> <span class="cm-variable">Test</span>() { <span class="cm-variable">Button</span> <span class="cm-variable">b</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span>(); <span class="cm-variable">b</span>.<span class="cm-variable">OnClick</span> <span class="cm-operator">+=</span> <span class="cm-variable">OnClick</span>; }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">private</span> <span class="cm-keyword">void</span> <span class="cm-variable">OnClick</span>(<span class="cm-variable-3">object</span> <span class="cm-variable">sender</span>, <span class="cm-variable">ClickEventArgs</span> <span class="cm-variable">eventArgs</span>) { <span class="cm-comment">/* do something */</span> }</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 364px;"></div><div class="CodeMirror-gutters" style="display: none; height: 364px;"></div></div></div></pre>
+        <p>
+          <span
+            >Zur Verwendung im &quot;Client Code&quot; muss nur eine
+            entsprechende Methode die zum Delegate passt erstellt werden, und
+            diese auf den Event einer Observable-Instanz registriert
+            werden.</span
+          >
+        </p>
+        <h2 id="lambda-expressions"><span>Lambda Expressions</span></h2>
+        <p>
+          <span
+            >Zuweisung von Methoden zu Delegates oder Events müssen nicht
+            zwingend benannt sein, die entsprechenden Methoden können als
+            Lambdas In-Place definiert werden.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11.6667px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Func</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span>, <span class="cm-variable-3">bool</span><span class="cm-operator">&gt;</span> <span class="cm-variable">fe</span> <span class="cm-operator">=</span> <span class="cm-variable">i</span> <span class="cm-operator">=&gt;</span> <span class="cm-variable">i</span> <span class="cm-operator">%</span> <span class="cm-number">2</span> <span class="cm-operator">==</span> <span class="cm-number">0</span>; <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-comment">// Expression Lambda: "Func&lt;param, param, .., return type&gt;"</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">Func</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">int</span>, <span class="cm-variable-3">bool</span><span class="cm-operator">&gt;</span> <span class="cm-variable">fs</span> <span class="cm-operator">=</span> <span class="cm-variable">i</span> <span class="cm-operator">=&gt;</span> </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-3">int</span> <span class="cm-variable">rest</span> <span class="cm-operator">=</span> <span class="cm-variable">i</span><span class="cm-operator">%</span><span class="cm-number">2</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">rest</span> <span class="cm-operator">==</span> <span class="cm-number">0</span>;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Statement Lambda, mehrere Zeilen mit { } eingepackt</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 159px;"></div><div class="CodeMirror-gutters" style="display: none; height: 159px;"></div></div></div></pre>
+        <p><span>Varianten von Parametern</span></p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11.6667px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">p01</span> <span class="cm-operator">=</span> () <span class="cm-operator">=&gt;</span> <span class="cm-atom">true</span>; <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span> <span class="cm-comment">// Kein Parameter</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">p02</span> <span class="cm-operator">=</span> (<span class="cm-variable">a</span>) <span class="cm-operator">=&gt;</span> <span class="cm-atom">true</span>; <span class="cm-variable">p02</span> <span class="cm-operator">=</span> <span class="cm-variable">a</span> <span class="cm-operator">=&gt;</span> <span class="cm-atom">true</span>; &nbsp; &nbsp;<span class="cm-comment">// Ein Parameter (Klammer optional)</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">p03</span> <span class="cm-operator">=</span> (<span class="cm-variable">a</span>, <span class="cm-variable">b</span>) <span class="cm-operator">=&gt;</span> <span class="cm-atom">true</span>; <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span> &nbsp;<span class="cm-comment">// etc...</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">p04</span> <span class="cm-operator">=</span> (<span class="cm-keyword">ref</span> <span class="cm-variable-3">int</span> <span class="cm-variable">a</span>) <span class="cm-operator">=&gt;</span> <span class="cm-atom">true</span>; <span class="cm-tab" role="presentation" cm-text="	"> </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span> &nbsp;<span class="cm-comment">// Ref oder Out Parameter auch möglich</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 108px;"></div><div class="CodeMirror-gutters" style="display: none; height: 108px;"></div></div></div></pre>
+        <p>
+          <span
+            >Statement Lambdas: theoretisch unbegrenzte Anzahl Statements,
+            idealerweise aber nicht mehr als 2-3 verwenden. Sonst besser eine
+            named Methode inkl. Tests.</span
+          >
+        </p>
+        <p>
+          <img src=".\res\csharp-func-delegate.png" alt="Func Delegate" />
+        </p>
+        <h2 id="closure"><span>Closure</span></h2>
+        <p>
+          <span
+            >Problem: Lambda Expression hat grundsätzlich keinen Zugriff auf die
+            Variablen der umgebenden Methode/Klasse.</span
+          >
+        </p>
+        <p>
+          <span
+            >Lösung Closure: Compiler generiert eine Hilfsklasse, welche die
+            Logik des Delegates enthält, inklusive aller Variablen, auf die das
+            Delegate zugreift.
+          </span>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

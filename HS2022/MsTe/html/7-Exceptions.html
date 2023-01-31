@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>7-Exceptions</title>
+  </head>
+  <body class="typora-export os-windows">
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <h1 id="exceptions"><span>Exceptions</span></h1>
+        <p>
+          <span
+            >Behandeln unerwartete Programmzustände oder Ausnahmeverhalten zur
+            Laufzeit. Best Practices dazu sind</span
+          >
+        </p>
+        <ul>
+          <li>
+            <span
+              >Wenn möglich Vorbedingungen prüfen um Exceptions zu
+              vermeiden</span
+            >
+          </li>
+          <li>
+            <span>Exceptions sind &quot;Fehlercodes&quot; vorzuziehen</span>
+          </li>
+          <li>
+            <span
+              >Konkrete Fehlerbeschreibung: möglichst konkrete Klassen
+              verwenden, möglichst detaillierte Beschreibung des Fehlers</span
+            >
+          </li>
+          <li>
+            <span
+              >Fehlerbeschreibung NIE über &quot;Web-Schnittstellen&quot;
+              übermitteln, offenbart Internas und erhöht die
+              Verletzbarkeit.</span
+            >
+          </li>
+          <li>
+            <span
+              >Wichtig: Aufräumen nach Exceptions! (offene Sockets, File
+              Handles, Transaktionen etc.)</span
+            >
+          </li>
+        </ul>
+        <p>
+          <img src=".\res\csharp-exceptions.png" />
+        </p>
+        <h2 id="beispiel--catch"><span>Beispiel / Catch</span></h2>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">try</span> { ... <span class="cm-variable">something</span> ... }</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">FileNotFoundException</span> <span class="cm-variable">e</span>)<span class="cm-tab" role="presentation" cm-text="	"> </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Exception inklusive Name wenn verwendet</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ <span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-string">"{0} not found"</span>, <span class="cm-variable">e</span>.<span class="cm-variable">FileName</span>) }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">IOException</span>)<span class="cm-tab" role="presentation" cm-text="	"> </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Exception nur mit Typ</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ <span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-string">"IO exception occurred"</span>) }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span><span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span> &nbsp;<span class="cm-comment">// Jegliche Exception</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ <span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-string">"Unknown error occurred"</span>) }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">finally</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ <span class="cm-comment">/* Wird immer ausgeführt */</span> }</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 238px;"></div><div class="CodeMirror-gutters" style="display: none; height: 238px;"></div></div></div></pre>
+        <h2 id="basisklasse-systemexception">
+          <span>Basisklasse System.Exception</span>
+        </h2>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+          style="break-inside: unset"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">Exception</span>: <span class="cm-variable">ISerializable</span>, <span class="cm-variable">_Exception</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Exception</span>(); </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Exception</span>(<span class="cm-variable-3">string</span> <span class="cm-variable">message</span>); </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Exception</span>(<span class="cm-variable-3">string</span> <span class="cm-variable">message</span>, <span class="cm-variable">Exception</span> <span class="cm-variable">innerException</span>);</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">Exception</span> <span class="cm-variable">InnerException</span> { <span class="cm-keyword">get</span>; }<span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Verschachtelung von Exceptions möglich</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">virtual</span> <span class="cm-variable-3">string</span> <span class="cm-variable">Message</span> { <span class="cm-keyword">get</span>; }<span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Fehlermeldung</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">virtual</span> <span class="cm-variable-3">string</span> <span class="cm-variable">Source</span> { <span class="cm-keyword">get</span>; <span class="cm-keyword">set</span>; }<span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-comment">// Name der Applikation, Objekt, Framework </span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">virtual</span> <span class="cm-variable-3">string</span> <span class="cm-variable">StackTrace</span> { <span class="cm-keyword">get</span>; <span class="cm-keyword">set</span>; }<span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-comment">// Methodenaufrufkette als String</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-variable">MethodBase</span> <span class="cm-variable">TargetSite</span> { <span class="cm-keyword">get</span>; }<span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Ausgeführter Codeteil, der den Fehler verursacht</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">public</span> <span class="cm-keyword">override</span> <span class="cm-variable-3">string</span> <span class="cm-variable">ToString</span>();<span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Fehlermeldung und StackTrace als String</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 372px;"></div><div class="CodeMirror-gutters" style="display: none; height: 372px;"></div></div></div></pre>
+        <h2 id="throw"><span>Throw</span></h2>
+        <p>
+          <span
+            >Werfen einer Exception, geschieht implizit bei ungültigen
+            Operationen, bei Methodenaufrufen welche eine unbehandelte Exception
+            werfen oder explizit mittels throw-Statement.</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">throw</span> <span class="cm-keyword">new</span> <span class="cm-variable">Exception</span>(<span class="cm-string">"An error occurred"</span>);</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="" cm-zwsp="">
+</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">try</span> { ... }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">Exception</span> <span class="cm-variable">e</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ <span class="cm-keyword">throw</span> <span class="cm-variable">e</span>; } <span class="cm-tab" role="presentation" cm-text="	">   </span><span class="cm-comment">// beginnt neuen Stack Trace</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{ <span class="cm-keyword">throw</span>; } <span class="cm-tab" role="presentation" cm-text="	"> </span><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-comment">// Strack Trace bleibt erhalten</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 159px;"></div><div class="CodeMirror-gutters" style="display: none; height: 159px;"></div></div></div></pre>
+        <h2 id="suche-nach-catch-klausel">
+          <span>Suche nach Catch-Klausel</span>
+        </h2>
+        <p>
+          <span
+            >Call stack wird rückwärts nach passender Catch Klausel durchsucht.
+            Programmabbruch mit Fehlermeldung und Stack-Trace, falls keine
+            Passende gefunden. (Multicast-) Delegates werden dabei wie normale
+            Methoden behandelt, die nacheinander ausgeführt werden.</span
+          >
+        </p>
+        <p>
+          <img src=".\res\csharp-exceptions-callstack.png" />
+        </p>
+        <h2 id="exception-filters"><span>Exception Filters</span></h2>
+        <p>
+          <span
+            >Catch-Block kann auch nur unter definierten Bedingungen ausgeführt
+            werden. </span
+          ><code>when</code
+          ><span>-Klausel erwartet eine Boolean Expression.</span>
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">try</span> { <span class="cm-variable">Console</span>.<span class="cm-variable">WriteLine</span>(<span class="cm-string">"Drink some beer"</span>) }</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">catch</span> (<span class="cm-variable">Exception</span> <span class="cm-variable">e</span>) <span class="cm-variable">when</span> (<span class="cm-variable-3">DateTime</span>.<span class="cm-variable">Now</span>.<span class="cm-variable">Hour</span> <span class="cm-operator">&lt;</span> <span class="cm-number">16</span>) { <span class="cm-comment">/* Kein Bier vor vier! */</span> }</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 52px;"></div><div class="CodeMirror-gutters" style="display: none; height: 52px;"></div></div></div></pre>
+        <h2 id="unchecked-exceptions"><span>Unchecked Exceptions</span></h2>
+        <p>
+          <span
+            >In C# kann jede Exception auch unbehandelt bleiben. Java benötigt
+            dazu </span
+          ><code>throws</code><span>-Klausel in Methodensignatur.</span>
+        </p>
+        <h2 id="argumente-prüfen"><span>Argumente prüfen</span></h2>
+        <p>
+          <span
+            >Refactoring-stabile Variante um Argumente auf Null-Werte oder Out
+            Of Range zu prüfen:</span
+          >
+        </p>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable-3">string</span> <span class="cm-def">Replicate</span>(<span class="cm-variable-3">string</span> <span class="cm-variable">s</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">nTimes</span>)</span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">if</span> (<span class="cm-variable">s</span> <span class="cm-operator">==</span> <span class="cm-atom">null</span>) </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">throw</span> <span class="cm-keyword">new</span> <span class="cm-variable">ArgumentNullException</span>(<span class="cm-variable">nameof</span>(<span class="cm-variable">s</span>));</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 130px;"></div><div class="CodeMirror-gutters" style="display: none; height: 130px;"></div></div></div></pre>
+        <h2 id="first-chance-exception"><span>First Chance Exception</span></h2>
+        <p>
+          <span
+            >Debugger wird genau an der Stelle angehalten, wo die Exception
+            auftritt. Standardmässig sonst dort, wo das Programm abstürzt.</span
+          >
+        </p>
+        <p>
+          <img src=".\res\csharp-exceptions-firstchance.png" />
+        </p>
+      </div>
+    </div>
+    <div class="typora-export-content">
+      <div id="write" class="">
+        <hr />
+        <h1 id="extension-methods"><span>Extension Methods</span></h1>
+        <p>
+          <span
+            >Erlauben das erweitern von bestehendne Klassen aus Anwendersicht.
+            Die Signatur der Klasse wird jedoch nicht verändert. Zur
+            Deklaration:</span
+          >
+        </p>
+        <ul>
+          <li><span>Methode muss in statischer Klasse sein</span></li>
+          <li><span>Methode muss statisch sein</span></li>
+          <li>
+            <span
+              >Erster Parameter definiert, auf welcher Klasse die Methode
+              verfügbar ist und hat ein </span
+            ><code>this</code><span> Schlüsselwort voranstehend.</span>
+          </li>
+        </ul>
+        <pre
+          class="md-fences md-end-block ty-contain-cm modeLoaded"
+          spellcheck="false"
+          lang="csharp"
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="csharp"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-keyword">class</span> <span class="cm-def">ExtensionMethods</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-keyword">static</span> <span class="cm-variable-3">string</span> <span class="cm-variable">ToStringSafe</span>(<span class="cm-keyword">this</span> <span class="cm-variable-3">object</span> <span class="cm-variable">obj</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-keyword">return</span> <span class="cm-variable">obj</span> <span class="cm-operator">==</span> <span class="cm-atom">null</span> <span class="cm-operator">?</span> <span class="cm-variable-3">string</span>.<span class="cm-variable">Empty</span> : <span class="cm-variable">obj</span>.<span class="cm-variable">ToString</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 182px;"></div><div class="CodeMirror-gutters" style="display: none; height: 182px;"></div></div></div></pre>
+        <p>
+          <span>Der Compiler wandelt den Aufruf von </span
+          ><code>1.ToStringSafe()</code><span> in </span
+          ><code>ExtensionMethods.ToStringSafe(1)</code
+          ><span> um. Typsicherheit ist damit gewährleistet.</span>
+        </p>
+        <p><span>Regeln:</span></p>
+        <ul>
+          <li>
+            <span
+              >Erlaubt auf Klassen, Structs, Interfaces, Delegates, Enumerators
+              und Arrays</span
+            >
+          </li>
+          <li><span>Kein Zugriff auf interne Members</span></li>
+          <li>
+            <span
+              >Methode ist nur sichtbar, wenn der Namespace der beinhaltenden
+              Klasse importiert wurde</span
+            >
+          </li>
+          <li>
+            <span
+              >Bei Konflikt mit einer Methode der Zieklasse verliert die
+              Extension Method immer</span
+            >
+          </li>
+        </ul>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+  </body>
+</html>

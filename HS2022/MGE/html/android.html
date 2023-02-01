@@ -8,8 +8,7 @@
   </head>
   <body class="typora-export os-windows">
     <div class="typora-export-content">
-      <div id="write" class="">
-        <h1 id="android-einführung"><span>Android Einführung</span></h1>
+      <h1 id="android-einführung"><span>Android Einführung</span></h1>
         <p>
           <strong><span>Motivation</span></strong
           ><span
@@ -22,7 +21,9 @@
             Drittanbietern, Konzepte und Tools sind Basis vieler Frameworks.
           </span>
         </p>
-        <p><img src="res\apps-ansaetze.png" referrerpolicy="no-referrer" /></p>
+        <p>
+          <img src="../res/apps-ansaetze.png" referrerpolicy="no-referrer" />
+        </p>
         <h2 id="grundlagen-begriffe"><span>Grundlagen, Begriffe</span></h2>
         <p>
           <strong><span>Android</span></strong
@@ -37,7 +38,7 @@
             wichtiger Services und Apps.</span
           >
         </p>
-        <p><img src="res\android-os.png" referrerpolicy="no-referrer" /></p>
+        <p><img src="../res/android-os.png" referrerpolicy="no-referrer" /></p>
         <p>
           <strong><span>Fragmentierung</span></strong
           ><span>
@@ -48,22 +49,8 @@
           ><span>
             sind nicht zwingend, beispiel Huawei verwendet AOSP. Bieten oft
             komfortablere Alternativen zu Standard-Libraries. Wichtig: Google
-            Play Store. </span
-          ><strong><span>Rückwärtskompatibilität</span></strong
-          ><span> </span><code>minSdkVersion</code
-          ><span>: Ältere Geräte können meine App nicht nutzen. </span
-          ><code>maxSdkVersion</code><span>: nutzlos? </span
-          ><code>targetSdkVersion</code
-          ><span
-            >: gibt an, auf welche Version die App getestet ist und sicher
-            stabil läuft. </span
-          ><code>compileSdkVersion</code
-          ><span
-            >: wird so kompiliert, beinhaltet neue Funktionen, aber diese werden
-            nicht verwendet (?)</span
-          >
-        </p>
-        <p>
+            Play Store.
+          </span>
           <span
             >Wird Code eines API Level verwendet, der höher ist als die
             minSdkVersion, muss das verwendete Device abgefragt und ein Fallback
@@ -95,8 +82,8 @@
           </li>
           <li>
             <span
-              >Setting für verwendete Java SDK in Android Studio: Optionen
-              -&gt;Build, Execution, Deployment -&gt; Build Tools -&gt; Gradle..
+              >Setting für verwendete Java SDK in Android Studio: Optionen -&gt;
+              Build, Execution, Deployment -&gt; Build Tools -&gt; Gradle..
               Einstellung Gradle JDK auf &quot;Android Studio default JDK
               Version 11.0.13&quot;.</span
             >
@@ -147,7 +134,7 @@
         </p>
         <p>
           <img
-            src="res/android-app-struktur.png"
+            src="../res/android-app-struktur.png"
             referrerpolicy="no-referrer"
           />
         </p>
@@ -172,11 +159,12 @@
           ><span
             >: Created &gt;&gt; Started &gt;&gt; Paused &gt;&gt; Resumed
             &gt;&gt; Stopped &gt;&gt; Destroyed. </span
-          ><strong><span>Callbacks</span></strong
-          ><span
-            >: onCreate, onStart, onRestart, onResume, onPause, onStop,
-            onDestroy.</span
-          >
+          ><strong><span>Callbacks-Methoden</span></strong
+          ><span>: onCreate, onStart, onRestart, onResume </span
+          ><em><span>(UI reagiert auf Inputs)</span></em
+          ><span>, onPause, onStop, onDestroy. </span
+          ><em><span>Sind virtuell mit Standardimplementation</span></em
+          ><span>.</span>
         </p>
         <p>
           <span>Typisch: </span><strong><span>Datensicherung</span></strong
@@ -254,18 +242,21 @@
         </p>
         <h2 id="intents"><span>Intents</span></h2>
         <p>
-          <span
-            >Dienen zur Kommunikation zwischen Komponenten, wechseln zwischen
-            Activities. </span
+          <span>Dienen zur Kommunikation zwischen </span
+          ><strong><span>Komponenten</span></strong
+          ><span>, wechseln zwischen Activities. </span
           ><strong><span>Expliziter</span></strong
           ><span>
-            Intent: Zeige einen spezifischen Screen, normal eigene App. </span
+            Intent: Aufruf einer bestimmten Komponente, über Typ identifiziert.
+            Meist eigene App. </span
           ><strong><span>Impliziter</span></strong
           ><span>
-            Intent: Zeige eine passende Komponente für die aktuelle Aktion,
-            normal fremde App. Registrieren auf implizite Intents im Manifest.
-            Bei Verwendung immer erst prüfen, ob eine passende App vorhanden ist
-            mit </span
+            Intent: Zeige eine beliebige passende Komponente für die aktuelle
+            Aktion, über Filter identifiziert. Meist fremde App.
+          </span>
+          <span
+            >Registrieren auf implizite Intents im Manifest. Bei Verwendung
+            immer erst prüfen, ob eine passende App vorhanden ist mit </span
           ><code
             >bool hasReceiver = intent.resolveActivity(getPackageManager()) !=
             null;</code
@@ -360,20 +351,7 @@
             gemacht und ein Fallback definiert werden. Um das zu vermeiden, gibt
             es </span
           ><strong><span>Android Jetpack / AndroidX</span></strong
-          ><span
-            >. Erweitert die Android SDK, wird unabhängig von Android
-            entwickelt. Eigene Versionierung. Verwendete Klassen müssen nur
-            erben von Komponenten der AppCompat Jetpack-Library. </span
-          ><code>AppCompatActivity</code><span> statt </span
-          ><code>Activity</code><span>, </span><code>AppCompatButton</code
-          ><span> statt </span><code>Button</code
-          ><span
-            >, etc etc. Hiess früher Android Support Libraries, Namespace ist </span
-          ><code>androidx</code
-          ><span
-            >. Integration durch Android Studio automatisch in neuen
-            Projekten.</span
-          >
+          ><span> (siehe W07).</span>
         </p>
         <h1 id="android-gui-programmierung">
           <span>Android GUI Programmierung</span>
@@ -414,9 +392,10 @@
           ><code>wrap_content</code><span> oder </span><code>match_parent</code
           ><span>
             (kann über einen Screen hinausgehen). Jede Eigenschaft mit </span
-          ><strong><span>Präfix &quot;_layout&quot;</span></strong
-          ><span> dient als Wunsch an das Elternelement (</span
-          ><code>layout_width, layout_height, layout_margin</code
+          ><strong
+            ><span>Präfix &quot;_layout&quot; dient als Wunsch</span></strong
+          ><span> an das Elternelement (</span
+          ><code>layout_width, layout_height, layout_margin, layout_weight</code
           ><span>). </span><code>padding</code
           ><span>
             wird auf Element selber gesetzt. Verschiedene Abmessungen pro
@@ -426,7 +405,7 @@
           ><span> für reale Grösse.</span>
         </p>
         <p>
-          <img src="res/layout-boxmodel.png" referrerpolicy="no-referrer" />
+          <img src="../res/layout-boxmodel.png" referrerpolicy="no-referrer" />
         </p>
         <p>
           <strong><span>LinearLayout:</span></strong
@@ -460,7 +439,10 @@
           <span>Constraint-Varianten:</span>
         </p>
         <p>
-          <img src="res/android-constraints.png" referrerpolicy="no-referrer" />
+          <img
+            src="../res/android-constraints.png"
+            referrerpolicy="no-referrer"
+          />
         </p>
         <p>
           <strong><span>ScrollView</span></strong
@@ -476,7 +458,7 @@
         </h2>
         <p>
           <img
-            src="res/android-adapterlayout.png"
+            src="../res/android-adapterlayout.png"
             referrerpolicy="no-referrer"
           />
         </p>
@@ -531,18 +513,21 @@
           ><span>
             (Jetpack): ViewRecycling integriert, ViewHolder Verwendung wird
             erzwungen. Weniger Overhead im eigenen Code. Ableitung von Basis </span
-          ><code>RecyclerView.Adapter&lt;ViewHolder&gt;</code
+          ><strong><code>RecyclerView.Adapter&lt;ViewHolder&gt;</code></strong
           ><span>
             benötigt zwingend eigenen ViewHolder Typen bei Implementierung.
-            Weiter ist Überschreiben von 3 Methoden nötig. </span
-          ><code>getItemCount()</code
+            Weiter ist Überschreiben von 3 Methoden nötig.
+          </span>
+          <code>getItemCount()</code
           ><span>
-            implementiert, wie viele Objekte in der Liste vorhanden sind. </span
-          ><code>onCreateViewHolder(ViewGroup parent, int vt)</code
+            implementiert, wie viele Objekte in der Liste vorhanden sind
+          </span>
+          <code>onCreateViewHolder(ViewGroup parent, int vt)</code
           ><span>
             erzeugt ViewHolder und generiert Layout, holt Controls ab. Kein
-            Erzeugen der Views mehr. </span
-          ><code>onBindVewHolder(ViewHolder holder, int position)</code
+            Erzeugen der Views mehr.
+          </span>
+          <code>onBindVewHolder(ViewHolder holder, int position)</code
           ><span>
             füllt die Informationen aus den darzustellenden Listenelementen in
             den ViewHolder ab.</span
@@ -656,7 +641,7 @@
         </p>
         <p>
           <img
-            src="res/fragment_lifecycle.png"
+            src="../res/fragment_lifecycle.png"
             referrerpolicy="no-referrer"
             alt="fragment lifecycle"
           />
@@ -765,7 +750,7 @@
           class="md-fences md-end-block ty-contain-cm modeLoaded"
           spellcheck="false"
           lang="xml"
-        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">resources</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">style</span> <span class="cm-attribute">name</span>=<span class="cm-string">"AppTheme"</span> <span class="cm-attribute">parent</span>=<span class="cm-string">"…"</span><span class="cm-tag cm-bracket">&gt;</span> <span class="cm-comment">&lt;!-- Parent definiert Grund-Theme --&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:textViewStyle"</span><span class="cm-tag cm-bracket">&gt;</span>@style/MyText<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span> <span class="cm-comment">&lt;!-- Macht MyText Standard f. TextView --&gt;</span> </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">style</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">style</span> <span class="cm-attribute">name</span>=<span class="cm-string">"MyText"</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:textSize"</span><span class="cm-tag cm-bracket">&gt;</span>24sp<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:background"</span><span class="cm-tag cm-bracket">&gt;</span>#ff9999<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:padding"</span><span class="cm-tag cm-bracket">&gt;</span>8dp<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:layout_margin"</span><span class="cm-tag cm-bracket">&gt;</span>8dp<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:gravity"</span><span class="cm-tag cm-bracket">&gt;</span>center<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">style</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">resources</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 338px;"></div><div class="CodeMirror-gutters" style="display: none; height: 338px;"></div></div></div></pre>
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="xml"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">resources</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">style</span> <span class="cm-attribute">name</span>=<span class="cm-string">"AppTheme"</span> <span class="cm-attribute">parent</span>=<span class="cm-string">"…"</span><span class="cm-tag cm-bracket">&gt;</span> <span class="cm-comment">&lt;!-- Parent definiert Grund-Theme --&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:textViewStyle"</span><span class="cm-tag cm-bracket">&gt;</span>@style/MyText<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span> <span class="cm-comment">&lt;!-- Macht MyText Standard f. TextView --&gt;</span> </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">style</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">style</span> <span class="cm-attribute">name</span>=<span class="cm-string">"MyText"</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:textSize"</span><span class="cm-tag cm-bracket">&gt;</span>24sp<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:background"</span><span class="cm-tag cm-bracket">&gt;</span>#ff9999<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:padding"</span><span class="cm-tag cm-bracket">&gt;</span>8dp<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:layout_margin"</span><span class="cm-tag cm-bracket">&gt;</span>8dp<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;</span><span class="cm-tag">item</span> <span class="cm-attribute">name</span>=<span class="cm-string">"android:gravity"</span><span class="cm-tag cm-bracket">&gt;</span>center<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">item</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">style</span><span class="cm-tag cm-bracket">&gt;</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tag cm-bracket">&lt;/</span><span class="cm-tag">resources</span><span class="cm-tag cm-bracket">&gt;</span></span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 312px;"></div><div class="CodeMirror-gutters" style="display: none; height: 312px;"></div></div></div></pre>
         <p>
           <strong><span>Einbindung</span></strong
           ><span>
@@ -815,7 +800,7 @@
         </p>
         <p>
           <img
-            src="res/materialdesign-mindmap.png"
+            src="../res/materialdesign-mindmap.png"
             referrerpolicy="no-referrer"
             alt="material design"
           />
@@ -862,8 +847,8 @@
           ><code>@style/TextAppearance.MaterialComponents.Headline3</code
           ><span>.</span>
         </p>
-        <p>
-          <img src="res/android-material.png" referrerpolicy="no-referrer" />
+        <p class="pagebreak">
+          <img src="../res/android-material.png" referrerpolicy="no-referrer" />
         </p>
         <p>
           <span
@@ -965,25 +950,28 @@
           <span>Varianten / Mechanismen</span>
         </h3>
         <p>
-          <span>App-Intern: </span>
+          <em><span>App-Intern:</span></em>
           <strong><span>App-Spezifische Dateien:</span></strong
           ><span>
-            Beliebiges Format. Werden beim Deinstallieren der App gelöscht.
-            Geschützt vor fremdem Zugriff. Bsp: Domänenobjekte als JSON. Zugriff
-            via File Klasse und Methoden auf Context: </span
+            Beliebige App-interne Daten, eigene Dateiformate, Domänenobjekte als
+            JSON. Werden beim Deinstallieren der App gelöscht. Geschützt vor
+            fremdem Zugriff. Zugriff via File API und Methoden auf Context: </span
           ><code
             >getFilesDir, getCacheDir, getExternalFilesDir,
             getExternalCacheDir</code
           >
           <strong><span>Preferences:</span></strong
-          ><span> Key-Value Paare, Bsp: Benutzereinstellungen. </span>
+          ><span>
+            Key-Value Paare, einfache Werte. Bsp: Benutzereinstellungen.
+            SharedPreferences API</span
+          >
           <strong><span>Datenbanken</span></strong
           ><span
             >: strukturierte Daten, Bsp: umfangreiche Domänenobjekte. Varianten
             SQLite direkt oder Abstraktion via OR Mapper RoomDb, basierend auf
             Java Annotations.</span
           >
-          <span>App-übergreifend: </span>
+          <em><span>App-übergreifend:</span></em>
           <strong><span>Medien:</span></strong
           ><span>
             Bilder, Dokumente, Musik und Videos. Ohne UI-Dialog, benötigt ggf.
@@ -993,9 +981,9 @@
           ><code>MediaStore</code><span> Content Provider.</span>
           <strong><span>Dokumente:</span></strong
           ><span>
-            Beliebige Dateiformate. Mit UI-Dialog (delegiert an andere App - wo
-            speichern?), keine Berechtigungen benötigt. Bleiben bei
-            Deinstallation erhalten. Zugriff via Storage Access Framework,
+            Beliebige Dateiformate (pdf, zip, etc). Mit UI-Dialog (delegiert an
+            andere App - wo speichern?), keine Berechtigungen benötigt. Bleiben
+            bei Deinstallation erhalten. Zugriff via Storage Access Framework,
             Kombination aus Intents und CPs.</span
           >
         </p>
@@ -1026,9 +1014,9 @@
           ><code>/sdcard/Music</code><span>, </span
           ><code>/sdcard/Pictures</code>
         </p>
-        <p>
+        <p class="pagebreak">
           <img
-            src="res/speicher-uebersicht.png"
+            src="../res/speicher-uebersicht.png"
             referrerpolicy="no-referrer"
             alt="Speicherarten"
           />
@@ -1168,7 +1156,7 @@
             Feature, Presentation Patterns (MVC, MVP, MVVM)</span
           >
         </p>
-        <p><img src="res/schichten.png" alt="Schichten" style="zoom: 67%" /></p>
+        <p class="pagebreak"><img src="../res/schichten.png" referrerpolicy="no-referrer" /></p>
         <p>
           <span
             >Fundament der Software soll nicht Daten sein, sondern Domäne. In
@@ -1180,7 +1168,7 @@
             Details&quot; sind aussen. Domäne bildet den Kern.</span
           >
         </p>
-        <p><img src="res/clean_code.png" alt="Ringe" style="zoom: 50%" /></p>
+        <p><img src="../res/clean_code.png" referrerpolicy="no-referrer" /></p>
         <p>
           <strong><span>Ziele in MGE</span></strong
           ><span
@@ -1212,10 +1200,9 @@
             aktualisiert das nicht sichtbar ist.
           </span>
         </p>
-
-        <p class="pagebreak">
+        <p>
           <img
-            src="res/android-observerpattern.png"
+            src="../res/android-observerpattern.png"
             referrerpolicy="no-referrer"
           />
         </p>
@@ -1228,11 +1215,10 @@
         </p>
         <h2 id="grundlagen-architektur"><span>Grundlagen Architektur</span></h2>
         <p>
-          <img src="res/mvc.png" alt="MVC" style="zoom: 50%" /><span> </span
-          ><img src="res/mvp.png" alt="MVP" style="zoom: 50%" /><img
-            src="res/mvvm.png"
-            alt="MVVM"
-            style="zoom: 50%"
+          <img src="../res/mvc.png" referrerpolicy="no-referrer" /><span> </span
+          ><img src="../res/mvp.png" referrerpolicy="no-referrer" /><img
+            src="../res/mvvm.png"
+            referrerpolicy="no-referrer"
           />
         </p>
         <p>
@@ -1294,7 +1280,7 @@
           class="md-fences md-end-block ty-contain-cm modeLoaded"
           spellcheck="false"
           lang="java"
-        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="java"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 10.9999px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">MyApplication</span> <span class="cm-keyword">extends</span> <span class="cm-variable">Application</span> <span class="cm-keyword">implements</span> <span class="cm-variable">Application</span>.<span class="cm-variable">ActivityLifecycleCallbacks</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-meta">@Override</span> <span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-variable">onCreate</span>() { </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span> &nbsp; &nbsp;<span class="cm-keyword">super</span>.<span class="cm-variable">onCreate</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">registerActivityLifecycleCallbacks</span>(<span class="cm-keyword">this</span>); <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-comment">// Wichtig!</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-meta">@Override</span> <span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-variable">onActivityCreated</span>(<span class="cm-variable">Activity</span> <span class="cm-variable">activity</span>) { <span class="cm-comment">/* ... */</span> }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 237px;"></div><div class="CodeMirror-gutters" style="display: none; height: 237px;"></div></div></div></pre>
+        ><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="java"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 11px; left: 4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">MyApplication</span> <span class="cm-keyword">extends</span> <span class="cm-variable">Application</span> <span class="cm-keyword">implements</span> <span class="cm-variable">Application</span>.<span class="cm-variable">ActivityLifecycleCallbacks</span></span></pre></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">{</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-meta">@Override</span> <span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-variable">onCreate</span>() { </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span> &nbsp; &nbsp;<span class="cm-keyword">super</span>.<span class="cm-variable">onCreate</span>();</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp;<span class="cm-variable">registerActivityLifecycleCallbacks</span>(<span class="cm-keyword">this</span>); <span class="cm-tab" role="presentation" cm-text="	">  </span><span class="cm-comment">// Wichtig!</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp;  }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-meta">@Override</span> <span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-variable">onActivityCreated</span>(<span class="cm-variable">Activity</span> <span class="cm-variable">activity</span>) { <span class="cm-comment">/* ... */</span> }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 211px;"></div><div class="CodeMirror-gutters" style="display: none; height: 211px;"></div></div></div></pre>
         <h2 id="context"><span>Context</span></h2>
         <p>
           <span
@@ -1312,11 +1298,7 @@
           </span>
         </p>
         <p>
-          <img
-            src="res/context-overview.png"
-            alt="Context table"
-            style="zoom: 50%"
-          />
+          <img src="../res/context-overview.png" referrerpolicy="no-referrer" />
         </p>
         <h2 id="brodacasts"><span>Brodacasts</span></h2>
         <p>
@@ -1453,7 +1435,7 @@
         <p>
           <span>Inhalt eines APK Files (APK Analyzer in Android Studio):</span
           ><img
-            src="res/android-apk-analyzed.png"
+            src="../res/android-apk-analyzed.png"
             referrerpolicy="no-referrer"
           />
         </p>
@@ -1462,7 +1444,7 @@
             >DEX Format: Optimierte Bytecode-Sprache für Mobile-CPUs. Inhalt </span
           ><code>classes.dex</code><span>:</span>
           <img
-            src="res/android-apk-analyzed-code.png"
+            src="../res/android-apk-analyzed-code.png"
             referrerpolicy="no-referrer"
           />
         </p>
@@ -1477,9 +1459,9 @@
           ><span> erzeugt </span><code>R.java</code
           ><span> Klasse sowie alle möglichen Ressourcen.</span>
         </p>
-        <p>
+        <p class="pagebreak">
           <img
-            src="res/android-buildprozess.png"
+            src="../res/android-buildprozess.png"
             referrerpolicy="no-referrer"
           />
         </p>
@@ -1492,7 +1474,7 @@
           >
         </p>
         <p>
-          <img src="res/android-build-v1.png" referrerpolicy="no-referrer" />
+          <img src="../res/android-build-v1.png" referrerpolicy="no-referrer" />
         </p>
         <p>
           <strong><span>Android Runtime ART 1.0</span></strong
@@ -1508,7 +1490,7 @@
           >
         </p>
         <p>
-          <img src="res/android-build-v2.png" referrerpolicy="no-referrer" />
+          <img src="../res/android-build-v2.png" referrerpolicy="no-referrer" />
         </p>
         <p>
           <strong><span>ART 2.0:</span></strong
@@ -1520,8 +1502,8 @@
             Google Play Store verteilt werden.</span
           >
         </p>
-        <p>
-          <img src="res/android-build-v3.png" referrerpolicy="no-referrer" />
+        <p class="pagebreak">
+          <img src="../res/android-build-v3.png" referrerpolicy="no-referrer" />
         </p>
         <h1 id="android-jetpack"><span>Android Jetpack</span></h1>
         <p>
@@ -1551,7 +1533,7 @@
         </p>
         <p>
           <img
-            src="res/android-jetpack-overview.png"
+            src="../res/android-jetpack-overview.png"
             referrerpolicy="no-referrer"
             alt="Jetpack Komponenten Stand 2018"
           />
@@ -1581,7 +1563,7 @@
             Methodenaufrufe. Bietet Typ- und Null-Sicherheit. Erzeugt
             Code-Klassen beim Build. Automatische Benennung: </span
           ><code>activity_main.xml</code><span> erzeugt </span
-          ><code>ActivityMainBinding</code><span> Objekt.</span>
+          ><code>ActivityMainBinding</code><span>-Objekt.</span>
         </p>
         <pre
           class="md-fences md-end-block ty-contain-cm modeLoaded"
@@ -1605,9 +1587,9 @@
             ViewModel) vereinfachen. Variablen im XML generieren, die im Code
             via </span
           ><code>binding</code
-          ><span>
-            verknüpft werden können. Registriert das Layout als Observer der
-            Daten (Achtung: Daten sind deshalb aber nicht zwingend
+          ><span
+            >-Objekt verknüpft werden können. Registriert das Layout als
+            Observer der Daten (Achtung: Daten sind deshalb aber nicht zwingend
             Observable!)</span
           >
         </p>
@@ -1723,7 +1705,9 @@
             muss vom XML Attribut auf gegebenem Objekt unterstützt werden. mit </span
           ><code>@={user.age}</code><span>.</span>
         </p>
-        <h2 id="mvvm"><span>MVVM</span></h2>
+        <h2 id="mvvm---model-view-viewmodel">
+          <span>MVVM - Model View ViewModel</span>
+        </h2>
         <p>
           <strong><span>View:</span></strong
           ><span> grafische Oberfläche und Benutzereingaben. </span
@@ -1738,7 +1722,12 @@
           <strong><span>Vorteile:</span></strong
           ><span>
             ViewModel einfach testbar, View frei von Logik, Änderungen am Model
-            haben keine direkten Auswirkungen auf die View.</span
+            haben keine direkten Auswirkungen auf die View. </span
+          ><strong><span>Nachteile:</span></strong
+          ><span>
+            Data Binding basiert auf Code Generierung (langsamer im Compilen,
+            schwerer zu debuggen). Gefahr, dass Logik in der View platziert wird
+            durch die Expression Language.</span
           >
         </p>
         <p>
@@ -1762,9 +1751,9 @@
             gehen somit verloren.</span
           >
         </p>
-        <p class="pagebreak">
+        <p>
           <img
-            src="res/android-lifecycleproblem.png"
+            src="../res/android-lifecycleproblem.png"
             referrerpolicy="no-referrer"
           />
         </p>
@@ -1820,7 +1809,10 @@
           >
         </p>
         <p>
-          <img src="res/android-lifecycle.png" referrerpolicy="no-referrer" />
+          <img
+            src="../res/android-lifecycle.png"
+            referrerpolicy="no-referrer"
+          />
         </p>
         <p>
           <span>Lifecycle hält intern den eigenen State als Enum (siehe </span
@@ -1864,7 +1856,7 @@
         </p>
         <p>
           <img
-            src="res/android-activity-livedata.png"
+            src="../res/android-activity-livedata.png"
             referrerpolicy="no-referrer"
           />
         </p>
@@ -1880,9 +1872,8 @@
         </p>
         <p>
           <img
-            src="res/android-standardarchitektur.png"
-            alt="Standardarchitektur"
-            style="zoom: 33%"
+            src="../res/android-standardarchitektur.png"
+            referrerpolicy="no-referrer"
           />
         </p>
       </div>

@@ -1,0 +1,28 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{ {./res/} }
+\usepackage{hyperref}
+\title{Secure Software, W00 Python venv}
+\author{Luzia Kündig}
+\begin{document}
+
+\maketitle
+
+\subsubsection*{How do you exit your current virtual environment?}
+
+By typing \verb|deactivate| inside the shell.
+
+\subsubsection*{What would you do, if the software is a python2 software instead of python3?}
+
+Either run it using a Python2 interpreter or convert it to Python3. The different major versions are not compatible. There are methods to call python2 scripts from within python3 code, but they rely on starting a new process with the right interpreter.
+
+\subsubsection*{Explain the purpose of Pipfile and Pipfile.lock from the GitHub Repo}
+
+The \verb|Pipfile| contains concrete requirements for a python application and is populated manually by the developer. These requirements include a package's source as well as loose version constraints. It also allows grouping of referenced packages, to separate dev-dependencies for example. 
+
+Detailed information of the environment, meaning all installed packages with pinned versions and more details, will be stored in a \verb|pipfile.lock| which is generated using the command \verb|pipenv lock|.
+
+Source: \url{https://github.com/pypa/pipfile}
+
+\end{document}

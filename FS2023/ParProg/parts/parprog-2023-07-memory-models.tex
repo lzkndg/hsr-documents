@@ -1,0 +1,34 @@
+\section{Week 7 Memory Models}
+
+\subsection{Problem Causes}
+
+\subsection{Atomicity}
+
+\subsubsection*{Atomic Base Types (Boolean, Integer, Long, Reference)}
+
+\subsubsection*{getAndSet}
+\verb|boolean locked|
+
+\verb|locked.getAndSet(true)| always returns the initial value read.
+
+\verb|while(locked.getAndSet(true)) {}| loops until the value of locked is false.
+
+\subsubsection*{CompareAndSet}
+
+\subsubsection{Optimistic Synchronization}
+\begin{verbatim}
+    do {
+        oldValue = var.get();
+        newValue = calculateChanges(oldValue);
+    } while (!var.compareAndSet(oldValue, newValue));
+\end{verbatim}
+
+\subsubsection*{CompareAndExchange}
+like compare and set, returns current in any case
+
+\subsubsection*{updateAndGet}
+
+
+\subsection{Visibility}
+
+\subsection{Ordering}

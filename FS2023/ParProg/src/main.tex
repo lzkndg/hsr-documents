@@ -1,8 +1,10 @@
 \documentclass[11pt, a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{float}
 \graphicspath{ {./res/} }
 \usepackage{hyperref}
+\usepackage{dirtree}
 \title{Parallel Programming, FS2023}
 \author{Luzia Kündig}
 \begin{document}
@@ -12,9 +14,10 @@
 \include{parts/parprog-2023-01-introduction.tex}
 \include{parts/parprog-2023-02-monitor-synchronization.tex}
 \include{parts/parprog-2023-03-synchronization-primitives.tex}
-\include{parts/parprog-2023-04.tex}
-\include{parts/parprog-2023-05.tex}
-\include{parts/parprog-2023-06.tex}
+\include{parts/parprog-2023-04-dangers-of.tex}
+\include{parts/parprog-2023-05-thread-pools.tex}
+\include{parts/parprog-2023-06-asynchronous.tex}
 \include{parts/parprog-2023-07-memory-models.tex}
+\include{parts/parprog-2023-00-snippets}
 
 \end{document}

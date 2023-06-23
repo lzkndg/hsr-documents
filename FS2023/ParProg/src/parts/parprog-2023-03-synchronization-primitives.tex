@@ -1,0 +1,106 @@
+\section{Week 3 Synchronization Primitives}
+
+\subsection{Semaphores}
+
+Is in essence a counter which defines the number of free resources, coupled with operations to adjust that record \emph{safely}.
+
+\texttt{new Semaphore(number);}
+
+General Semaphore (0-n) vs. Binary Semaphore (Mutex, 0 or 1). Fairness can be enforced using FIFO waiting queue, slower than non-fair version:
+
+\texttt{new Semaphore(number, true);}
+
+\begin{description}
+  \item[acquire()] acquire a permit, decrement counter of available resources. Wait if none is available. Thread is disabled for scheduling and lies dormant until it can acquire the semaphore or is interrupted.
+  \item[release()] free a permit, increment counter of available resources, notifies waiting threads. \textit{does not confirm that acquire() has been called before.}
+\end{description}
+
+\subsubsection*{Implementation using Monitor}
+\begin{verbatim}
+  public class Semaphore {
+    private int value;
+
+    public Semaphore(int initial) {
+      value = initial;
+    }
+    public synchronized void acquire() throws InterruptedException {
+      while (value <= 0) { wait(); }
+      value--;
+    }
+    public synchronized void release() {
+      value++;
+      notify();
+    }
+  }
+\end{verbatim}
+
+\subsection{Lock and Condition}
+
+Uses a \texttt{ReentrantLock}, which is \textit{owned} by the thread that last successfully locked and not yet unlocked it. Always follow a successful \texttt{lock} with a \texttt{try / finally} block to ensure it is unlocked in case of an exception.
+
+\texttt{Conditions} can be created from an existing ReentrantLock.
+
+\begin{verbatim}
+  private Lock monitor = new ReentrantLock(true);
+  private Condition nonFull = monitor.newCondition();
+  private Condition nonEmpty = monitor.newCondition();
+
+  public void put(T item) throws InterruptedException {
+    monitor.lock();
+    try {
+      while (queue.size() == Capacity) { nonFull.await(); }
+      queue.add(item);
+      nonEmpty.signal();
+    } finally { monitor.release(); }
+  }
+\end{verbatim}
+
+\subsection{Read/Write Locks}
+
+Goal: allow parallel read access but mutually exclusive write access.
+
+\begin{verbatim}
+  ReadWriteLock rwLock = new ReentrantReadWriteLock(true);
+  rwLock.readLock().lock();
+  // read only access
+  rwLock.readLock().unlock();
+
+  rwLock.writeLock().lock();
+  // write and read access
+  rwLock.writeLock().unlock();
+\end{verbatim}
+
+\subsection{Count Down Latch}
+Car Race example:
+
+\begin{verbatim}
+  var ready = new CountDownLatch(10); // number of cars
+  var start = new CountDownLatch(1);  // start signal given once
+
+  //car
+  ready.countDown(); // register for race
+  start.await();     // wait for start
+
+  //race control
+  ready.await();      // wait until all cars are ready
+  start.countDown();  // start signal
+\end{verbatim}
+
+\subsection{Cyclic Barrier}
+
+Reusable synchronization point for a given amount of threads that wait.
+
+\begin{verbatim}
+  var start = new CyclicBarrier(10); // number of cars
+  
+  // car
+  start.await(); // wait for everyone to be ready
+\end{verbatim}
+
+\subsection{Exchanger}
+Call blocks until another thread also calls exchange, returns argument of the other thread.
+
+\begin{verbatim}
+  var exchanger = new Exchanger<Integer>();
+  int out = exchanger.exchange(in);
+\end{verbatim}

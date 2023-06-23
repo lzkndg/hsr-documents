@@ -1,0 +1,33 @@
+\section{Week 5 Thread Pools}
+
+Downsides of using many threads include
+\begin{itemize}
+    \item longer time intervals before the same thread is scheduled again
+    \item start and termination of threads has some overhead
+    \item number of possible threads is limited
+    \item Memory cost: Single stack for each thread
+    \item full register-backup at preemption
+\end{itemize}
+
+A possible solution strategy is to allow for high parallelism in the problem space, but use a limited number of threads (\# threads >= \# processors).
+
+\begin{description}
+  \item[Tasks] define potentially parallel work packages that are \textit{independent}. These tasks can be queued and executed by different worker threads. Number of these threads (pool size) can be adapted to the system. Any task must complete execution before its worker thread can start another task.
+  \item[Future Values] are modelled with their own object type. \texttt{Future} in Java, \texttt{Promise} in JavaScript, \texttt{Task} in .NET
+  
+  Starting a task returns a future value that can be waited on using a method call.
+\end{description}
+
+\subsection{Java Fork Join Pool}
+
+\subsection{.NET TPL: Task Parallel Library}
+
+\begin{description}
+  \item[Exception in threads] terminates the program.
+  \item[Fairness flag] not available.
+  \item[Lock\&Condition] not available.
+  \item[ReadWriteLockSlim] for upgradeable Read/Write Lock.
+  \item[Semaphores] can be used at OS level.
+  \item[Mutex] binary semaphore at OS level
+  \item[Collections] are not thread safe, except \texttt{System.Collections.Concurrent} 
+\end{description}

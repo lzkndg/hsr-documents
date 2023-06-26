@@ -1,0 +1,60 @@
+\section{Cluster Parallelisierung}
+
+Cluster weisen spezielle Eigenschaften auf. Erstens gibt es nur innerhalb eines Nodes Shared Memory und nicht über die Grenzen eines Nodes hinweg. Zweitens sind Cluster durch die grosse Anzahl von General Purpose CPUs sehr gut für "allgemeine" Rechenaufgaben geeignet. Im Allgemeinen wird der Austausch von Informationen in Clustern mit Dateien oder über Sockets bewerkstelligt.
+
+
+\textbf{Message Passing Interface (MPI)}  MPI ist ein Industriestandard einer Bibliothek für Cluster- Anwendungen. MPI ist sogenanntes SPMD (Single Program Multiple Data), da jeder Node das gleiche Programm mit anderen Daten ausführt.
+
+\begin{lstlisting}[style=csharp]
+int main(int argc, char * argv[]) {
+int rank, size;
+
+// Broadcast arguments to processes
+MPI_Init(&argc, &argv);
+// rank=number of proc, size=N
+MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+// main task to execute
+if (rank % 2 == 0) 
+{
+	int value = rank;
+    MPI_Send(&value, 1, MPI_INT, (rank+1), 0, MPI_COMM_WORLD);
+} 
+if (rank % 2 == 1) {
+    int value;
+    MPI_Recv(&value, 1, MPI_INT, (rank-1), 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    printf("%i received by %i \n", value, rank);
+}
+// clean up MPI Environment
+MPI_Finalize();
+}
+\end{lstlisting}
+
+\subsection{MPI API}
+
+\begin{lstlisting}[style=csharp]
+MPI_Send(&value, 1, MPI_INIT, receiverRank, tag, MPI_COMM_WORLD);
+MPI_Recv(&value, 1, MPI_INIT, senderRank, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+MPI_Allreduce(&value, &total, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
+MPI_Bcast(void* data, int count, MPI_Datatype datatype, int root, MPI_COMM_WORLD);
+MPI_Reduce(&value, &total, 1, MPI_INT, MPI_SUM, , receiverRank, MPI_COMM_WORLD);
+\end{lstlisting}
+
+\section{Hybrid Cluster Parallelisierung}
+
+\subsection{Amdahls's Law}
+$T$ = Total time, $p$ = Teil des Programmes, welcher Parallelisiert werden kann.
+
+\[ T = (1-p) * T + T_p \]
+
+If we can paralleize the p fraction using N processors.
+
+\[ SpeedUp= \frac{T}{\frac{T*p}{N}+(1-p)T} = \frac{1}{1-p+ \frac{p}{N}} = \frac{1}{s+\frac{p}{N}} \]
+
+\[ Efficiency = \frac{T}{N * T_N} \]
+
+\subsection{Open Multi-Processing (OpenMP)}
+
+
+

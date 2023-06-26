@@ -1,0 +1,102 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{float}
+
+\usepackage{cmbright}
+\usepackage[T1]{fontenc}
+
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage[ngerman]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{subfiles}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{multicol}
+
+% compact items
+\setlength{\parindent}{0cm}
+\setlength{\columnseprule}{2pt}
+
+\graphicspath{ {res/} }
+\geometry{top=0.4cm,left=0.4cm,right=0.4cm,bottom=0.4cm}
+
+\newcommand{\SubItem}[1]{
+	{\setlength\itemindent{15pt} \item[-] #1}
+}
+
+\definecolor{lightgreen}{RGB}{179, 225, 172}
+\definecolor{green}{RGB}{65, 163, 23}
+\definecolor{darkgreen}{RGB}{4, 99, 7}
+
+\titleformat{\section}[block]
+	{\normalfont\LARGE\bfseries}
+	{}
+	{0pt}
+	{\colorsection}
+\titlespacing{\section}{0pt}{0.1ex}{0.1ex}
+
+\newcommand{\colorsection}[1]{%
+	\colorbox{darkgreen!40}{\parbox{0.99\linewidth}{\color{black}\thesection\ #1}}}
+
+\titlespacing*{\section}
+{0ex}{0pt}{0pt}
+
+\titleformat{\subsection}[block]
+	{\normalfont\LARGE\bfseries}
+	{}
+	{0pt}
+	{\colorsubsection}
+\titlespacing*{\subsection}{0pt}{0.1ex}{0.1ex}
+
+\newcommand{\colorsubsection}[1]{%
+	\colorbox{green!40}{\parbox{0.99\linewidth}{\color{black}\thesubsection\ #1}}}
+
+\titleformat{\subsubsection}[block]
+	{\normalfont\bfseries}
+	{}
+	{0pt}
+	{\colorsubsubsection}
+\titlespacing*{\subsubsection}{0pt}{0.1ex}{0.1ex}
+
+\newcommand{\colorsubsubsection}[1]{%
+	\colorbox{lightgreen!40}{\parbox{0.99\linewidth}{\color{black}\thesubsubsection\ #1}}}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+\definecolor{cadetgrey}{rgb}{0.57, 0.64, 0.69}
+
+\lstdefinestyle{Java}{
+	tabsize=1,
+	language=Java,
+	basicstyle=\ttfamily,
+	backgroundcolor=\color{lightgray},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{azure},
+    identifierstyle=\color{black},
+    stringstyle=\color{codepurple},
+    aboveskip=0mm,
+  	belowskip=0mm,
+  	breaklines=true
+}
+
+\lstdefinestyle{Csharp}{
+	tabsize=1,
+	language=Java,
+	basicstyle=\ttfamily,
+	backgroundcolor=\color{lightgray},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{azure},
+    identifierstyle=\color{black},
+    stringstyle=\color{codepurple},
+    aboveskip=0mm,
+  	belowskip=0mm,
+  	breaklines=true
+}
+

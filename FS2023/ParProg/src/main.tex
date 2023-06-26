@@ -1,10 +1,65 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass{article}
+\usepackage[a4paper, total={6in, 9in}]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage{float}
 \graphicspath{ {./res/} }
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{dirtree}
+\usepackage{tabularray}
+
+% Colors
+\definecolor{strings}{HTML}{448c25}
+\definecolor{comments}{HTML}{aaaaaa}
+\definecolor{keywords}{HTML}{aa3d8c}
+\definecolor{ndkeywords}{rgb}{.612,.36,.15}
+\definecolor{background}{HTML}{fbfbfb}
+\definecolor{numbers}{HTML}{aaaaaa}
+
+% Listings
+% Default style
+\lstdefinestyle{default}{
+    backgroundcolor=\color{background},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=true,
+    breaklines=true,
+    commentstyle=\color{comments},
+    deletekeywords={},
+    escapeinside={}{},
+    extendedchars=true,
+    frame=lines,
+    keepspaces=true,
+    keywordstyle=\color{keywords},
+    keywords={for, in, new, true, false, return, if, while, do },
+    ndkeywords={class, export, boolean, void, int, char, throw, include, ifndef, define, endif, private, public, final, this, extends, protected, var},
+    ndkeywordstyle=\color{ndkeywords}\bfseries,
+    morekeywords={@Override, For, ForEach, Run, Invoke, AsParallel, AsOrdered},
+    numbers=none,
+    numberstyle=\ttfamily\color{numbers},
+    rulecolor=\color{numbers},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    stepnumber=1,
+    stringstyle=\color{strings},
+    morestring=[b]',
+    morestring=[b]",
+    comment=[l]{//},
+    tabsize=2,
+}
+\lstset{
+    style=default,
+    columns=fullflexible,
+    upquote=true
+}
+
+\lstdefinelanguage{numbered}{
+    numbers=left,
+    numberstyle=\ttfamily\color{numbers},
+}
+
 \title{Parallel Programming, FS2023}
 \author{Luzia Kündig}
 \begin{document}

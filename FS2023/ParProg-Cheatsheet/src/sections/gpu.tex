@@ -1,0 +1,69 @@
+\section{GPU Paralellisierung}
+Eine GPU besteht aus mehreren Streaming Multiprocessors (SM). Jeder SM besteht aus mehreren Streaming Processors (SP). In CUDA sind Threads in Blöcke zusammengefasst. Jeder SM kann mehrere Blöcke beherbergen, jeder Block ist intern in Warps zu je 32 Threads zerlegt.
+
+In der Welt der GPU wird zwischen Latenz und Durchsatz unterschieden, \textbf{Latenz:} Wie lange braucht eine einzelne Instruktion/Operation, \textbf{Durchsatz:} Wie viele Operationen führen wir pro Sekunde durch.
+
+\textbf{SIMD} ist die Abkürzung für "Single Instruction Multiple Data". Dies entspricht dem Paradigma der Verktorparallelität. GPUs sind inherent für SIMD-Applikationen geeignet, denn innerhalb eines SM führen alle Cores die gleiche Instruktion auf unterschiedlichen Daten aus. Es gibt auch in CPU begrenzt mächtige SIMD-Instruktionen.
+
+\begin{lstlisting}[style=csharp]
+__global__
+void vecAKern(float *A, float *B, float *C, int N) {
+	int i = blockIdx.x * blockDim.x + threadId.x;
+	if (i < N) { C[i] = A[i] + B[i]; }
+	// alle anderen Threads machen nichts
+}
+\end{lstlisting}     
+
+\subsection{CUDA Laufzeitmodell}
+ CUDA ist die "Computer Unified Device Architecture" von NVIDIA. CUDA arbeitet mit sogenannten Kernels, welche auf der GPU laufen. Jedes Kernel bekommt Informationen darüber, auf welchem Block er läuft \textbf{(blockIdx.x)}, welcher Thread innerhalb des Blocks er ist \textbf{(threadIdx.x)} und wie gross ein Block ist \textbf{(blockDim.x)}. Auch die y- und z- Dimensionen sind nutzbar. Als Programmierer muss man die Datenaufteilung selber modellieren.
+ 
+\subsection{Divergenz / Warp}
+Divergenz heisst, dass im selben Warp unterschiedliche Instruktionen vorhanden sind (z.B. via if/else). Dies bewirkt, dass je für die "if"- und "else"-Elemente ein Cycle gebraucht wird –> Performance-Probleme (ohne else keine Divergenz). Dies verhindert auch das effiziente Laden von Daten aus dem RAM.
+
+\subsection{Arithmetische Intensität}
+\[ ArithmeticIntensity = \frac{BWcompute}{BWmemory} \]
+
+
+\subsection{Memory Management}
+Das \textbf{CUDA Memory Management} kennt die drei wichtigen Funktionen cudaMalloc, cudaFree und cudaMemcpy welche ähnlich wie ihre C-Geschwister funktionieren. Mit cudaMalloc kann Speicher im Device Global Memory alloziiert werden. cudaFree gibt allozierten Speicher auf dem Device wieder frei und cudaMemcpy wird verwendet um Daten vom Host zum Device zu kopieren.
+
+\begin{lstlisting}[style=csharp]
+__global__  // Kernel
+void AddIntsCUDA(int* a, int* b) 
+{ a[0] += b[0]; }
+
+int main() {
+    int a = 5, b = 9;
+    int *d_a, *d_b;
+    // Allocate space on the device
+    cudaMalloc(&d_a, sizeof(int));
+    cudaMalloc(&d_b, sizeof(int));
+    // Copy values from host to device
+    cudaMemcpy(d_a, &a, sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, &b, sizeof(int), cudaMemcpyHostToDevice);
+    // Launch the kernel
+    AddIntsCUDA<<<1, 1>>>(d_a, d_b);
+    // Copy values from device to host
+    cudaMemcpy(&a, d_a, sizeof(int), cudaMemcpyDeviceToHost);
+    std::cout << "The answer is " << a << '\n';
+    cudaFree(d_a);
+    cudaFree(d_b);
+}
+\end{lstlisting}
+
+CUDA kennt verschiedene \textbf{Function Keywords} \lstinline|__global__| (läuft auf Device wird von Host aufgerufen), \lstinline|__device__| (läuft auf Device und wird von Device aufgerufen) und \lstinline|__host__| (läuft auf Host und wird auch vom Host aufgerufen).
+
+Die \textbf{Launch-Configuration} muss dynamisch bestimmt werden und sich am Problem und den Fähigkeiten des Device ermittelt mit cudaGetDeviceProperties()) orientieren. Aus Effizienzgründen sollte die Blockgrösse ein Vielfaches von 32 sein (remember: 32 Threads per Warp, multiple Warps per Block). Die Blockgrösse sollte auch nicht zu gross gewählt werden, um die Anzahl der unnützen Threads zu minimieren. Die SM sollten voll ausgeschöpft werden
+
+\begin{lstlisting}[style=csharp]
+kernel <<< N Blocks, N Threads >>> (arguments);
+\end{lstlisting}
+
+Vor und nach dem Launch des Kernels, müssen die Blöcke auf die GPU kopiert werden. Nach der Verarbeitung müssen wir die Daten wieder auf den Host kopieren.
+
+\subsection{Memory Klassen}
+Eine GPU kennt verschiedene Klassen von Speicher: Register, Local Memory (as slow as global), Shared Memory (L1 Cache), Global Memory, Constant Memory, Texture Memory.
+
+\subsection{Synchronisierung}
+In CUDA können wir mit \lstinline|__syncthreads()| eine Barrier für alle Threads aufbauen.
+

@@ -35,3 +35,50 @@
 %   .2 Dockerfile.
 %   .2 init.sh.
 % }
+
+\subsection*{Parallel Counting}
+\begin{lstlisting}
+  var left = threadPool.submit(() => count(leftPart));
+  var right = threadPool.submit(() => count(rightPart));
+  result = left.get() + right.get();
+\end{lstlisting}
+
+\subsection*{Recursive Counting}
+\begin{lstlisting}
+  class CountTask extends RecursiveTask<Integer> {
+    // constructor
+
+    @Override
+    protected Integer compute() {
+      // if no or single element, return result
+      // split into two parts
+      var left = new CountTask(lower, middle),
+      var right = new CountTask(middle, upper);
+      left.fork(); right.fork();
+      return right.join() + left.join();
+    }
+  }
+\end{lstlisting}
+
+\subsection*{Full Task Implementation}
+\begin{lstlisting}
+  class CountTask extends RecursiveTask<Integer> {
+    private final int lower, upper, THRESHOLD; // threshold to avoid over-parallelization
+    public CountTask(int lower, int upper) {
+      this.lower = lower; this.upper = upper;
+    }
+    protected Integer compute() {
+      if (lower == upper) { return 0; }
+      if (upper - lower < THRESHOLD) { 
+        // sequential execution
+        return isPrime(lower) ? 1 : 0; 
+        }
+      // parallel execution
+      int middle = (lower + upper) / 2;
+      var left = new CountTask(lower, middle);
+      var right = new CountTask(middle, upper);
+      left.fork(); right.fork();
+      return right.join() + left.join();
+    }
+  }
+\end{lstlisting}

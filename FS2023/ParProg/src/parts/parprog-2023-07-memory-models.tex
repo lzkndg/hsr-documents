@@ -1,0 +1,71 @@
+\section{Memory Models}
+
+\textit{What happens when we operate on the same memory without any locking mechanisms? \\- No sequential consistency with concurrent execution.}
+
+\begin{description}
+  \item[Weak Consistency:] Memory accesses are seen in different order by different threads.
+  \item[Optimizations:] Instructions can be reordered or eliminated by optimization.  
+\end{description}
+
+\noindent
+The Memory Model defines what the minimum specified guarantees are when accessing data on the disk.
+
+\begin{description}
+  \item[Atomicity] What instructions will be executed in one single step?
+  \item[Visibility] When will the result of a write operation be visible to other threads? 
+  \item[Ordering] What instructions can be reordered for optimization by the compiler?  
+\end{description}
+
+\begin{description}
+  \item[Volatile write] (Release semantics): preceding memory accesses are not moved below.
+  \item[Volatile read] (Acquire semantics): subsequent memory accesses are not moved above.  
+\end{description}
+
+\begin{table}[H]
+  \begin{tblr}{colspec={l|l|l}}
+    & Java & .NET \\
+    \hline
+    Atomicity & single read / write operation & test \\
+    & (primitive datatypes with 32 bit, & \\
+    & NOT long/double, use \texttt{volatile}) & \\
+
+    \hline
+    Visibility & Lock release \& acquire & test \\
+     & Volatile variable: all changes & \\
+     & before write are visible to next read & \\
+     & Thread/task start and join & \\
+     & \textit{Initialization of final variables:} & \\
+     & \textit{visible after constructor} & \\
+
+    \hline
+    Ordering & same as inter-thread visibility & test \\
+     & + synchronization operations & \\
+     & (total order, if the program consists & \\
+     & only of synchronization instructions) & \\
+  \end{tblr}
+\end{table}
+
+\subsection{Atomic Operations: Java}
+Atomic data types (\texttt{AtomicInteger, AtomicBoolean, AtomicLong, AtomicReference ...}) supply new operations for atomicity of several operations.
+
+\begin{description}
+  \item[\texttt{get()/set()}] guarantees visibility like using volatile
+  \item[\texttt{getAndSet(newVal)}] sets the given value and returns the value before the update 
+  \item[\texttt{compareAndSet(expect, update)}] updates a value if it is equal to the \texttt{expect} parameter, returns a boolen that indicates success. 
+\end{description}
+
+\subsection{Atomic Operations: .NET}
+
+Use class \texttt{Interlocked (import System.Threading)} to perform atomic instructions. 
+
+\begin{description}
+  \item[Add(), Increment(), Decrement()]
+  \item[CompareExchange()] Compares two variables for equality and, if they are equal, replaces the first value.
+  \item[Exchange()] Sets a variable to a specified value and returns the original value, as an atomic operation.
+  \item[MemoryBarrier()] Synchronizes memory access as follows: The processor that executes the current thread cannot reorder instructions in such a way that memory accesses before the call execute after memory accesses that follow the call.    
+\end{description}
+
+\texttt{Thread.MemoryBarrier()} to disallow reordering in both directions.
+
+\subsection{Lock-Free Data Structures}
+Thread safe data structures without locks, using only atomic operations.

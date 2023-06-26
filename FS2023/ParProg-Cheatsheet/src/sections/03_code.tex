@@ -1,0 +1,143 @@
+\section{Code - Java}
+
+\textbf{Blocking Queue mit Non Blocking Datenstrukturen}
+\begin{lstlisting}[style=csharp]
+public class BlockingQueue<T>{
+	private final Semaphore capacity;
+	private final Queue<T> queue = new ConcurrentLinkedList<>();
+	private final Semaphore size = new Semaphore(0);
+	public BlockingQueue(int capacity){
+		this.capacity = new Semaphore(capacity);
+	}
+	public void add(T item) throws InterrruptedException{
+		capacity.aquire();
+		queue.add(item);
+		size.release();
+	}
+	public T remove() throws InterrruptedException{
+		size.aquire();
+		var item = queue.remove();
+		capacity.release();
+		return item;
+}}
+\end{lstlisting}
+
+\textbf{Java Thread Pool}
+\begin{lstlisting}[style=java]
+public class ThreadPool {
+    private final int poolSize;
+    private final BlockingQueue<Runnable> taskQueue;
+    private final ThreadPoolExecutor executor;
+
+    public ThreadPool(int size) {
+        this.poolSize = size;
+        this.taskQueue = new LinkedBlockingQueue<>();
+        this.executor = new ThreadPoolExecutor(poolSize, poolSize, 0L, TimeUnit.MILLISECONDS, taskQueue);
+    }
+
+    public void submit(Runnable task) {
+        executor.execute(task);
+    }
+}
+\end{lstlisting}
+
+\textbf{Rekursive Höhekalkulierung}
+\begin{lstlisting}[style=java]
+int height = threadPool.invoke(new HeightCalculation(tree));
+// task implemenation
+class HeightCalculation extends RecursiveTask<Integer> {
+	private final Node node;
+	
+	public HeightCalculation(Node node) { 
+		this.node = node;
+	}
+    @Override
+    protected Integer compute() {
+		if (node == null) {
+    		return 0;
+		}
+		var leftTask = new HeightCalculation(node.getLeft()); 
+		var rightTask = new HeightCalculation(node.getRight()); 
+		leftTask.fork();
+		rightTask.fork();
+		return Math.max(rightTask.join(), leftTask.join()) + 1;
+	} 
+}
+\end{lstlisting}
+
+\section{Code - CUDA}
+\textbf{Array Summierung}\\
+Ein Beispiel für die Array-Summierung zweier Paare und die Zusammenrechnung im nächsten Schritt
+\begin{lstlisting}[style=csharp]
+__global__ void parallelSum(int* array, int length) {
+  int offset = blockIdx.x * blockDim.x;
+  int stride = 1;
+  while (stride < blockDim.x) {
+    int first = offset + 2 * stride * threadIdx.x; 
+    int second = first + stride;
+    if (second < length) {
+      array[first] += array[second];
+    }
+    stride *= 2;      
+    __syncthreads();
+  }
+}
+\end{lstlisting}
+
+\textbf{Task Graph Traversal}
+\begin{lstlisting}[style=csharp]
+Thread Pool: Tree Traversal
+class TreeTraversal extends RecursiveAction {
+  private final Node node;
+  public TreeTraversal(Node node) { this.node = node; }
+  
+  @Override
+  protected void compute() {
+    if (node != null) {
+      TreeTraversal leftTask = new TreeTraversal(node.getLeft());
+      TreeTraversal rightTask = new TreeTraversal(node.getRight());
+      leftTask.fork(); rightTask.fork(); Logic.operation(node.getValue());
+      rightTask.join(); leftTask.join(); } } }
+
+\end{lstlisting}
+
+\section{Code - MPI}
+\textbf{Calculate the number of zeros in an Array}
+\begin{lstlisting}[style=csharp]
+int rank, size;
+MPI_Init(&argc, &argv);
+MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+int n = 100; // Total number of elements in the array
+int local_n = n / size; // Number of elements for each process
+int *array = NULL;
+int local_count = 0;
+// Scatter the array to all processes
+MPI_Scatter(array, local_n, MPI_INT, local_array, local_n, MPI_INT, 0, MPI_COMM_WORLD);
+// Count the number of zeros in the local portion of the array
+local_count = count_zeros(local_array, local_n);
+
+// Combine the results from all processes
+int global_count = 0;
+MPI_Reduce(&local_count, &global_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+
+if (rank == 0) {
+	printf("The total number of zeros in the array is: %d\n", global_count);
+	free(array);
+}
+free(local_array);
+MPI_Finalize();
+\end{lstlisting}
+
+\textbf{dim3()}
+\begin{lstlisting}[style=csharp]
+ __global__ void VectorAddKernel(float *A, float *B, float *C) {
+   int row = blockIdx.x * blockDim.x + threadIdx.x;
+   int column = blockIdx.y * blockDim.y + threadIdx.y;
+   
+   if (row < A_ROWS && col < A_COLS) {
+      C[row * A_COLS + col] = A[row * A_COLS + col] + B[row * A_COLS + col];
+	}	
+}
+\end{lstlisting}

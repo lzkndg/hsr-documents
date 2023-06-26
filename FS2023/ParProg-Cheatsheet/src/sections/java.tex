@@ -1,0 +1,138 @@
+\section{Java}
+In Java können Threads mittels Vererbung von der Basisklasse Thread definiert werden. Dafür muss die Methode \textbf{public void run()} überschrieben werden. Gestartet wird er Thread mit \textbf{start()} (run würde blockieren). Threads teilen sich den Adressraum und Heap.
+
+\begin{lstlisting}[style=Java]
+class MyThread extends Thread {
+	public void run() { do_something(); }
+}
+new MyThread().start();
+\end{lstlisting}
+
+Auch kann der die Klasse auch das Runnable Interface implementieren. Jedoch muss bei der Kreieren eines Threads eine Instanz des neuen Runnables der Thread-Klasse übergeben werden.
+
+\begin{lstlisting}[style=Java]
+class MyRunnable implements Runnable {
+	public void run() { do_something(); }
+}
+New Thread(new MyRunnable().start());
+\end{lstlisting}
+
+Threads können auch über \textbf{Lambdas} erstellt werden. Dem Konstuktor wird ein Lambda übergeben und der Thread startet.
+
+\begin{lstlisting}[style=Java]
+new Thread(() -> { do_something(); )).start();
+\end{lstlisting}
+
+Ein Thread kann verschieden pausiert werden. Ein Thread kann mit \textbf{yield} den Prozessor freigeben und sich direkt wieder in die Warteschlange einreihen. Mit \textbf{Thread.join()} kann auf die Beendigung eines anderen Prozesse gewartet werden.
+
+\begin{lstlisting}[style=Java]
+Thread.sleep(miliseconds); 
+Thread.yield();
+\end{lstlisting}
+
+Java kennt sogenannte \textbf{Deamon Threads}, die das beenden eines Programmers nicht verhindern (Bsp: Garbage Collector, Worker in ForkJoinPool).
+
+\subsection{Volatile}
+
+\subsection{Atomare Operationen}
+Erlauben das atomare ändern einer Variable mit einer zusätzlichen Operation. Es gibt für Atomare Klassen für Boolean, Integer, Long und Referenzen (auch für Array-Elemente). Atomare Operationen garantieren Ordering und Visibility. Beispiele für atomare Operationen sind \textbf{getAndSet(newVal), getAndAdd(delta), updateAndGet(lambda)}.
+
+\subsection{Monitor}
+Jedes Objekt besitzt einen Monitor Lock und somit kann jedes Objekt synchronisiert werden. Warten auf das Lock kann man mit \textbf{wait()} und notifizieren der Wartenden Objekte mit \textbf{notifyAll(), notify()}. Fairness wird hier nicht garantiert.
+
+\begin{lstlisting}[style=Java]
+public class MyCounter {
+	public synchronized increaseCount() { count++; }
+	public synchornized decreaseCount() { count--; }
+	public void partlySync() {
+		non_dangerous_things();
+		synchronized(this) {dangerous_things();} } }
+\end{lstlisting}
+
+\subsection{Seamphore}
+Mit \textbf{acquire()} wird der Zähler verkleinert und blockiert wenn der Zähler 0 ist und mit \textbf{release()} erhöht.
+
+\begin{lstlisting}[style=Java]
+Semaphore s1 = new Sempahore(1, true);
+s1.acquire(); // blockiert
+s1.release(); // läuft weiter
+\end{lstlisting}
+
+\subsection{Locks \& Conditions}
+Können verwendet werden, um einen spezialisierten Monitor zu bauen. Die Wartebedingung wird gezielt notifiziert. Jedem Lock können mehrer Conditions zugeordnet sein, welche von Threads via \textbf{await()} warten können.
+
+%todo add sample for locks and conditions
+\begin{lstlisting}[style=Java]
+
+\end{lstlisting}
+
+\subsection{Read-Write-Locks}
+Erlaubt die Verwendungen von upgradebaren Locks. 
+
+
+\subsection{CoundDownLatch}
+Bieten einen einmal verwendbaren Rückzähler, der wartet bis er au null ist. Threads können mit \textbf{countDown()} den Zähler dekrementieren. 
+
+\subsection{Cyclic Barrier}
+Ist im Gegensatz zum CountDownLatch wiederverwendbar. Sie wird bei \textbf{await()} dekrementiert; \textbf{getParties()} ermittelt die Anzahl Teilnehmer der Barrier. Die Anzahl Teilnehmer muss bei der Erstellung bekannt sein.
+
+\subsection{Exchanger}
+ermöglicht es, zwischen zwei Threads Objekte auszutauschen.
+
+%todo add exhanger
+
+
+\subsection{Thread Pools}
+In Java erzeugt man Thread Pools mit der Factory Klasse Executors. Zur Auswahl stehen \textbf{newFixedThreadPool(nofThreads), newCachedThreadPools() und newWorkStealingPool()}. Gesondert gibt es noch den\textbf{ForkJoinPool}, welcher es erlaubt rekursive Tasks zu formulieren.
+
+
+
+\begin{lstlisting}[style=Java]
+var simpleTask = threadPool.submit(new simpleTask()); 
+
+public class simpleTask implements Runnable {
+	@Override
+    public void run() {
+    	Thread.sleep(1000);
+    	System.out.print("simpleTask finised\n");
+    }
+}
+\end{lstlisting}
+
+Es kann manchmal vorkommen, dass nach dem Starten eines solchen ForkJoinPool Tasks, es nicht zum Ende kommt, d.h. das Programm terminiert gelegentlich, bevor die Tasks fertig sind. Das gleiche Problem existiert bei der .NET TPL. Die Tasks verursachen auch keine Exceptions. Der Grund für dieses Verhalten sind Worker Threads, die Background sind / Daemon Threads.
+Lösung: Kein Fire-And-Forget. Task-Beendigung per Future bzw. Task-Beendigung per Future bzw. Task-Referenz von Aufruferseite (Non-Daemon/Foreground-Thread) später abwarten.
+
+\begin{lstlisting}[style=Java]
+Future<Integer> future = threadPool.submit(() -> {
+	int value = ...; // long calc
+	return value;
+}
+\end{lstlisting}
+
+\subsection{Futures} sind Proxies auf zukünftige Ereignisse, welche mit \textbf{get()} abgeholt werden können.
+
+Seit Java 8 bieten \textbf{continuations} die Möglichkeit, Folgeoperationen an einen Task anzuhängen. Hierfür wird ein \textbf{CompletableFuture<T>} verwendet.
+
+\begin{lstlisting}[style=Java]
+CompletableFuture<Long> fut = CompletableFuture.supplyAsny(() -> {
+	longOp(); });
+fut.ghenAccpet(res -> System.out.println(res);
+\end{lstlisting}
+
+Die Continuation läuft nur dann, wenn das Future das Ergebnis schon hat, sonst auf einem beliebigenWorker Thread.
+
+\begin{lstlisting}[style=Java]
+// Wait for all Futures
+CompletableFuture.allOf(fut1, fut2).thenAccept(cont);
+//Wait for ANY Future to arrive
+CompletableFuture.any(fut1, fut2).thenAccept(cont);
+\end{lstlisting}
+
+\subsection{Asnychrone Aufrufe}
+%todo add section asynchrone aufrufe
+
+\subsection{Memory Modell}
+ garantiert Atomicity für Lese- /Schreiboperationen bis 32- Bit (mit volatile auch für long und double) und auf Referenzen. Visibility ist bei Locks Release/Acquire garantiert (Änderungen vor Release werden bei Acquire sichtbar). Bei volatile Variablen werden alle vorhergehenden Änderungen beim Zugriff sichtbar. final- Variablen werden nach dem Ende des Konstruktors sichtbar. Sichtbarkeit ist auch bei Thread-Start und –Join sowie Task-Start und -Ende garantiert.
+\\
+ 
+ Das \textbf{volatile} in Java garantiert, dass kein Reordering über einen Zugriff (lesend oder schreiben) auf eine derart markierte Variable hinaus stattfindet. Der Compiler darf optimiert, falls die Semantik INNERHALB des Threads gleich bleibt. Zwischen Threads ist Ordering nur bei Zugriffen auf volatile-Variablen und bei Synchronisationsbefehlen garantiert. Volatile Zugriffe führen nicht zu locking.

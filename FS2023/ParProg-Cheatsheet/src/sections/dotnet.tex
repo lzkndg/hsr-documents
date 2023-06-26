@@ -1,0 +1,72 @@
+\section{.NET}
+Die Primitiven sind analog zu Java, ausser den fehlenden Locks \& Conditions, fehlendes Fairness Flag. Flags. Dazu kommen ReadWriteLockSlim (upgradable), Mutex (binärer Semaphor) und speziellere. Ausser den Collections in System. Collections.Concurrent sind alle Collection NICHT Threadsafe. \\
+
+Das Thread Handling funktioniert ähnlich wie in Java, nur ohne Vererbung, sondern mit Deleagtes und dem Unterschied, dass uncaught Exceptions per Defualt zum Programmabbruch führen. 
+
+\begin{lstlisting}[style=csharp]
+Thread myThread = new Thread(() => {
+	for(int i = 0; i < 100; i++) {
+		Console.WriteLine("Step {0}", i);
+	}
+});
+\end{lstlisting}
+
+\subsection{Monitor}
+ist in .NET über \textbf{lock(someObj)} verfügbar, welches ählich wie synchronized vor einen Block geschrieben wird. Best Practice: sperre ein Hilfsobjekt und nicht das eigene Objekt. Zum Warten und Benachrichten werden \textbf{Monitor.Wait(lock), Monitor.Pulse(), Monitor.PulseAll()} verwendet. Der .NET Monitor ist fair und \textbf{Pulse()} weckt immer den Thread, der schon am längsten wartet.
+
+\begin{lstlisting}[style=csharp]
+class Account {
+	private Object syncObject = new Object();
+	public void syncOp1() {
+		lock(syncObject) {
+			dangerous_op();
+			Monitor.PulseAll();
+		}
+	}
+}
+\end{lstlisting}
+
+\subsection{Task Parallel Library (TPL)}
+ist ein Work Stealing Thread Pool mit verschiedenen Abstraktionsebenen (Task Parallelism, Data Parallelism, Asynchronous Programming with Continuations). Die TPL erkennt geschachtelte Tasks selber und es sind keine speziellen Vorkehrungen zu treffen. Des Weiteren erzeugt die TPL selber neue Threads wenn sie merkt, dass alle Threads blockiert sind. ACHTUNG:TPL Threads sind Background Threads (analog Java Daemon Threads).
+
+\begin{lstlisting}[style=Csharp]
+Task task1 = Task.Factory.StartNew(()=>{/**/});
+// wait for task to finish
+task1.Wait();
+// tasks can have return values
+Task<int> task2 = Task.Factory.StartNew(() => { int res = 42; 
+return res; });
+// this blocks until task2 is finished
+Console.WriteLine(task2.Result);
+\end{lstlisting}
+
+Die TPL kennt verschiedene Abstraktionen, welche im Hintergurnd einen Thread Pool verwendet.
+
+\begin{lstlisting}[style=Csharp]
+Parallel.For(0, 1000, i => Compute(i));
+\end{lstlisting}
+
+\subsection{Asnyc/Await}
+erlauben das teil-asynchrone Ausführen von Funktionen. Der Compiler zerlegt die Funktion in zwei Hälften: bis zum ersten await wird die Funktion vom Caller synchron ausgeführt, Der Rest wird auf einem TPL-Thread erledigt. await darf nur in Funktionen vorkommen die mit async gekennzeichtet sind und Funktionen die mit async gekennzeichnet sind MÜSSEN ein await enthalten! Das was nach dem await kommt ist die Continuation.
+
+\begin{lstlisting}[style=Csharp]
+public class MainClass {
+	public static asnync void DoStuff() {
+		await Task.Delay(1000);
+		Console.WriteLine("Knights!");
+	}
+	public static void Main(String[] args) {
+		Console Write.Line("foo");
+		DoStuff();
+		Thread.Sleep(5000);
+		Console.WriteLine("bar");
+	}
+}
+\end{lstlisting}
+
+\subsection{Memory Model}
+unterscheidet sich vom Java Memory Model darin, dass long und double auch mit volatile nicht atomar sind. Auch die Visibility ist nicht explizit definiert, da sie durch das Ordering gegeben ist. Beim Ordering ist es wichtig, dass volatile in .NET nur ein Partial Fence ist.
+
+\subsection{Volatile}
+verfolgt beim Lesen die sogenannte Acquire-Semantik, was bedeutet, dass alles was VOR dem LESEN einer volatile Variable nach "unten" optimiert werden darf. Beim Schreiben wird die Release-Semantik angewandt: alles was NACH dem SCHREIBEN kommt, darf nach oben optimiert werden. Da diese Semantik oft ungenügend ist, gibt es mit \textbf{Thread.MemoryBarrier()} einen Full- Fence.
+

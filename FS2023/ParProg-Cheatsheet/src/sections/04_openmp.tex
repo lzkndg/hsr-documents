@@ -1,0 +1,45 @@
+\section{OpenMP}
+A library for SMP (symmetric multi-processor, UMA (vs NUMA)) programming. Master thread starts the program, omp directives can fork multiple threads for parallel execution.
+\textbf{Hybrid:} can be combined with MPI \\
+\texttt{omp\_get\_thread\_num()} returns current thread id\\
+\texttt{\#pragma omp parallel} Basic Direktive für das Forking \\
+\texttt{private} private variable copy per thread / loop iterations are private by default \\
+\texttt{shared} shared between Threads, default for all global variables 
+
+\textbf{Parallele Loops}
+\begin{lstlisting}[style=csharp]
+#pragma omp parallel 
+{
+	#pragma omp for 
+	//for loop to parallelize 
+} //end of parallel block 
+\end{lstlisting}
+
+\textbf{Example Working OpenMP}
+\begin{lstlisting}[style=csharp]
+int i; double sum;
+#pragma omp parallel private(sum) private(i)
+{
+	for (i=1; i <= 4; i++)
+    	sum = sum + i;
+    printf("the sum is %lf\n", sum);
+}
+\end{lstlisting}
+
+\textbf{Atomic Instruction}
+\begin{lstlisting}[style=csharp]
+const int n = 300;
+int sum = 0;
+#pragma omp parallel for
+for (int i = 0; i < n; i++) 
+#pragma omp atomic // lightweight mutex
+sum += i;
+\end{lstlisting}
+
+\textbf{Reduction}
+\begin{lstlisting}[style=csharp]
+int sum = 0;
+#pragma omp parallel for reduction(+: sum)
+for (int i = 0; i < 3; i++)
+	sum +=i; // sum = 3;
+\end{lstlisting}

@@ -1,0 +1,82 @@
+\section{Cluster Programming}
+\begin{description}
+	\itemsep -0.2em
+	\item [Shared Memory] (SMP, POSIX, OpenMP)
+	\item [Distributed Memory] / Message Passing (MPI)
+	\item [Single Program Multiple Data] (SPMD)
+	\item [Multiple Program Multiple Data] (MPMD)
+	\item [HPC Hybrid] Memory Model SPMP mit mehreren Nodes
+\end{description}
+
+\subsection{Message Passing Interface (MPI)}
+\textbf{Program Size} is defined when starting the application using \texttt{mpiexec}, cannot be changed.  --
+\texttt{MPI\_Init(\&argc, \&argv);} setup group (does not create processes) \\
+\texttt{MPI\_Comm\_rank(MPI\_COMM\_WORLD, \&rank);} identifies processor in a group \\
+\texttt{MPI\_Comm\_size(MPI\_COMM\_WORLD, \&size);} size of the group \\
+\texttt{MPI\_Send(\&value, length, type, receiverRank, tag, MPI\_COMM\_WORLD);}\\
+\texttt{MPI\_Recv(\&value, length, type, senderRank, tag, MPI\_COMM\_WORLD, MPI\_STATUS\_IGNORE);} \\
+\texttt{MPI\_Finalize();} Cleanup of the group
+
+\begin{description}
+  \item[Datentypen] \texttt{MPI\_CHAR, MPI\_SHORT, MPI\_INT, MPI\_LONG, MPI\_LONG\_LONG, MPI\_UNSIGNED, MPI\_FLOAT, MPI\_DOUBLE}
+  \item[Broadcast] \texttt{MPI\_Bcast(\&data, int length, type, receiverRank, MPI\_COMM\_WORLD);}
+  \item[MPI Barrier] \texttt{MPI\_Barrier(MPI\_COMM\_WORLD);}
+  \item[Reduktion] Operationen auf allen Teilen anwenden und zu einem Ergebnis kalkulieren
+  \item[Reduction ops] \texttt{MPI\_MAX, MPI\_MIN, MPI\_SUM, MPI\_PROD, MPI\_LAND, MPI\_LOR, MPI\_BAND, MPI\_BOR, MPI\_MAXLOC, MPI\_MINLOC}
+\end{description}
+
+\begin{lstlisting}[style=csharp]
+  // result to one receiver
+  MPI_Reduce(&localValue, &totalValue, length, type, operator, receiverRank, MPI_COMM_WORLD); 
+  // result to all processes
+  MPI_Allreduce(&localValue, &totalValue, length, type, operator, MPI_COMM_WORLD);	
+\end{lstlisting}
+
+\textbf{Senden von Werten von einem Prozess an alle anderen (Broadcast)}
+\begin{lstlisting}[style=csharp]
+int main(int argc, char * argv[]) {
+  int rank, size; MPI_Init(&argc, &argv);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
+  if (rank == 0) {
+    int value = rand(); int to;
+    for (to = 1; to < size; to++) {
+      MPI_Send(&value, 1, MPI_INT, to, 0, MPI_COMM_WORLD);
+  } } else { int value;
+    MPI_Recv(&value, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE); }
+  MPI_Finalize(); }
+\end{lstlisting}
+
+\subsection{Calculate the number of zeros in an Array}
+\begin{lstlisting}[style=csharp]
+int rank, size;
+MPI_Init(&argc, &argv);
+MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+int n = 100; // Total number of elements in the array
+int local_n = n / size; // Number of elements for each process
+int *array = NULL; int local_count = 0;
+// Scatter the array to all processes
+MPI_Scatter(array, local_n, MPI_INT, local_array, local_n, MPI_INT, 0, MPI_COMM_WORLD);
+// Count the number of zeros in the local portion of the array
+local_count = count_zeros(local_array, local_n);
+
+// Combine the results from all processes
+int global_count = 0;
+MPI_Reduce(&local_count, &global_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+if (rank == 0) {
+	printf("The total number of zeros in the array is: %d\n", global_count); free(array);
+}
+free(local_array); MPI_Finalize();
+\end{lstlisting}
+\subsection{Explicit MPI Reduce}
+\begin{lstlisting}[style=csharp]
+  if (rank > 0) {
+    MPI_Send(&hits, 1, MPI_LONG, 0, 0, MPI_COMM_WORLD);} 
+  else { int total = hits; 
+  for (int other = 1; other < size; other++) {
+    MPI_Recv(&hits, 1,MPI_LONG, other, 0, MPI_COMM_WORLD);total += hits; } }
+\end{lstlisting}
+
+
